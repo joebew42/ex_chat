@@ -15,7 +15,6 @@ This is a simple chat server built in Elixir with the goal to show a real life a
 
 ### DOING
 
-### TODO
+- As user I can subscribe to a chat room so that I can receive all the messages sent
 
-- A user can subscribe to a chat room
-- Everytime a message is sent to that chat room, all the subscribed user get notified about that message
+### TODO
