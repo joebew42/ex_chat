@@ -21,7 +21,8 @@ defmodule ExChat.MixProject do
   defp deps do
     [
       {:cowboy, "~> 1.0.0"},
-      {:plug, "~> 1.0"}
+      {:plug, "~> 1.0"},
+      {:web_socket, "~> 0.1.0"}
     ]
   end
 end
