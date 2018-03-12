@@ -1,21 +1,21 @@
 # ExChat
 
-**TODO: Add description**
+This is a simple chat server built in Elixir with the goal to show a real life application of Websockets.
 
-## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ex_chat` to your list of dependencies in `mix.exs`:
+![the sketch](/sketch.png?raw=true)
 
-```elixir
-def deps do
-  [
-    {:ex_chat, "~> 0.1.0"}
-  ]
-end
-```
+## Features roadmap
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/ex_chat](https://hexdocs.pm/ex_chat).
+- Multiple Rooms support
+- A Websockets server implementation so that we can support web clients
+- A minimal frontend to allow users to subscribe to each room, sending messages and receiving messages
 
+## Scratchpad
+
+### DOING
+
+### TODO
+
+- A user can subscribe to a chat room
+- Everytime a message is sent to that chat room, all the subscribed user get notified about that message
