@@ -6,7 +6,10 @@ defmodule ExChat.Supervisor do
   end
 
   def init(:ok) do
-    children = [ExChat.ChatRoom]
+    children = [
+      ExChat.ChatRoom,
+      Plug.Adapters.Cowboy.child_spec(:http, ExChat.Web.Http, [], [port: 4000])
+    ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
