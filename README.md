@@ -15,8 +15,10 @@ This is a simple chat server built in Elixir with the goal to show a real life a
 
 ### DOING
 
-- As user I can subscribe to a chat room so that I can receive all the messages sent
+- Rename the test folder `exchat` to `ex_chat`
 
 ### TODO
 
-- Rename the test folder `exchat` to `ex_chat`
+### DONE
+
+- As a client I can subscribe to a chat room so that I can receive all the messages sent
