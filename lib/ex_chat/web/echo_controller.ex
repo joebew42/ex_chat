@@ -7,7 +7,7 @@ defmodule ExChat.Web.EchoController do
     :ok
   end
 
-  def echo(message, state)do
+  def echo(message, state) do
     {:reply, {:text, message}, state}
   end
 end
