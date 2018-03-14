@@ -22,7 +22,8 @@ defmodule ExChat.MixProject do
     [
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 1.0"},
-      {:web_socket, "~> 0.1.0"}
+      {:web_socket, "~> 0.1.0"},
+      {:websockex, "~> 0.4.0", only: :test}
     ]
   end
 end
