@@ -20,7 +20,7 @@ defmodule ExChat.ChatRoom do
   # Callbacks
 
   def handle_call({:join, subscriber}, _from, subscribers) do
-    {:reply, :ok, subscribers ++ [subscriber]}
+    {:reply, :ok, [subscriber|subscribers]}
   end
 
   def handle_cast({:send, message}, subscribers) do
