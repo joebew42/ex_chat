@@ -24,12 +24,7 @@ defmodule ExChat.ChatRoom do
   end
 
   def handle_cast({:send, message}, subscribers) do
-    Enum.each(subscribers,
-      fn(subscriber) ->
-        Kernel.send(subscriber, message)
-      end
-    );
-
+    Enum.each(subscribers, &Kernel.send(&1, message));
     {:noreply,  subscribers}
   end
 end
