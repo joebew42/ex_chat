@@ -32,10 +32,11 @@ _Check out the web client at `http://localhost:4000/index.html`_
 
 ### TODO
 
-- Expose a websocket endpoint to join a chatroom and receive messages
+- Expose a websocket endpoint to allow clients join a chatroom and receive messages
 
 ### DONE
 
+- How to test the websocket endpoint in Elixir
 - Put `how to run tests` and `how to start application` in the `README.md`
 - Start the application
 - Rename the test folder `exchat` to `ex_chat`

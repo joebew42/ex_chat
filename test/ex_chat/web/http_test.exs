@@ -1,6 +1,6 @@
 defmodule ExChat.Web.HttpTest do
   use ExUnit.Case, async: true
-  use WebSockex
+  import WebSocketClient
 
   alias ExChat.Supervisor
 
@@ -10,14 +10,10 @@ defmodule ExChat.Web.HttpTest do
   end
 
   test "receive back the message sent" do
-    {:ok, client} = WebSockex.start_link("ws://localhost:4000/echo", __MODULE__, self(), [])
-    WebSockex.send_frame(client, {:text, "hello world"})
+    {:ok, ws_client} = connect_to "ws://localhost:4000/echo", {:forward_to, self()}
 
-    assert_receive "hello world", 1_000
-  end
+    send_as_text "hello world", {:to, ws_client}
 
-  def handle_frame({:text, message}, test_process) do
-    send test_process, message;
-    {:ok, test_process}
+    assert_receive "hello world"
   end
 end
