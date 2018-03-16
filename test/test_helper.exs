@@ -7,7 +7,7 @@ defmodule WebSocketClient do
     WebSockex.start_link(ws_endpoint, __MODULE__, pid, [])
   end
 
-  def send_as_text(message, {:to, ws_client}) do
+  def send_as_text(message, {:using, ws_client}) do
     WebSockex.send_frame(ws_client, {:text, message})
   end
 

@@ -30,9 +30,12 @@ _Check out the web client at `http://localhost:4000/index.html`_
 
 ### DOING
 
+- Allow web clients to join a chatroom
+
 ### TODO
 
-- Expose a websocket endpoint to allow clients join a chatroom and receive messages
+- Allow web clients to send messages
+- Allow web clients to receive messages
 
 ### DONE
 
