@@ -3,6 +3,7 @@ defmodule ExChat.Web.Http do
   use WebSocket
 
   socket "/echo", ExChat.Web.EchoController, :echo
+  socket "/room", ExChat.Web.ChatRoomController, :chat_room
 
   plug Plug.Static, at: "/", from: :ex_chat
 
