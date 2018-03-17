@@ -30,10 +30,11 @@ _Check out the web client at `http://localhost:4000/index.html`_
 
 ### DOING
 
-- Allow web clients to send messages
+- Replace the `plug-web-socket` with the default `cowboy_websocket_handler`
 
 ### TODO
 
+- Allow web clients to send messages
 - Allow web clients to receive messages
 - Remove the `/echo` endpoint
 
