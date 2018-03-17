@@ -32,7 +32,6 @@ defmodule ExChat.Web.HttpTest do
     test "each message sent is received back", %{ws_client: ws_client} do
       send_as_text "Hello folks!", {:using, ws_client}
 
-      assert_receive "welcome to the awesome chat room!"
       assert_receive "Hello folks!"
     end
   end
