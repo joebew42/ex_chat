@@ -34,6 +34,15 @@ defmodule ExChat.Web.HttpTest do
 
       assert_receive "Hello folks!"
     end
+
+    test "we receive all the messages sent by other clients" do
+      {:ok, another_client} = connect_to "ws://localhost:4000/room", {:forward_to, NullProcess.start}
+      send_as_text "join", {:using, another_client}
+
+      send_as_text "Hello from Twitch!", {:using, another_client}
+
+      assert_receive "Hello from Twitch!"
+    end
   end
 
 end

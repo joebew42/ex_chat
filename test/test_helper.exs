@@ -16,3 +16,11 @@ defmodule WebSocketClient do
     {:ok, test_process}
   end
 end
+
+defmodule NullProcess do
+  def start, do: spawn(__MODULE__, :loop, [])
+
+  def loop do
+    receive do _ -> loop() end
+  end
+end
