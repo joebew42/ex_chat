@@ -30,16 +30,16 @@ _Check out the web client at `http://localhost:4000/index.html`_
 
 ### DOING
 
-- Replace the `plug-web-socket` with the default `cowboy_websocket_handler`
+- Allow web clients to send messages
 
 ### TODO
 
-- Allow web clients to send messages
 - Allow web clients to receive messages
 - Remove the `/echo` endpoint
 
 ### DONE
 
+- Replace the `plug-web-socket` with the default `cowboy_websocket_handler`
 - Allow web clients to join a chatroom
 - How to test the websocket endpoint in Elixir
 - Put `how to run tests` and `how to start application` in the `README.md`

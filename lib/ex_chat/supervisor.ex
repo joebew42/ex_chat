@@ -3,7 +3,7 @@ defmodule ExChat.Supervisor do
 
   @http_options [
     port: 4000,
-    dispatch: ExChat.Web.Http.dispatch_table
+    dispatch: ExChat.Web.Http.dispatch
   ]
 
   def start_link(opts) do
