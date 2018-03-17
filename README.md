@@ -24,13 +24,14 @@ $ mix deps.get
 $ iex -S mix
 ```
 
-_Check out the web client at `http://localhost:4000/index.html`_
+_Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ## Scratchpad
 
 ### DOING
 
 - Allow web clients to send messages
+  - We have to create a better web UI to allows user to write and send messages
 
 ### TODO
 

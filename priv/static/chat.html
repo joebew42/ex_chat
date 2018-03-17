@@ -30,9 +30,12 @@
         writeToScreen("DISCONNECTED");
       }
       function onMessage(evt) {
-        writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-        doSend("Hello there!")
-        websocket.close();
+        message = evt.data;
+        writeToScreen('<span style="color: blue;">RESPONSE: ' + message +'</span>');
+
+        if (message.startsWith("welcome")) {
+          doSend("Hello there!");
+        }
       }
       function onError(evt) {
         writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
