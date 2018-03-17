@@ -25,8 +25,8 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
     {:ok, req, state}
   end
 
-  def websocket_info(_info, req, state) do
-    {:ok, req, state}
+  def websocket_info(message, req, state) do
+    {:reply, {:text, message}, req, state}
   end
 
   def websocket_terminate(_reason, _req, _state) do

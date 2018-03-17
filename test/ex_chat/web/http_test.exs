@@ -17,11 +17,24 @@ defmodule ExChat.Web.HttpTest do
     assert_receive "hello world"
   end
 
-  test "when join a chat room a welcome message is received" do
-    {:ok, ws_client} = connect_to "ws://localhost:4000/room", {:forward_to, self()}
+  describe "when join a chat room" do
+    setup do
+      {:ok, ws_client} = connect_to "ws://localhost:4000/room", {:forward_to, self()}
+      send_as_text "join", {:using, ws_client}
 
-    send_as_text "join", {:using, ws_client}
+      {:ok, ws_client: ws_client}
+    end
 
-    assert_receive "welcome to the awesome chat room!"
+    test "a welcome message is received" do
+      assert_receive "welcome to the awesome chat room!"
+    end
+
+    test "each message sent is received back", %{ws_client: ws_client} do
+      send_as_text "Hello folks!", {:using, ws_client}
+
+      assert_receive "welcome to the awesome chat room!"
+      assert_receive "Hello folks!"
+    end
   end
+
 end

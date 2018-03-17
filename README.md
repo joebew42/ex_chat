@@ -34,6 +34,7 @@ _Check out the web client at `http://localhost:4000/index.html`_
 
 ### TODO
 
+- Rename `web.http` to `web.router`
 - Allow web clients to receive messages
 - Remove the `/echo` endpoint
 
