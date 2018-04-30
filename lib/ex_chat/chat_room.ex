@@ -17,8 +17,6 @@ defmodule ExChat.ChatRoom do
     GenServer.cast(:chatroom, {:send, message})
   end
 
-  # Callbacks
-
   def handle_call({:join, subscriber}, _from, subscribers) do
     {:reply, :ok, [subscriber|subscribers]}
   end

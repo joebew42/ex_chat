@@ -12,12 +12,18 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
   end
 
   def websocket_handle({:text, "join"}, req, state) do
-    :ok = ExChat.ChatRoom.join(self())
-    {:reply, {:text, "welcome to the awesome chat room!"}, req, state}
+    :ok = ExChat.ChatRooms.join("default", self())
+
+    response = %{
+      room: "default",
+      message: "welcome to the default chat room!"
+    }
+
+    {:reply, {:text, as_json(response)}, req, state}
   end
 
   def websocket_handle({:text, message}, req, state) do
-    :ok = ExChat.ChatRoom.send(message)
+    :ok = ExChat.ChatRooms.send("default", message)
     {:ok, req, state}
   end
 
@@ -32,4 +38,6 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
   def websocket_terminate(_reason, _req, _state) do
     :ok
   end
+
+  defp as_json(response), do: Poison.encode!(response)
 end

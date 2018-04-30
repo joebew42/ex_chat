@@ -18,7 +18,7 @@ defmodule ExChat.Web.RouterTest do
     end
 
     test "a welcome message is received" do
-      assert_receive "welcome to the awesome chat room!"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
     end
 
     test "each message sent is received back", %{ws_client: ws_client} do

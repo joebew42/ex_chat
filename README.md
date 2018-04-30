@@ -34,6 +34,8 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
+- leave the chatroom when a ws handler terminate
+- try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
 
 ### DONE
 
