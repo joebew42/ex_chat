@@ -1,4 +1,4 @@
-defmodule ExChat.Web.Http do
+defmodule ExChat.Web.Router do
   use Plug.Router
 
   plug Plug.Static, at: "/", from: :ex_chat
