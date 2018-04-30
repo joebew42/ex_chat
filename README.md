@@ -31,6 +31,8 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 ### DOING
 
 - Handle multiple chat rooms
+  - change the format of the response for other tests (add the room name)
+  - improve the way we make assertion on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 
 ### TODO
 
