@@ -5,9 +5,21 @@
   </head>
   <body>
     <h2>WebSocket Chat Test</h2>
+    <div id="message_box">
+      <input id="message_box_input" type="text" style="width:400px" />
+      <button id="message_box_send_button" onclick="sendMessage()">send message</button>
+    </div>
+
     <div id="output"></div>
 
     <script language="javascript" type="text/javascript">
+      /* UI functions */
+      function sendMessage() {
+        var messageBoxInput = document.getElementById("message_box_input");
+        doSend(messageBoxInput.value)
+      }
+
+      /* WebSockets functions */
       var wsUri = "ws://localhost:4000/room";
       var output;
       var websocket;
@@ -32,10 +44,6 @@
       function onMessage(evt) {
         message = evt.data;
         writeToScreen('<span style="color: blue;">RESPONSE: ' + message +'</span>');
-
-        if (message.startsWith("welcome")) {
-          doSend("Hello there!");
-        }
       }
       function onError(evt) {
         writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);

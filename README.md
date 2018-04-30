@@ -30,17 +30,17 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
-- Allow web clients to send messages
-  - We have to create a better web UI to allows user to write and send messages
-
 ### TODO
 
-- Rename `web.http` to `web.router`
 - Allow web clients to receive messages
-- Remove the `/echo` endpoint
+- Handle multiple chat rooms
+- Rename `web.http` to `web.router`
+- Remove the `/echo` endpoint just because it is no longer needed
 
 ### DONE
 
+- Allow web clients to write and send messages
+  - We have to create a better web UI to allows user to write and send messages
 - Replace the `plug-web-socket` with the default `cowboy_websocket_handler`
 - Allow web clients to join a chatroom
 - How to test the websocket endpoint in Elixir
