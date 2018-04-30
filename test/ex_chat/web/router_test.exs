@@ -11,8 +11,8 @@ defmodule ExChat.Web.RouterTest do
 
   describe "when join a chat room" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/room", {:forward_to, self()}
-      send_as_text "join", {:using, ws_client}
+      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      send_as_text(ws_client, "join")
 
       {:ok, ws_client: ws_client}
     end
@@ -22,16 +22,16 @@ defmodule ExChat.Web.RouterTest do
     end
 
     test "each message sent is received back", %{ws_client: ws_client} do
-      send_as_text "Hello folks!", {:using, ws_client}
+      send_as_text(ws_client, "Hello folks!")
 
       assert_receive "Hello folks!"
     end
 
     test "we receive all the messages sent by other clients" do
-      {:ok, another_client} = connect_to "ws://localhost:4000/room", {:forward_to, NullProcess.start}
-      send_as_text "join", {:using, another_client}
+      {:ok, another_client} = connect_to "ws://localhost:4000/room", forward_to: NullProcess.start
+      send_as_text(another_client, "join")
 
-      send_as_text "Hello from Twitch!", {:using, another_client}
+      send_as_text(another_client, "Hello from Twitch!")
 
       assert_receive "Hello from Twitch!"
     end

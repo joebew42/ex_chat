@@ -3,11 +3,11 @@ ExUnit.start([trace: true])
 defmodule WebSocketClient do
   use WebSockex
 
-  def connect_to(ws_endpoint, {:forward_to, pid}) do
+  def connect_to(ws_endpoint, forward_to: pid) do
     WebSockex.start_link(ws_endpoint, __MODULE__, pid, [])
   end
 
-  def send_as_text(message, {:using, ws_client}) do
+  def send_as_text(ws_client, message) do
     WebSockex.send_frame(ws_client, {:text, message})
   end
 

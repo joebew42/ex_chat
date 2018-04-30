@@ -30,10 +30,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+- Handle multiple chat rooms
 
 ### TODO
 
-- Handle multiple chat rooms
 
 ### DONE
 
