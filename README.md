@@ -32,13 +32,13 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
-- Allow web clients to receive messages
+- Remove the `/echo` endpoint just because it is no longer needed
 - Handle multiple chat rooms
 - Rename `web.http` to `web.router`
-- Remove the `/echo` endpoint just because it is no longer needed
 
 ### DONE
 
+- Allow web clients to receive messages
 - Allow web clients to write and send messages
   - We have to create a better web UI to allows user to write and send messages
 - Replace the `plug-web-socket` with the default `cowboy_websocket_handler`
