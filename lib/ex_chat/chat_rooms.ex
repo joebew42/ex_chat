@@ -9,15 +9,15 @@ defmodule ExChat.ChatRooms do
     {:ok, chatrooms}
   end
 
-  def join(_room_name, client) do
-    :ok = GenServer.call(:chatrooms, {:join, client})
+  def join(room, client) do
+    :ok = GenServer.call(:chatrooms, {:join, client, :room, room})
   end
 
-  def send(_room_name, message) do
+  def send(_room, message) do
     :ok = GenServer.call(:chatrooms, {:send, message})
   end
 
-  def handle_call({:join, client}, _from, chatrooms) do
+  def handle_call({:join, client, :room, _room}, _from, chatrooms) do
     ExChat.ChatRoom.join(client)
     {:reply, :ok, chatrooms}
   end
