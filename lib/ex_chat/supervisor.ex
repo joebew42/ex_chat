@@ -13,6 +13,7 @@ defmodule ExChat.Supervisor do
   def init(:ok) do
     children = [
       ExChat.ChatRoom,
+      ExChat.ChatRooms,
       Plug.Adapters.Cowboy.child_spec(:http, ExChat.Web.Router, [], @http_options)
     ]
 

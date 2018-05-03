@@ -34,6 +34,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
+- promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - improve the way we make assertion on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - think to rename the websocket endpoint (`ws://localhost:4000/room`)
@@ -42,6 +43,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- rename `subscriber` to `client` in `ChatRooms`
 - change the format of the response for other tests (add the room name)
 - Rename `web.http` to `web.router`
 - Remove the `/echo` endpoint just because it is no longer needed
