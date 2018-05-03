@@ -36,4 +36,17 @@ defmodule ExChat.Web.RouterTest do
       assert_receive "{\"room\":\"default\",\"message\":\"Hello from Twitch!\"}"
     end
   end
+
+  describe "when join a new chat room" do
+    setup do
+      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
+
+      {:ok, ws_client: ws_client}
+    end
+
+    test "a welcome message is received" do
+      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room!\"}"
+    end
+  end
 end

@@ -34,6 +34,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
+- handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - improve the way we make assertion on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - think to rename the websocket endpoint (`ws://localhost:4000/room`)
 - leave the chatroom when a ws handler terminate

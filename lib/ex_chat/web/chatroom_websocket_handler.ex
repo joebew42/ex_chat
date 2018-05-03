@@ -32,15 +32,19 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
     :ok
   end
 
-  defp handle(%{"command" => "join"}, req, state) do
-    :ok = ExChat.ChatRooms.join("default", self())
+  defp handle(%{"command" => "join", "room" => room}, req, state) do
+    :ok = ExChat.ChatRooms.join(room, self())
 
     response = %{
-      room: "default",
-      message: "welcome to the default chat room!"
+      room: room,
+      message: "welcome to the " <> room <> " chat room!"
     }
 
     {:reply, {:text, to_json(response)}, req, state}
+  end
+
+  defp handle(command = %{"command" => "join"}, req, state) do
+    handle(Map.put(command, "room", "default"), req, state)
   end
 
   defp handle(%{"room" => room, "message" => message}, req, state) do
