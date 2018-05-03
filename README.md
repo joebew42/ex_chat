@@ -31,6 +31,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 ### DOING
 
 - Handle multiple chat rooms
+  - handle the chat room creation when client wants to join to an unexisting chat room
 
 ### TODO
 

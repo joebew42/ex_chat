@@ -49,10 +49,10 @@ defmodule ExChat.Web.RouterTest do
       assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room!\"}"
     end
 
-    # test "each message sent is received back", %{ws_client: ws_client} do
-    #   send_as_text(ws_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}")
+    test "each message sent is received back", %{ws_client: ws_client} do
+      send_as_text(ws_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}")
 
-    #   assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}"
-    # end
+      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}"
+    end
   end
 end
