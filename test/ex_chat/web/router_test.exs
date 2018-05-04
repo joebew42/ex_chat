@@ -49,10 +49,19 @@ defmodule ExChat.Web.RouterTest do
       assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room!\"}"
     end
 
-    # test "each message sent is received back", %{ws_client: ws_client} do
-    #   send_as_text(ws_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}")
+    test "each message sent is received back", %{ws_client: ws_client} do
+      send_as_text(ws_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}")
 
-    #   assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}"
-    # end
+      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}"
+    end
+
+    test "we receive all the messages sent by other clients" do
+      {:ok, other_client} = connect_to "ws://localhost:4000/room", forward_to: NullProcess.start
+      send_as_text(other_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
+
+      send_as_text(other_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello from Twitch!\"}")
+
+      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello from Twitch!\"}"
+    end
   end
 end
