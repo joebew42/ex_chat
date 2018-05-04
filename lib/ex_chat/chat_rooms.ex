@@ -23,7 +23,7 @@ defmodule ExChat.ChatRooms do
   def handle_call({:join, client, :room, room}, _from, chatrooms) do
     new_chatrooms = case find_chatroom(chatrooms, room) do
       nil ->
-        {:ok, pid} = ChatRoom.start_link(name: room)
+        {:ok, pid} = ChatRoom.create(room)
         ExChat.ChatRoom.join(pid, client)
         Map.put(chatrooms, room, pid)
       pid ->
@@ -41,7 +41,7 @@ defmodule ExChat.ChatRooms do
   end
 
   def handle_info(:create_default_chatroom, chatrooms) do
-    {:ok, pid} = ChatRoom.start_link(name: "default")
+    {:ok, pid} = ChatRoom.create("default")
     new_chatrooms = Map.put(chatrooms, "default", pid)
     {:noreply, new_chatrooms}
   end

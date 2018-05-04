@@ -3,7 +3,7 @@ defmodule ExChat.ChatRoom do
 
   defstruct subscribers: [], name: nil
 
-  def start_link([name: name]) do
+  def create(name) do
     GenServer.start_link(__MODULE__, %__MODULE__{name: name})
   end
 
