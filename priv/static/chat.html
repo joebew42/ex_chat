@@ -6,7 +6,11 @@
   <body>
     <h2>WebSocket Chat Test</h2>
     <div id="message_box">
-      <input id="message_box_input" type="text" style="width:400px" />
+      Room: <input id="message_box_room_input" type="text" style="width:100px" value="default" />
+      <button id="message_box_join_button" onclick="joinRoom()">join room</button>
+      <br/>
+
+      Message: <input id="message_box_input" type="text" style="width:400px" />
       <button id="message_box_send_button" onclick="sendMessage()">send message</button>
     </div>
 
@@ -14,9 +18,23 @@
 
     <script language="javascript" type="text/javascript">
       /* UI functions */
+      function joinRoom() {
+        var messageBoxRoomInput = document.getElementById("message_box_room_input");
+        request = {
+          command: "join",
+          room: messageBoxRoomInput.value
+        }
+        doSend(JSON.stringify(request))
+      }
+
       function sendMessage() {
+        var messageBoxRoomInput = document.getElementById("message_box_room_input");
         var messageBoxInput = document.getElementById("message_box_input");
-        doSend(messageBoxInput.value)
+        request = {
+          room: message_box_room_input.value,
+          message: messageBoxInput.value
+        }
+        doSend(JSON.stringify(request))
       }
 
       /* WebSockets functions */
@@ -36,14 +54,14 @@
       }
       function onOpen(evt) {
         writeToScreen("CONNECTED");
-        doSend("join");
+        doSend(JSON.stringify({command: "join"}));
       }
       function onClose(evt) {
         writeToScreen("DISCONNECTED");
       }
       function onMessage(evt) {
-        message = evt.data;
-        writeToScreen('<span style="color: blue;">RESPONSE: ' + message +'</span>');
+        response = JSON.parse(evt.data);
+        writeToScreen('<span style="color: blue;">MESSAGE: ' + response.room +': ' + response.message + '</span>');
       }
       function onError(evt) {
         writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);

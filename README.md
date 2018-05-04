@@ -30,11 +30,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
-- Handle multiple chat rooms
-
 ### TODO
 
-- think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join to an unexisting chatroom)
+- avoid that a subscribed client can subscribe twice
+- think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join to an unexisting chatroom, look at the `ChatRooms.create_and_join_chatroom/3 function)
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - improve the way we make assertion on received messages (e.g. assert_receive wants pattern match and not functions or variables)
@@ -44,6 +43,8 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- Handle multiple chat rooms
+- adapt the UI to handle the room name
 - handle the chat room creation when client wants to join to an unexisting chat room
 - rename `subscriber` to `client` in `ChatRooms`
 - change the format of the response for other tests (add the room name)
