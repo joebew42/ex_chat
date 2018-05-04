@@ -21,12 +21,14 @@ defmodule ExChat.ChatRooms do
   end
 
   def handle_call({:join, client, :room, _room}, _from, chatrooms) do
-    ExChat.ChatRoom.join(client)
+    pid = Map.get(chatrooms, "default")
+    ExChat.ChatRoom.join(pid, client)
     {:reply, :ok, chatrooms}
   end
 
   def handle_call({:send, message}, _from, chatrooms) do
-    ExChat.ChatRoom.send(message)
+    pid = Map.get(chatrooms, "default")
+    ExChat.ChatRoom.send(pid, message)
     {:reply, :ok, chatrooms}
   end
 
