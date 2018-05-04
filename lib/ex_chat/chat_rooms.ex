@@ -1,11 +1,14 @@
 defmodule ExChat.ChatRooms do
   use GenServer
 
+  alias ExChat.ChatRoom
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, %{}, name: :chatrooms)
   end
 
   def init(chatrooms) do
+    Kernel.send self(), :create_default_chatroom
     {:ok, chatrooms}
   end
 
@@ -25,5 +28,11 @@ defmodule ExChat.ChatRooms do
   def handle_call({:send, message}, _from, chatrooms) do
     ExChat.ChatRoom.send(message)
     {:reply, :ok, chatrooms}
+  end
+
+  def handle_info(:create_default_chatroom, chatrooms) do
+    {:ok, pid} = ChatRoom.start_link([])
+    new_chatrooms = Map.put(chatrooms, "default", pid)
+    {:noreply, new_chatrooms}
   end
 end
