@@ -35,6 +35,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
+- think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join to an unexisting chatroom)
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - improve the way we make assertion on received messages (e.g. assert_receive wants pattern match and not functions or variables)

@@ -16,18 +16,26 @@ defmodule ExChat.ChatRooms do
     :ok = GenServer.call(:chatrooms, {:join, client, :room, room})
   end
 
-  def send(_room, message) do
-    :ok = GenServer.call(:chatrooms, {:send, message})
+  def send(room, message) do
+    :ok = GenServer.call(:chatrooms, {:send, message, :room, room})
   end
 
-  def handle_call({:join, client, :room, _room}, _from, chatrooms) do
-    pid = find_chatroom(chatrooms, "default")
-    ExChat.ChatRoom.join(pid, client)
-    {:reply, :ok, chatrooms}
+  def handle_call({:join, client, :room, room}, _from, chatrooms) do
+    new_chatrooms = case find_chatroom(chatrooms, room) do
+      nil ->
+        {:ok, pid} = ChatRoom.start_link([])
+        ExChat.ChatRoom.join(pid, client)
+        Map.put(chatrooms, room, pid)
+      pid ->
+        ExChat.ChatRoom.join(pid, client)
+        chatrooms
+    end
+
+    {:reply, :ok, new_chatrooms}
   end
 
-  def handle_call({:send, message}, _from, chatrooms) do
-    pid = find_chatroom(chatrooms, "default")
+  def handle_call({:send, message, :room, room}, _from, chatrooms) do
+    pid = find_chatroom(chatrooms, room)
     ExChat.ChatRoom.send(pid, message)
     {:reply, :ok, chatrooms}
   end

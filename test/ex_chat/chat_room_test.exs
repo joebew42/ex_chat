@@ -4,14 +4,14 @@ defmodule ExChat.ChatRoomTest do
   alias ExChat.ChatRoom
 
   setup do
-    {:ok, pid} = start_supervised ChatRoom
+    {:ok, pid} = ChatRoom.start_link(name: "room_name")
     %{chatroom: pid}
   end
 
   test "not receive messages when not subscribed", %{chatroom: chatroom} do
     ChatRoom.send(chatroom, "hello world")
 
-    refute_receive "hello world"
+    refute_receive {"room_name", "hello world"}
   end
 
   test "receive messages when subscribed", %{chatroom: chatroom} do
@@ -19,6 +19,6 @@ defmodule ExChat.ChatRoomTest do
 
     ChatRoom.send(chatroom, "hello world")
 
-    assert_receive "hello world"
+    assert_receive {"room_name", "hello world"}
   end
 end

@@ -19,9 +19,9 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
     {:ok, req, state}
   end
 
-  def websocket_info(message, req, state) do
+  def websocket_info({chatroom_name, message}, req, state) do
     response = %{
-      room: "default",
+      room: chatroom_name,
       message: message
     }
 
