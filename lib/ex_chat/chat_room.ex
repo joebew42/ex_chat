@@ -6,9 +6,6 @@ defmodule ExChat.ChatRoom do
   def start_link([name: name]) do
     GenServer.start_link(__MODULE__, %__MODULE__{name: name})
   end
-  def start_link(_opts) do
-    GenServer.start_link(__MODULE__, %__MODULE__{name: "default"})
-  end
 
   def init(state) do
     {:ok, state}
