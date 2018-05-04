@@ -31,7 +31,6 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 ### DOING
 
 - Handle multiple chat rooms
-  - handle the chat room creation when client wants to join to an unexisting chat room
 
 ### TODO
 
@@ -45,6 +44,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- handle the chat room creation when client wants to join to an unexisting chat room
 - rename `subscriber` to `client` in `ChatRooms`
 - change the format of the response for other tests (add the room name)
 - Rename `web.http` to `web.router`

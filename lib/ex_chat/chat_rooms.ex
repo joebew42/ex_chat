@@ -8,7 +8,6 @@ defmodule ExChat.ChatRooms do
   end
 
   def init(chatrooms) do
-    Kernel.send self(), :create_default_chatroom
     {:ok, chatrooms}
   end
 
@@ -21,16 +20,7 @@ defmodule ExChat.ChatRooms do
   end
 
   def handle_call({:join, client, :room, room}, _from, chatrooms) do
-    new_chatrooms = case find_chatroom(chatrooms, room) do
-      nil ->
-        {:ok, pid} = ChatRoom.create(room)
-        ExChat.ChatRoom.join(pid, client)
-        Map.put(chatrooms, room, pid)
-      pid ->
-        ExChat.ChatRoom.join(pid, client)
-        chatrooms
-    end
-
+    new_chatrooms = create_and_join_chatroom(chatrooms, room, client)
     {:reply, :ok, new_chatrooms}
   end
 
@@ -40,10 +30,16 @@ defmodule ExChat.ChatRooms do
     {:reply, :ok, chatrooms}
   end
 
-  def handle_info(:create_default_chatroom, chatrooms) do
-    {:ok, pid} = ChatRoom.create("default")
-    new_chatrooms = Map.put(chatrooms, "default", pid)
-    {:noreply, new_chatrooms}
+  defp create_and_join_chatroom(chatrooms, room, client) do
+    case find_chatroom(chatrooms, room) do
+      nil ->
+        {:ok, pid} = ChatRoom.create(room)
+        ExChat.ChatRoom.join(pid, client)
+        Map.put(chatrooms, room, pid)
+      pid ->
+        ExChat.ChatRoom.join(pid, client)
+        chatrooms
+    end
   end
 
   defp find_chatroom(chatrooms, name), do: Map.get(chatrooms, name)
