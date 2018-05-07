@@ -31,13 +31,24 @@ defmodule ExChat.ChatRooms do
   end
 
   defp create_and_join_chatroom(chatrooms, room, client) do
+    new_chatrooms = create_chatroom(chatrooms, room)
+    join_chatroom(new_chatrooms, room, client)
+    new_chatrooms
+  end
+
+  defp join_chatroom(chatrooms, room, client) do
+    case find_chatroom(chatrooms, room) do
+      nil -> nil
+      pid -> ExChat.ChatRoom.join(pid, client)
+    end
+  end
+
+  defp create_chatroom(chatrooms, room) do
     case find_chatroom(chatrooms, room) do
       nil ->
         {:ok, pid} = ChatRoom.create(room)
-        ExChat.ChatRoom.join(pid, client)
         Map.put(chatrooms, room, pid)
-      pid ->
-        ExChat.ChatRoom.join(pid, client)
+      _ ->
         chatrooms
     end
   end

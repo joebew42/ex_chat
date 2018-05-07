@@ -30,17 +30,20 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+- think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join an unexisting chatroom, look at the `ChatRooms.create_and_join_chatroom/3` function)
+
 ### TODO
 
-- avoid that a subscribed client can subscribe twice to the same room
-- think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join to an unexisting chatroom, look at the `ChatRooms.create_and_join_chatroom/3` function)
-- As a client I want to connect with my username so that other can see the name of the user who send the messages
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
-- think to rename the websocket endpoint (`ws://localhost:4000/room`)
-- leave the chatroom when a ws handler terminate
-- improve the way we make assertion on received messages (e.g. assert_receive wants pattern match and not functions or variables)
+- think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
+- As a client I want to connect with my username so that others can see the name of the user who send the messages
+- BUG: Avoid that a subscribed client can subscribe twice to the same room
+- Unsubscribe a client to receive messages once it leave the chat
+- improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
+- maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
 - try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
+- find a way to distribute the Chat, in order to use more than one nodes
 
 ### DONE
 
