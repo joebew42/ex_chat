@@ -66,6 +66,12 @@ defmodule ExChat.Web.RouterTest do
       {:ok, ws_client: ws_client}
     end
 
+    test "an error message is received if the room does not exists", %{ws_client: ws_client} do
+      send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"unexisting_room\"}")
+
+      assert_receive "{\"error\":\"unexisting_room does not exists\"}"
+    end
+
     test "a welcome message is received" do
       assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room!\"}"
     end
