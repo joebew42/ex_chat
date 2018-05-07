@@ -45,6 +45,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 - handle invalid client messages
 - try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
 - find a way to distribute the Chat, in order to use more than one nodes
+- in `ChatRooms` there is not need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
 - try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
 
 ### DONE

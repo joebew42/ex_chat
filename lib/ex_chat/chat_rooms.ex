@@ -19,6 +19,22 @@ defmodule ExChat.ChatRooms do
     :ok = GenServer.call(:chatrooms, {:send, message, :room, room})
   end
 
+  def create(room) do
+    GenServer.call(:chatrooms, {:create, :room, room})
+  end
+
+  def handle_call({:create, :room, room}, _from, chatrooms) do
+    {reply, new_chatrooms} = case find_chatroom(chatrooms, room) do
+      nil ->
+        {:ok, pid} = ChatRoom.create(room)
+        {{:ok}, Map.put(chatrooms, room, pid)}
+      _ ->
+        {{:error, :already_exists}, chatrooms}
+    end
+
+    {:reply, reply, new_chatrooms}
+  end
+
   def handle_call({:join, client, :room, room}, _from, chatrooms) do
     new_chatrooms = create_and_join_chatroom(chatrooms, room, client)
     {:reply, :ok, new_chatrooms}
