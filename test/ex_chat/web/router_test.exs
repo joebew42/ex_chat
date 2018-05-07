@@ -40,6 +40,7 @@ defmodule ExChat.Web.RouterTest do
   describe "when create a new chat room" do
     test "an error message is received if the room already exist" do
       {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
 
       send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
 
