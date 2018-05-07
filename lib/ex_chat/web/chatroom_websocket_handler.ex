@@ -52,6 +52,14 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
     {:ok, req, state}
   end
 
+  defp handle(_command, req, state) do
+    response = %{
+      error: "a_chat_room already exists"
+    }
+
+    {:reply, {:text, to_json(response)}, req, state}
+  end
+
   defp to_json(response), do: Poison.encode!(response)
   defp from_json(json), do: Poison.decode!(json)
 end

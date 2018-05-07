@@ -34,6 +34,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
+- maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
 - think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
@@ -41,9 +42,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 - BUG: Avoid that a subscribed client can subscribe twice to the same room
 - Unsubscribe a client to receive messages once it leave the chat
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
-- maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
+- handle invalid client messages
 - try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
 - find a way to distribute the Chat, in order to use more than one nodes
+- try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
 
 ### DONE
 
