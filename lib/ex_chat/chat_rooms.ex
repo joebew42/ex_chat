@@ -8,11 +8,12 @@ defmodule ExChat.ChatRooms do
   end
 
   def init(chatrooms) do
+    Kernel.send self(), :initialize
     {:ok, chatrooms}
   end
 
   def join(room, client) do
-    :ok = GenServer.call(:chatrooms, {:join, client, :room, room})
+    GenServer.call(:chatrooms, {:join, client, :room, room})
   end
 
   def send(room, message) do
@@ -24,50 +25,51 @@ defmodule ExChat.ChatRooms do
   end
 
   def handle_call({:create, :room, room}, _from, chatrooms) do
-    {reply, new_chatrooms} = case find_chatroom(chatrooms, room) do
-      nil ->
-        {:ok, pid} = ChatRoom.create(room)
-        {{:ok}, Map.put(chatrooms, room, pid)}
-      _ ->
-        {{:error, :already_exists}, chatrooms}
-    end
+    {reply, new_chatrooms} = create_chatroom(chatrooms, room)
 
     {:reply, reply, new_chatrooms}
   end
 
   def handle_call({:join, client, :room, room}, _from, chatrooms) do
-    new_chatrooms = create_and_join_chatroom(chatrooms, room, client)
-    {:reply, :ok, new_chatrooms}
+    reply = join_chatroom(chatrooms, room, client)
+
+    {:reply, reply, chatrooms}
   end
 
   def handle_call({:send, message, :room, room}, _from, chatrooms) do
-    pid = find_chatroom(chatrooms, room)
+    {:ok, pid} = find_chatroom(chatrooms, room)
     ExChat.ChatRoom.send(pid, message)
+
     {:reply, :ok, chatrooms}
   end
 
-  defp create_and_join_chatroom(chatrooms, room, client) do
-    new_chatrooms = create_chatroom(chatrooms, room)
-    join_chatroom(new_chatrooms, room, client)
-    new_chatrooms
-  end
+  def handle_info(:initialize, chatrooms) do
+    {_reply, new_chatrooms} = create_chatroom(chatrooms, "default")
 
-  defp join_chatroom(chatrooms, room, client) do
-    case find_chatroom(chatrooms, room) do
-      nil -> nil
-      pid -> ExChat.ChatRoom.join(pid, client)
-    end
+    {:noreply, new_chatrooms}
   end
 
   defp create_chatroom(chatrooms, room) do
     case find_chatroom(chatrooms, room) do
-      nil ->
+      {:ok, _pid} ->
+        {{:error, :already_exists}, chatrooms}
+      {:error, :unexisting_room} ->
         {:ok, pid} = ChatRoom.create(room)
-        Map.put(chatrooms, room, pid)
-      _ ->
-        chatrooms
+        {:ok, Map.put(chatrooms, room, pid)}
     end
   end
 
-  defp find_chatroom(chatrooms, name), do: Map.get(chatrooms, name)
+  defp join_chatroom(chatrooms, room, client) do
+    case find_chatroom(chatrooms, room) do
+      {:ok, pid} -> ExChat.ChatRoom.join(pid, client)
+      error -> error
+    end
+  end
+
+  defp find_chatroom(chatrooms, room) do
+    case Map.get(chatrooms, room) do
+      nil -> {:error, :unexisting_room}
+      pid -> {:ok, pid}
+    end
+  end
 end

@@ -33,12 +33,12 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
   end
 
   defp handle(%{"command" => "join", "room" => room}, req, state) do
-    :ok = ExChat.ChatRooms.join(room, self())
-
-    response = %{
-      room: room,
-      message: "welcome to the " <> room <> " chat room!"
-    }
+    response = case ExChat.ChatRooms.join(room, self()) do
+      :ok ->
+        %{ room: room, message: "welcome to the " <> room <> " chat room!" }
+      {:error, :unexisting_room} ->
+        %{ error: room <> " does not exists" }
+    end
 
     {:reply, {:text, to_json(response)}, req, state}
   end
@@ -49,13 +49,14 @@ defmodule ExChat.Web.ChatRoomWebSocketHandler do
 
   defp handle(%{"room" => room, "message" => message}, req, state) do
     :ok = ExChat.ChatRooms.send(room, message)
+
     {:ok, req, state}
   end
 
   defp handle(%{"command" => "create", "room" => room}, req, state) do
     response = case ExChat.ChatRooms.create(room) do
+      :ok -> %{success: room <> " has been created!"}
       {:error, :already_exists} ->  %{error: room <> " already exists"}
-      {:ok} -> %{success: room <> " has been created!"}
     end
 
     {:reply, {:text, to_json(response)}, req, state}

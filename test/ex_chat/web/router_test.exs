@@ -61,6 +61,7 @@ defmodule ExChat.Web.RouterTest do
   describe "when join a new chat room" do
     setup do
       {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
       {:ok, ws_client: ws_client}
