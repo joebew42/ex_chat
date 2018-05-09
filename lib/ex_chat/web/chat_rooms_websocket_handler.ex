@@ -1,4 +1,4 @@
-defmodule ExChat.Web.ChatRoomWebSocketHandler do
+defmodule ExChat.Web.ChatRoomsWebSocketHandler do
 
   @behaviour :cowboy_websocket_handler
 
