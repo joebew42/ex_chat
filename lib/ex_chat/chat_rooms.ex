@@ -60,8 +60,11 @@ defmodule ExChat.ChatRooms do
 
   defp join_chatroom(chatrooms, room, client) do
     case find_chatroom(chatrooms, room) do
-      {:ok, pid} -> ExChat.ChatRoom.join(pid, client)
-      error -> error
+      {:ok, pid} ->
+        ExChat.ChatRoom.join(pid, client)
+        send_welcome_message(client, room)
+      {:error, :unexisting_room} ->
+        send_error_message(client, room)
     end
   end
 
@@ -77,5 +80,13 @@ defmodule ExChat.ChatRooms do
       nil -> {:error, :unexisting_room}
       pid -> {:ok, pid}
     end
+  end
+
+  defp send_welcome_message(client, room) do
+    Kernel.send client, {room, "welcome to the " <> room <> " chat room!"}
+  end
+
+  defp send_error_message(client, room) do
+    Kernel.send client, {:error, room <> " does not exists"}
   end
 end

@@ -19,6 +19,11 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
     {:ok, req, state}
   end
 
+  def websocket_info({:error, message}, req, state) do
+    response = %{ error: message }
+
+    {:reply, {:text, to_json(response)}, req, state}
+  end
   def websocket_info({chatroom_name, message}, req, state) do
     response = %{
       room: chatroom_name,
@@ -33,14 +38,9 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"command" => "join", "room" => room}, req, state) do
-    response = case ExChat.ChatRooms.join(room, self()) do
-      :ok ->
-        %{ room: room, message: "welcome to the " <> room <> " chat room!" }
-      {:error, :unexisting_room} ->
-        %{ error: room <> " does not exists" }
-    end
+    ExChat.ChatRooms.join(room, self())
 
-    {:reply, {:text, to_json(response)}, req, state}
+    {:ok, req, state}
   end
 
   defp handle(command = %{"command" => "join"}, req, state) do

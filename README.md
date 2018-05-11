@@ -31,7 +31,6 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
-- handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
 - think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
 - As a client I want to connect with my username so that others can see the name of the user who send the messages
@@ -48,6 +47,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - handle the case when we try to send a message to an unexisting chat room
 - update the roadmap features in the readme
 - maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
