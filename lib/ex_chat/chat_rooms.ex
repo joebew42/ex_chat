@@ -17,7 +17,7 @@ defmodule ExChat.ChatRooms do
   end
 
   def send(room, message) do
-    :ok = GenServer.call(:chatrooms, {:send, message, :room, room})
+    GenServer.call(:chatrooms, {:send, message, :room, room})
   end
 
   def create(room) do
@@ -37,10 +37,9 @@ defmodule ExChat.ChatRooms do
   end
 
   def handle_call({:send, message, :room, room}, _from, chatrooms) do
-    {:ok, pid} = find_chatroom(chatrooms, room)
-    ExChat.ChatRoom.send(pid, message)
+    reply = send_message(chatrooms, room, message)
 
-    {:reply, :ok, chatrooms}
+    {:reply, reply, chatrooms}
   end
 
   def handle_info(:initialize, chatrooms) do
@@ -62,6 +61,13 @@ defmodule ExChat.ChatRooms do
   defp join_chatroom(chatrooms, room, client) do
     case find_chatroom(chatrooms, room) do
       {:ok, pid} -> ExChat.ChatRoom.join(pid, client)
+      error -> error
+    end
+  end
+
+  defp send_message(chatrooms, room, message) do
+    case find_chatroom(chatrooms, room) do
+      {:ok, pid} -> ExChat.ChatRoom.send(pid, message)
       error -> error
     end
   end

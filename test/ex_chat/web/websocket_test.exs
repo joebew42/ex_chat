@@ -92,4 +92,14 @@ defmodule ExChat.Web.WebSocketTest do
       assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello from Twitch!\"}"
     end
   end
+
+  describe "when send a message to an unexisting room" do
+    test "an error message is received" do
+      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+
+      send_as_text(ws_client, "{\"room\":\"unexisting_room\",\"message\":\"a message\"}")
+
+      assert_receive "{\"error\":\"unexisting_room does not exists\"}"
+    end
+  end
 end

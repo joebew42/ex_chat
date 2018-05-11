@@ -48,9 +48,13 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"room" => room, "message" => message}, req, state) do
-    :ok = ExChat.ChatRooms.send(room, message)
-
-    {:ok, req, state}
+    case ExChat.ChatRooms.send(room, message) do
+      :ok ->
+        {:ok, req, state}
+      {:error, :unexisting_room} ->
+        response = %{ error: room <> " does not exists" }
+        {:reply, {:text, to_json(response)}, req, state}
+    end
   end
 
   defp handle(%{"command" => "create", "room" => room}, req, state) do
