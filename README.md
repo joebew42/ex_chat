@@ -35,7 +35,6 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
   - named processes and registry
 - bug: avoid that a subscribed client can subscribe twice to the same room
 - unsubscribe a client to receive messages once it leaves the chat
-
 - it seems that we have some flaky tests for "other clients" scenarios
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - handle invalid client messages
