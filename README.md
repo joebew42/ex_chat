@@ -32,7 +32,6 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
-- maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
 - handle the case when we try to send a message to an unexisting chat room
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
@@ -51,6 +50,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
 - rename `chatroom_websocket_handler.ex` to `chat_rooms_websocket_handler.ex`
 - think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join an unexisting chatroom, look at the `ChatRooms.create_and_join_chatroom/3` function)
 - update the UI so that it can support the create command

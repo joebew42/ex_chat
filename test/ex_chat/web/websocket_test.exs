@@ -1,4 +1,4 @@
-defmodule ExChat.Web.RouterTest do
+defmodule ExChat.Web.WebSocketTest do
   use ExUnit.Case, async: true
   import WebSocketClient
 
