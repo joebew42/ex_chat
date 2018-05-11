@@ -29,16 +29,17 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
-
 ### TODO
 
-- promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
-- As a client I want to connect with my username so that others can see the name of the user who send the messages
-- BUG: Avoid that a subscribed client can subscribe twice to the same room
-- Unsubscribe a client to receive messages once it leave the chat
-- It seems that we have some flaky tests for "other clients" scenarios
+- promote the `ChatRooms` to act as a `Supervisor` instead of being a `GenServer`
+  - named processes and registry
+- bug: avoid that a subscribed client can subscribe twice to the same room
+- unsubscribe a client to receive messages once it leaves the chat
+
+- it seems that we have some flaky tests for "other clients" scenarios
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - handle invalid client messages
+- as a client I want to connect with my username so that others can see the name of the user who send the messages
 - Setup a continuous integration for the project (e.g. using TravisCI)
 - try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
 - find a way to distribute the Chat, in order to use more than one nodes
