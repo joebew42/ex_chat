@@ -24,6 +24,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
 
     {:reply, {:text, to_json(response)}, req, state}
   end
+
   def websocket_info({chatroom_name, message}, req, state) do
     response = %{
       room: chatroom_name,
