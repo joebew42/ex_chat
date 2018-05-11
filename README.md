@@ -6,9 +6,8 @@ This is a simple chat server built in Elixir with the goal to show a real life a
 
 ## Features roadmap
 
-- Multiple Rooms support
-- A Websockets server implementation so that we can support web clients
-- A minimal frontend to allow users to subscribe to each room, sending messages and receiving messages
+- Introduce the concept of User
+- ...
 
 ## Run tests
 
@@ -30,6 +29,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+
 ### TODO
 
 - handle the case when we try to send a message to an unexisting chat room
@@ -50,6 +50,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- update the roadmap features in the readme
 - maybe `ExChat.Web.Router` is not a good name for the web sockets delivery mechanism (maybe `Web.WebSocket`)
 - rename `chatroom_websocket_handler.ex` to `chat_rooms_websocket_handler.ex`
 - think to separate the two actions `create chatroom` and `join chatroom` (at the moment the chatroom creation happens when a client try to join an unexisting chatroom, look at the `ChatRooms.create_and_join_chatroom/3` function)
