@@ -11,7 +11,7 @@ defmodule ExChat.Web.WebSocketTest do
 
   describe "when join the default chat room" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"join\"}")
 
       {:ok, ws_client: ws_client}
@@ -28,7 +28,7 @@ defmodule ExChat.Web.WebSocketTest do
     end
 
     test "we receive all the messages sent by other clients" do
-      {:ok, other_client} = connect_to "ws://localhost:4000/room", forward_to: NullProcess.start
+      {:ok, other_client} = connect_to "ws://localhost:4000/chat", forward_to: NullProcess.start
       send_as_text(other_client, "{\"command\":\"join\"}")
 
       send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from Twitch!\"}")
@@ -39,7 +39,7 @@ defmodule ExChat.Web.WebSocketTest do
 
   describe "when create a new chat room" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
 
       {:ok, ws_client: ws_client}
@@ -60,7 +60,7 @@ defmodule ExChat.Web.WebSocketTest do
 
   describe "when join a new chat room" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
@@ -84,7 +84,7 @@ defmodule ExChat.Web.WebSocketTest do
     end
 
     test "we receive all the messages sent by other clients" do
-      {:ok, other_client} = connect_to "ws://localhost:4000/room", forward_to: NullProcess.start
+      {:ok, other_client} = connect_to "ws://localhost:4000/chat", forward_to: NullProcess.start
       send_as_text(other_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
       send_as_text(other_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello from Twitch!\"}")
@@ -95,7 +95,7 @@ defmodule ExChat.Web.WebSocketTest do
 
   describe "when send a message to an unexisting room" do
     test "an error message is received" do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/room", forward_to: self()
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
 
       send_as_text(ws_client, "{\"room\":\"unexisting_room\",\"message\":\"a message\"}")
 

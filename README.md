@@ -29,10 +29,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+
 ### TODO
 
 - promote the `ChatRooms` to be a `Supervisor` instead of being a `GenServer`
-- think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
 - As a client I want to connect with my username so that others can see the name of the user who send the messages
 - BUG: Avoid that a subscribed client can subscribe twice to the same room
 - Unsubscribe a client to receive messages once it leave the chat
@@ -47,6 +47,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - handle the case when we try to send a message to an unexisting chat room
 - update the roadmap features in the readme
