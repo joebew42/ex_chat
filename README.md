@@ -29,9 +29,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+- add a `Supervisor` to supervise all the `ChatRoom` processes
+
 ### TODO
 
-- promote the `ChatRooms` to act like `Supervisor` instead of being a `GenServer`
 - bug: avoid that a subscribed client can subscribe twice to the same room
 - unsubscribe a client to receive messages once it leaves the chat
 
