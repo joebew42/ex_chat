@@ -7,6 +7,8 @@ defmodule ExChat.ChatRoom do
     GenServer.start_link(__MODULE__, %__MODULE__{name: name}, name: via_registry(name))
   end
 
+  def start_link(name), do: create(name)
+
   def init(state) do
     {:ok, state}
   end

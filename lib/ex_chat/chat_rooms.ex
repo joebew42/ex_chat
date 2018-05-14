@@ -4,6 +4,7 @@ defmodule ExChat.ChatRooms do
   @no_state nil
 
   alias ExChat.ChatRoom
+  alias ExChat.ChatRoomSupervisor
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, @no_state, name: :chatrooms)
@@ -55,7 +56,7 @@ defmodule ExChat.ChatRooms do
       {:ok, _pid} ->
         {:error, :already_exists}
       {:error, :unexisting_room} ->
-        {:ok, _pid} = ChatRoom.create(room)
+        {:ok, _pid} = ChatRoomSupervisor.create(room)
         :ok
     end
   end

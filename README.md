@@ -29,13 +29,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
-- add a `Supervisor` to supervise all the `ChatRoom` processes
-
 ### TODO
 
 - bug: avoid that a subscribed client can subscribe twice to the same room
 - unsubscribe a client to receive messages once it leaves the chat
-
 - it seems that we have some flaky tests for "other clients" scenarios
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - handle invalid client messages
@@ -49,6 +46,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- add a `Supervisor` to supervise all the `ChatRoom` processes
 - use a [registry](https://hexdocs.pm/elixir/master/Registry.html) to name all the `ChatRoom` processes
 - think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
