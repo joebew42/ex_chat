@@ -4,11 +4,15 @@ defmodule ExChat.ChatRoom do
   defstruct subscribers: [], name: nil
 
   def create(name) do
-    GenServer.start_link(__MODULE__, %__MODULE__{name: name})
+    GenServer.start_link(__MODULE__, %__MODULE__{name: name}, name: via_registry(name))
   end
 
   def init(state) do
     {:ok, state}
+  end
+
+  def find(room) do
+    Registry.lookup(ExChat.Registry, room)
   end
 
   def join(pid, subscriber) do
@@ -33,4 +37,6 @@ defmodule ExChat.ChatRoom do
   defp add_subscriber(state = %__MODULE__{subscribers: subscribers}, subscriber) do
     %__MODULE__{state | subscribers: [subscriber|subscribers]}
   end
+
+  defp via_registry(name), do: {:via, Registry, {ExChat.Registry, name}}
 end

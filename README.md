@@ -31,10 +31,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
-- promote the `ChatRooms` to act as a `Supervisor` instead of being a `GenServer`
-  - named processes and registry
+- promote the `ChatRooms` to act like `Supervisor` instead of being a `GenServer`
 - bug: avoid that a subscribed client can subscribe twice to the same room
 - unsubscribe a client to receive messages once it leaves the chat
+
 - it seems that we have some flaky tests for "other clients" scenarios
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - handle invalid client messages
@@ -42,11 +42,13 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 - Setup a continuous integration for the project (e.g. using TravisCI)
 - try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
 - find a way to distribute the Chat, in order to use more than one nodes
+  - we have to think to introduce [`gproc`](https://github.com/uwiger/gproc) for distribute the lookup processes across different nodes
 - in `ChatRooms` there is not need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
 - try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
 
 ### DONE
 
+- use a [registry](https://hexdocs.pm/elixir/master/Registry.html) to name all the `ChatRoom` processes
 - think to rename the websocket endpoint (`ws://localhost:4000/room`), maybe `/chat` or others
 - handle the welcome message in the `ChatRoom` itself and not in the `chatroom_websocket_handler`
 - handle the case when we try to send a message to an unexisting chat room
