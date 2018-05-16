@@ -43,6 +43,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- handle invalid command
 - handle invalid client messages
 - rename `subscribers` to `clients` in `ChatRoom`
 - bug: avoid that a client can join twice to a room

@@ -121,4 +121,12 @@ defmodule ExChat.Web.WebSocketTest do
 
     refute_receive _
   end
+
+  test "invalid commands are not handled" do
+    {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
+
+    send_as_text(ws_client, "{\"something\":\"invalid\"}")
+
+    refute_receive _
+  end
 end

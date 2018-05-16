@@ -70,6 +70,8 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
     {:reply, {:text, to_json(response)}, req, state}
   end
 
+  defp handle(_not_handled_command, req, state), do: {:ok, req, state}
+
   defp to_json(response), do: Poison.encode!(response)
   defp from_json(json), do: Poison.decode(json)
 end
