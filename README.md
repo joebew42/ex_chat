@@ -31,18 +31,17 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### TODO
 
-- bug: avoid that a subscribed client can subscribe twice to the same room
+- bug: avoid that a client can join twice to a room
 - unsubscribe a client to receive messages once it leaves the chat
-- it seems that we have some flaky tests for "other clients" scenarios
-- improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables)
 - handle invalid client messages
-- as a client I want to connect with my username so that others can see the name of the user who send the messages
-- Setup a continuous integration for the project (e.g. using TravisCI)
-- try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
+- improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
+- in `ChatRooms` there is no need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
 - find a way to distribute the Chat, in order to use more than one nodes
   - we have to think to introduce [`gproc`](https://github.com/uwiger/gproc) for distribute the lookup processes across different nodes
-- in `ChatRooms` there is not need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
+- try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
+- setup a continuous integration for the project (e.g. using TravisCI)
 - try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
+- it seems that we have some flaky tests for "other clients" scenarios
 
 ### DONE
 
