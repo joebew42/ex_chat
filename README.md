@@ -29,9 +29,9 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+
 ### TODO
 
-- rename `subscribers` to `clients` in `ChatRoom`
 - unsubscribe a client to receive messages once it leaves the chat
 - handle invalid client messages
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
@@ -45,6 +45,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- rename `subscribers` to `clients` in `ChatRoom`
 - bug: avoid that a client can join twice to a room
 - add a `Supervisor` to supervise all the `ChatRoom` processes
 - use a [registry](https://hexdocs.pm/elixir/master/Registry.html) to name all the `ChatRoom` processes
