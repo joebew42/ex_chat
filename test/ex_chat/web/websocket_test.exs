@@ -102,4 +102,15 @@ defmodule ExChat.Web.WebSocketTest do
       assert_receive "{\"error\":\"unexisting_room does not exists\"}"
     end
   end
+
+  test "avoid a client to join twice to a room" do
+    {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
+
+    send_as_text(ws_client, "{\"command\":\"join\"}")
+    send_as_text(ws_client, "{\"command\":\"join\"}")
+
+    assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
+    refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
+    assert_receive "{\"error\":\"you already joined the default room!\"}"
+  end
 end

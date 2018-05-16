@@ -64,10 +64,18 @@ defmodule ExChat.ChatRooms do
   defp join_chatroom(room, client) do
     case find_chatroom(room) do
       {:ok, pid} ->
-        ChatRoom.join(pid, client)
-        send_welcome_message(client, room)
+        try_join_chatroom(room, client, pid)
       {:error, :unexisting_room} ->
-        send_error_message(client, room)
+        send_error_message(client, room <> " does not exists")
+    end
+  end
+
+  defp try_join_chatroom(room, client, chatroom_pid) do
+    case ChatRoom.join(chatroom_pid, client) do
+      :ok ->
+        send_welcome_message(client, room)
+      {:error, :already_joined} ->
+        send_error_message(client, "you already joined the " <> room <> " room!")
     end
   end
 
@@ -89,7 +97,7 @@ defmodule ExChat.ChatRooms do
     Kernel.send client, {room, "welcome to the " <> room <> " chat room!"}
   end
 
-  defp send_error_message(client, room) do
-    Kernel.send client, {:error, room <> " does not exists"}
+  defp send_error_message(client, message) do
+    Kernel.send client, {:error, message}
   end
 end

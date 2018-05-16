@@ -18,7 +18,7 @@ defmodule ExChat.ChatRoom do
   end
 
   def join(pid, subscriber) do
-    :ok = GenServer.call(pid, {:join, subscriber})
+    GenServer.call(pid, {:join, subscriber})
   end
 
   def send(pid, message) do
@@ -26,9 +26,20 @@ defmodule ExChat.ChatRoom do
   end
 
   def handle_call({:join, subscriber}, _from, state) do
-    new_state = add_subscriber(state, subscriber)
+    {message, new_state} = case Enum.member?(state.subscribers, subscriber) do
+      true ->
+        {{:error, :already_joined}, state}
+      false ->
+        {:ok, add_subscriber(state, subscriber)}
+    end
 
-    {:reply, :ok, new_state}
+    {:reply, message, new_state}
+  end
+
+  def handle_call({:joined?, client}, _from, state) do
+    result = Enum.member?(state.subscribers, client)
+
+    {:reply, result, state}
   end
 
   def handle_cast({:send, message}, state = %__MODULE__{name: name}) do
