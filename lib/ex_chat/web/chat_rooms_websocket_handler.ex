@@ -12,7 +12,10 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   def websocket_handle({:text, command_as_json}, req, state) do
-    handle(from_json(command_as_json), req, state)
+    case from_json(command_as_json) do
+      {:error, _reason} -> {:ok, req, state}
+      {:ok, command} -> handle(command, req, state)
+    end
   end
 
   def websocket_handle(_message, req, state) do
@@ -68,5 +71,5 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp to_json(response), do: Poison.encode!(response)
-  defp from_json(json), do: Poison.decode!(json)
+  defp from_json(json), do: Poison.decode(json)
 end

@@ -113,4 +113,12 @@ defmodule ExChat.Web.WebSocketTest do
     refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
     assert_receive "{\"error\":\"you already joined the default room!\"}"
   end
+
+  test "invalid messages are not handled" do
+    {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
+
+    send_as_text(ws_client, "this is an invalid message")
+
+    refute_receive _
+  end
 end
