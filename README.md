@@ -6,8 +6,8 @@ This is a simple chat server built in Elixir with the goal to show a real life a
 
 ## Features roadmap
 
-- Introduce the concept of User
-- ...
+- As a client I want to be associated to a user so that other client can see who send messages
+- As a user I can send a private message to an existing user to that I can talk directly without using an existing room
 
 ## Run tests
 
