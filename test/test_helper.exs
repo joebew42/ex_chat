@@ -1,4 +1,4 @@
-ExUnit.start([trace: true])
+ExUnit.start([trace: true, exclude: :ignore])
 
 defmodule WebSocketClient do
   use WebSockex

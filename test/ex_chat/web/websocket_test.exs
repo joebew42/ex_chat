@@ -2,6 +2,20 @@ defmodule ExChat.Web.WebSocketTest do
   use ExUnit.Case, async: true
   import WebSocketClient
 
+  @tag :ignore
+  describe "when join the default chat room as an identified user" do
+    setup do
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_TOKEN", forward_to: self()
+      send_as_text(ws_client, "{\"command\":\"join\"}")
+
+      {:ok, ws_client: ws_client}
+    end
+
+    test "a welcome message with the user name is received" do
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, joe!\"}"
+    end
+  end
+
   describe "when join the default chat room" do
     setup do
       {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()

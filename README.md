@@ -27,12 +27,16 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ## Scratchpad
 
+Feature:
+
+As a client I want to be associated to a user so that other client can see who send messages
+
 ### DOING
 
-- As a client I want to be associated to a user so that other client can see who send messages
 
 ### TODO
 
+- When I join a chat room as an identified user I want to read my user name in the welcome message
 - We read in the console "Application logger stopped temporary" every time we run tests
 - unsubscribe a client to receive messages once it leaves the chat
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
