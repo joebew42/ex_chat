@@ -11,7 +11,6 @@ defmodule ExChat.ChatRooms do
   end
 
   def init(_state) do
-    Kernel.send self(), :initialize
     {:ok, @no_state}
   end
 
@@ -43,12 +42,6 @@ defmodule ExChat.ChatRooms do
     reply = send_message(room, message)
 
     {:reply, reply, @no_state}
-  end
-
-  def handle_info(:initialize, _state) do
-    create_chatroom("default")
-
-    {:noreply, @no_state}
   end
 
   defp create_chatroom(room) do
