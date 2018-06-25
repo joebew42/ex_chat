@@ -33,7 +33,6 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- `ExChat.ChatRooms` could be a "simple" module and not a process
 
 ### TODO
 
@@ -51,6 +50,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- `ExChat.ChatRooms` could be a "simple" module and not a process
 - remove the empty file `ex_chat_test.exs`
 - Issue during run the tests: It seems that `Elixir.ExChat.Supervisor` is already started
 - handle invalid command
