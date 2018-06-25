@@ -36,6 +36,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
+- `ExChat.ChatRooms` should be a "simple" module and not a process
 - When I join a chat room as an identified user I want to read my user name in the welcome message
 - We read in the console "Application logger stopped temporary" every time we run tests
 - unsubscribe a client to receive messages once it leaves the chat
