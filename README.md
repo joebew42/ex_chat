@@ -29,8 +29,10 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DOING
 
+
 ### TODO
 
+- As a client I want to be associated to a user so that other client can see who send messages
 - unsubscribe a client to receive messages once it leaves the chat
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
 - in `ChatRooms` there is no need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
@@ -43,6 +45,7 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 ### DONE
 
+- Issue during run the tests: It seems that `Elixir.ExChat.Supervisor` is already started
 - handle invalid command
 - handle invalid client messages
 - rename `subscribers` to `clients` in `ChatRoom`

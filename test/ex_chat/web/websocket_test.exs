@@ -2,13 +2,6 @@ defmodule ExChat.Web.WebSocketTest do
   use ExUnit.Case, async: true
   import WebSocketClient
 
-  alias ExChat.Supervisor
-
-  setup do
-    start_supervised Supervisor
-    %{}
-  end
-
   describe "when join the default chat room" do
     setup do
       {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
