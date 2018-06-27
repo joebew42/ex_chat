@@ -37,6 +37,8 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
+- Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
+- We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message
 - We read in the console "Application logger stopped temporary" every time we run tests
 - unsubscribe a client to receive messages once it leaves the chat
