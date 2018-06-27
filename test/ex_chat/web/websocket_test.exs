@@ -5,7 +5,7 @@ defmodule ExChat.Web.WebSocketTest do
   @tag :ignore
   describe "when join the default chat room as an identified user" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_TOKEN", forward_to: self()
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=ACCESS_TOKEN", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"join\"}")
 
       {:ok, ws_client: ws_client}
