@@ -34,6 +34,7 @@ As a client I want to be associated to a user so that other client can see who s
 ### DOING
 
 - Introduce the `User` processes (see the `sketch` image in the README for a reference)
+  - Start writing test from the point of view of the `User`
 
 ### TODO
 
