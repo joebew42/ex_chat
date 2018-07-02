@@ -15,6 +15,7 @@ defmodule ExChat.Supervisor do
       {Registry, keys: :unique, name: ExChat.Registry},
       ExChat.ChatRoomSupervisor,
       ExChat.ChatRoomInitialize,
+      ExChat.UserSessions,
       Plug.Adapters.Cowboy.child_spec(:http, ExChat.Web.WebSocket, [], @http_options)
     ]
 

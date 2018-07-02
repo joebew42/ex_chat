@@ -34,7 +34,8 @@ As a client I want to be associated to a user so that other client can see who s
 ### DOING
 
 - Introduce the `User` processes (see the `sketch` image in the README for a reference)
-  - Start writing test from the point of view of the `User`
+  - Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
+  - Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
 
 ### TODO
 
