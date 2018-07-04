@@ -33,12 +33,15 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- Introduce the `User` processes (see the `sketch` image in the README for a reference)
-  - Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
-  - Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
 
 ### TODO
 
+- Try to find a way to remove the shared state from the `UserSessions` Tests
+- think to rename `clients` in `subscribers` in both `UserSession` and `ChatRoom` process
+- remove the `UserSession.exists?` function in favor of the `UserSession.find` function
+- as a `UserSession` I can join a chatroom
+- as a `UserSession` I can send messages to a chatroom
+- Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)
 - Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message
@@ -55,6 +58,8 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
+- Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
 - `ExChat.ChatRooms` could be a "simple" module and not a process
 - remove the empty file `ex_chat_test.exs`
 - Issue during run the tests: It seems that `Elixir.ExChat.Supervisor` is already started

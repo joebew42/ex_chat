@@ -1,45 +1,27 @@
 defmodule ExChat.UserSessions do
-  use GenServer
+  alias ExChat.UserSession
+  alias ExChat.UserSessionSupervisor
 
-  def start_link([]) do
-    GenServer.start_link(__MODULE__, nil, name: :user_sessions)
-  end
-
-  def init(state) do
-    {:ok, state}
-  end
-
-  def create("existing-user-session") do
-    {:error, :already_exists}
-  end
-  def create("unexisting-user-session") do
-    :ok
+  def create(user_session_id) do
+    case UserSession.exists?(user_session_id) do
+      true -> {:error, :already_exists}
+      false ->
+          UserSessionSupervisor.create(user_session_id)
+          :ok
+    end
   end
 
-  def subscribe(client_pid, to: "existing-user-session") do
-    GenServer.call(:user_sessions, {:subscribe, client_pid})
-  end
-  def subscribe(_client_pid, _username) do
-    {:error, :session_not_exists}
-  end
-
-  def send(message, to: "existing-user-session") do
-    GenServer.call(:user_sessions, {:send, message})
-  end
-  def send(_message, to: _username) do
-    {:error, :session_not_exists}
+  def subscribe(client_pid, to: user_session_id) do
+    case UserSession.find(user_session_id) do
+      nil -> {:error, :session_not_exists}
+      pid -> UserSession.subscribe(pid, client_pid)
+    end
   end
 
-  def handle_call({:subscribe, client_pid}, _from, _state) do
-    {:reply, :ok, client_pid}
-  end
-
-  def handle_call({:send, _message}, _from, nil) do
-    {:reply, :ok, nil}
-  end
-  def handle_call({:send, message}, _from, client_pid) do
-    Kernel.send(client_pid, message)
-
-    {:reply, :ok, client_pid}
+  def send(message, to: user_session_id) do
+    case UserSession.find(user_session_id) do
+      nil -> {:error, :session_not_exists}
+      pid -> UserSession.send(pid, message)
+    end
   end
 end
