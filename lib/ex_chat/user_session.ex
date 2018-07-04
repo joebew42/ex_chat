@@ -30,13 +30,6 @@ defmodule ExChat.UserSession do
     end
   end
 
-  def exists?(user_session_id) do
-    case Registry.lookup(UserSessionRegistry, user_session_id) do
-      [] -> false
-      [{_pid, nil}] -> true
-    end
-  end
-
   def handle_call({:subscribe, client_pid}, _from, state) do
     {:reply, :ok, %__MODULE__{state | clients: [client_pid|state.clients]} }
   end

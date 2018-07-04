@@ -33,12 +33,11 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
+- Try to find a way to remove the shared state (the `UserSessionRegistry`) from the `UserSessions` Tests
 
 ### TODO
 
-- Try to find a way to remove the shared state from the `UserSessions` Tests
 - think to rename `clients` in `subscribers` in both `UserSession` and `ChatRoom` process
-- remove the `UserSession.exists?` function in favor of the `UserSession.find` function
 - as a `UserSession` I can join a chatroom
 - as a `UserSession` I can send messages to a chatroom
 - Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)
@@ -58,6 +57,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- remove the `UserSession.exists?` function in favor of the `UserSession.find` function
 - Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
 - Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
 - `ExChat.ChatRooms` could be a "simple" module and not a process
