@@ -29,16 +29,15 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 Feature:
 
-As a client I want to be associated to a user so that other client can see who send messages
+As a client I want to be associated to a user so that other clients can see who send messages
 
 ### DOING
 
-- Introduce the `User` processes (see the `sketch` image in the README for a reference)
-  - Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
-  - Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
-
 ### TODO
 
+- as a `UserSession` I can send messages to a chatroom
+- think about to rename the `UserSessions.send` function to `UserSessions.notify`
+- Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
 - Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message
@@ -55,6 +54,8 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- as a `UserSession` I can join a chatroom
+- Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
 - `ExChat.ChatRooms` could be a "simple" module and not a process
 - remove the empty file `ex_chat_test.exs`
 - Issue during run the tests: It seems that `Elixir.ExChat.Supervisor` is already started

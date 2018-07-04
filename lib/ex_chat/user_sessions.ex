@@ -1,6 +1,8 @@
 defmodule ExChat.UserSessions do
   use GenServer
 
+  alias ExChat.ChatRooms
+
   def start_link([]) do
     GenServer.start_link(__MODULE__, nil, name: :user_sessions)
   end
@@ -23,6 +25,10 @@ defmodule ExChat.UserSessions do
     {:error, :session_not_exists}
   end
 
+  def join_chatroom(room_name, _user_session_name) do
+    ChatRooms.join(room_name, self())
+  end
+
   def send(message, to: "existing-user-session") do
     GenServer.call(:user_sessions, {:send, message})
   end
@@ -41,5 +47,11 @@ defmodule ExChat.UserSessions do
     Kernel.send(client_pid, message)
 
     {:reply, :ok, client_pid}
+  end
+
+  def handle_info(message = {:error, _reason}, client_pid) do
+    Kernel.send(client_pid, message)
+
+    {:noreply, client_pid}
   end
 end
