@@ -37,6 +37,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
+- rename `user_session_id` with `user_id`
 - think to rename `clients` in `subscribers` in both `UserSession` and `ChatRoom` process
 - as a `UserSession` I can join a chatroom
 - as a `UserSession` I can send messages to a chatroom
