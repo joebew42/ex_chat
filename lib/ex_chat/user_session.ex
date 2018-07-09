@@ -1,14 +1,12 @@
 defmodule ExChat.UserSession do
   use GenServer
 
-  alias ExChat.UserSessionRegistry
+  defstruct clients: []
 
-  defstruct clients: [], user_session_id: nil
+  def start_link(name), do: create(name)
 
-  def start_link(user_session_id), do: create(user_session_id)
-
-  def create(user_session_id) do
-    GenServer.start_link(__MODULE__, %__MODULE__{user_session_id: user_session_id}, name: via_registry(user_session_id))
+  def create(name) do
+    GenServer.start_link(__MODULE__, %__MODULE__{}, name: name)
   end
 
   def init(state) do
@@ -23,13 +21,6 @@ defmodule ExChat.UserSession do
     GenServer.cast(pid, {:send, message})
   end
 
-  def find(user_session_id) do
-    case Registry.lookup(UserSessionRegistry, user_session_id) do
-       [] -> nil
-       [{pid, nil}] -> pid
-    end
-  end
-
   def handle_call({:subscribe, client_pid}, _from, state) do
     {:reply, :ok, %__MODULE__{state | clients: [client_pid|state.clients]} }
   end
@@ -38,6 +29,4 @@ defmodule ExChat.UserSession do
     Enum.each(state.clients, &Kernel.send(&1, message));
     {:noreply, state}
   end
-
-  defp via_registry(name), do: {:via, Registry, {UserSessionRegistry, name}}
 end
