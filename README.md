@@ -37,7 +37,6 @@ As a client I want to be associated to a user so that other client can see who s
 ### TODO
 
 - Try to split the [API, the Server and the Application](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) Logic for the `AllUserSessions`
-- rename `user_session_id` with `user_id`
 - think to rename `clients` in `subscribers` in both `UserSession` and `ChatRoom` process
 - as a `UserSession` I can join a chatroom
 - as a `UserSession` I can send messages to a chatroom
@@ -59,6 +58,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- rename `user_session_id` to `session_id`
 - Maybe the `UserSessions` and `UserSessionSupervisor` could be merged in a single module named `UserSessions`
 - Fix the names used for the user sessions in the `UserSessionsTest`
 - Try to find a way to remove the shared state (the `UserSessionRegistry`) from the `UserSessions` Tests
