@@ -1,6 +1,8 @@
 defmodule ExChat.ChatRoom do
   use GenServer
 
+  alias ExChat.ChatRoomRegistry
+
   defstruct clients: [], name: nil
 
   def create(name) do
@@ -14,7 +16,7 @@ defmodule ExChat.ChatRoom do
   end
 
   def find(room) do
-    Registry.lookup(ExChat.Registry, room)
+    Registry.lookup(ChatRoomRegistry, room)
   end
 
   def join(pid, client) do
@@ -45,5 +47,5 @@ defmodule ExChat.ChatRoom do
     %__MODULE__{state | clients: [client|clients]}
   end
 
-  defp via_registry(name), do: {:via, Registry, {ExChat.Registry, name}}
+  defp via_registry(name), do: {:via, Registry, {ChatRoomRegistry, name}}
 end

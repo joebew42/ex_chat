@@ -1,10 +1,11 @@
 defmodule ExChat.ChatRoomTest do
   use ExUnit.Case, async: true
 
+  alias ExChat.ChatRoomRegistry
   alias ExChat.ChatRoom
 
   setup_all do
-    start_supervised! {Registry, keys: :unique, name: ExChat.Registry}
+    start_supervised! {Registry, keys: :unique, name: ChatRoomRegistry}
     :ok
   end
 

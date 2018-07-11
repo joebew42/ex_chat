@@ -12,7 +12,7 @@ defmodule ExChat.Supervisor do
 
   def init(:ok) do
     children = [
-      {Registry, keys: :unique, name: ExChat.Registry},
+      {Registry, keys: :unique, name: ExChat.ChatRoomRegistry},
       {Registry, keys: :unique, name: ExChat.UserSessionRegistry},
       ExChat.ChatRoomSupervisor,
       ExChat.ChatRoomInitialize,
