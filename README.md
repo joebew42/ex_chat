@@ -36,10 +36,9 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
-- think to rename `clients` to `session_ids` in the `ChatRoom` process
+- As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
 - As a `UserSession` I can join a chatroom
 - As a `UserSession` I can send messages to a chatroom
-- As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
 - Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
@@ -57,6 +56,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- think to rename `clients` to `session_ids` in the `ChatRoom` process
 - Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
 - rename `user_session_id` to `session_id`
 - Maybe the `UserSessions` and `UserSessionSupervisor` could be merged in a single module named `UserSessions`
