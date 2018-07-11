@@ -33,7 +33,6 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- Maybe the `UserSessions` and `UserSessionSupervisor` can be merged in a single module named `AllUserSessions`
 
 ### TODO
 
@@ -60,6 +59,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Maybe the `UserSessions` and `UserSessionSupervisor` could be merged in a single module named `UserSessions`
 - Fix the names used for the user sessions in the `UserSessionsTest`
 - Try to find a way to remove the shared state (the `UserSessionRegistry`) from the `UserSessions` Tests
 - do not start the application when run all the tests

@@ -1,12 +1,10 @@
 defmodule ExChat.UserSessionsTest do
   use ExUnit.Case, async: true
 
-  alias ExChat.UserSessionSupervisor
-
   alias ExChat.UserSessions
 
   setup do
-    start_supervised! UserSessionSupervisor
+    start_supervised! UserSessions
     start_supervised! {Registry, keys: :unique, name: ExChat.UserSessionRegistry}
     :ok
   end
@@ -52,6 +50,7 @@ defmodule ExChat.UserSessionsTest do
 
     test "a message is correctly delivered" do
       UserSessions.create("a-user-session")
+
       result = UserSessions.send("a message", to: "a-user-session")
 
       assert result == :ok
