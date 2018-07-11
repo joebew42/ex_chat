@@ -33,15 +33,6 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- Try to find a way to remove the shared state (the `UserSessionRegistry`) from the `UserSessions` Tests
- - Try to investigate this strange issue:
-
-```
- ** (exit) exited in: GenServer.call(:user_session_supervisor, {:start_child, [{:via, Registry, {ExChat.TestRegistry, "xxx"}}]}, :infinity)
-         ** (EXIT) no process: the process is not alive or there's no process currently associated with the given name, possibly because its application isn't started
-```
-
-When run `mix test`
 
 ### TODO
 
@@ -68,6 +59,9 @@ When run `mix test`
 
 ### DONE
 
+- Fix the names used for the user sessions in the `UserSessionsTest`
+- Try to find a way to remove the shared state (the `UserSessionRegistry`) from the `UserSessions` Tests
+- do not start the application when run all the tests
 - remove the `UserSession.exists?` function in favor of the `UserSession.find` function
 - Refactor the `UserSessions` module in order to achieve the obvious implementation with Supervisors, UserSession Processes, etc, ...
 - Start writing test from the point of view of the `Client` who tries to subscribe to `UserSessions`
