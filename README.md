@@ -33,10 +33,10 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
+- As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
 
 ### TODO
 
-- As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
 - As a `UserSession` I can join a chatroom
 - As a `UserSession` I can send messages to a chatroom
 - Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)
