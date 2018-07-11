@@ -12,14 +12,14 @@ defmodule ExChat.UserSessionSupervisor do
     supervise(children, strategy: :simple_one_for_one)
   end
 
-  def create(user_session_id, registry \\ UserSessionRegistry) do
-    name = {:via, Registry, {registry, user_session_id}}
+  def create(user_session_id) do
+    name = {:via, Registry, {UserSessionRegistry, user_session_id}}
 
     Supervisor.start_child(:user_session_supervisor, [name])
   end
 
-  def find(user_session_id, registry \\ UserSessionRegistry) do
-    case Registry.lookup(registry, user_session_id) do
+  def find(user_session_id) do
+    case Registry.lookup(UserSessionRegistry, user_session_id) do
        [] -> nil
        [{pid, nil}] -> pid
     end

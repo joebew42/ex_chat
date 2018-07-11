@@ -51,6 +51,7 @@ When run `mix test`
 - as a `UserSession` I can join a chatroom
 - as a `UserSession` I can send messages to a chatroom
 - Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)
+- Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message

@@ -2,6 +2,16 @@ defmodule ExChat.Web.WebSocketTest do
   use ExUnit.Case, async: true
   import WebSocketClient
 
+  alias ExChat.Supervisor
+
+
+  setup_all do
+    Application.start :ranch
+
+    start_supervised! Supervisor
+    :ok
+  end
+
   @tag :ignore
   describe "when join the default chat room as an identified user" do
     setup do

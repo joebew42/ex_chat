@@ -3,6 +3,11 @@ defmodule ExChat.ChatRoomTest do
 
   alias ExChat.ChatRoom
 
+  setup_all do
+    start_supervised! {Registry, keys: :unique, name: ExChat.Registry}
+    :ok
+  end
+
   setup do
     {:ok, pid} = ChatRoom.create("room_name")
     %{chatroom: pid}
