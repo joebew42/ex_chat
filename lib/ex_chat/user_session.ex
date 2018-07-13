@@ -17,7 +17,7 @@ defmodule ExChat.UserSession do
     GenServer.call(pid, {:subscribe, client_pid})
   end
 
-  def send(pid, message) do
+  def notify(pid, message) do
     GenServer.cast(pid, {:send, message})
   end
 

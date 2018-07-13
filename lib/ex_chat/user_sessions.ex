@@ -24,10 +24,10 @@ defmodule ExChat.UserSessions do
     end
   end
 
-  def send(message, [to: session_id]) do
+  def notify(message, [to: session_id]) do
     case find(session_id) do
       nil -> {:error, :session_not_exists}
-      pid -> UserSession.send(pid, message)
+      pid -> UserSession.notify(pid, message)
     end
   end
 

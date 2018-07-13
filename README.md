@@ -33,15 +33,15 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
+- The module `ChatRooms` should be reorganized like the `UserSessions`
 
 ### TODO
 
-- The module `ChatRooms` should be reorganized like the `UserSessions`
+- `ChatRoomWebSocketHandler` should collaborate only with `UserSessions`
+  - As a `UserSession` I can join a chatroom
+  - As a `UserSession` I can send messages to a chatroom
+  - At the end we can remove the `ChatRooms` as a collaborator
 - Enhancement: Think if it could be useful to use `Mox` instead of `Mock`
-- As a `UserSession` I can join a chatroom
-- As a `UserSession` I can send messages to a chatroom
-- Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message
@@ -58,6 +58,8 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
+- rename the `UserSessions.send` to `UserSessions.notify`
 - think to rename `clients` to `session_ids` in the `ChatRoom` process
 - Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
 - rename `user_session_id` to `session_id`
