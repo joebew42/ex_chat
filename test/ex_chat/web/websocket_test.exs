@@ -4,10 +4,11 @@ defmodule ExChat.Web.WebSocketTest do
 
   alias ExChat.Supervisor
 
-
   setup_all do
     Application.start :ranch
+  end
 
+  setup do
     start_supervised! Supervisor
     :ok
   end

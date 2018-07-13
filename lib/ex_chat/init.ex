@@ -1,7 +1,7 @@
-defmodule ExChat.ChatRoomInitialize do
+defmodule ExChat.Init do
   use Task, restart: :transient
 
-  alias ExChat.ChatRooms
+  alias ExChat.{ChatRooms, UserSessions}
 
   def start_link(_args) do
     Task.start_link(__MODULE__, :run, [])
@@ -9,5 +9,6 @@ defmodule ExChat.ChatRoomInitialize do
 
   def run() do
     ChatRooms.create("default")
+    UserSessions.create("default-user-session")
   end
 end

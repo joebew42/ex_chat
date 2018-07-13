@@ -37,6 +37,8 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
+- The module `ChatRooms` should be reorganized like the `UserSessions`
+- Enhancement: Think if it could be useful to use `Mox` instead of `Mock`
 - As a `UserSession` I can join a chatroom
 - As a `UserSession` I can send messages to a chatroom
 - Think about to rename or remove `UserSessions.send` (it could be renamed in `UserSessions.notify` ???)

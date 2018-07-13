@@ -1,6 +1,7 @@
 defmodule ExChat.ChatRoom do
   use GenServer
 
+  alias ExChat.UserSessions
   alias ExChat.ChatRoomRegistry
 
   defstruct session_ids: [], name: nil
@@ -37,7 +38,7 @@ defmodule ExChat.ChatRoom do
   end
 
   def handle_cast({:send, message}, state = %__MODULE__{name: name}) do
-    Enum.each(state.session_ids, &Kernel.send(&1, {name, message}));
+    Enum.each(state.session_ids, &UserSessions.send({name, message}, to: &1))
     {:noreply, state}
   end
 

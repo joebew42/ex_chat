@@ -1,7 +1,9 @@
 defmodule ExChat.ChatRoomTest do
   use ExUnit.Case, async: true
 
-  alias ExChat.ChatRoomRegistry
+  import Mock
+
+  alias ExChat.{ChatRoomRegistry, UserSessions}
   alias ExChat.ChatRoom
 
   setup_all do
@@ -9,22 +11,14 @@ defmodule ExChat.ChatRoomTest do
     :ok
   end
 
-  setup do
-    {:ok, pid} = ChatRoom.create("room_name")
-    %{chatroom: pid}
-  end
+  test "notify subscribed user session when a chatroom receives message" do
+    {:ok, chatroom} = ChatRoom.create("room_name")
+    ChatRoom.join(chatroom, "a-user-session-id")
 
-  test "not receive messages when not subscribed", %{chatroom: chatroom} do
-    ChatRoom.send(chatroom, "hello world")
+    with_mock UserSessions, [send: fn(_message, [to: _user_session_id]) -> :ok end] do
+      ChatRoom.send(chatroom, "a message")
 
-    refute_receive {"room_name", "hello world"}
-  end
-
-  test "receive messages when subscribed", %{chatroom: chatroom} do
-    ChatRoom.join(chatroom, self())
-
-    ChatRoom.send(chatroom, "hello world")
-
-    assert_receive {"room_name", "hello world"}
+      assert called UserSessions.send({"room_name", "a message"}, to: "a-user-session-id")
+    end
   end
 end

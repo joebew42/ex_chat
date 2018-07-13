@@ -1,14 +1,16 @@
 defmodule ExChat.Web.ChatRoomsWebSocketHandler do
-
   @behaviour :cowboy_websocket_handler
+
+  alias ExChat.UserSessions
 
   def init(_, _req, _opts) do
     {:upgrade, :protocol, :cowboy_websocket}
   end
 
   def websocket_init(_type, req, _opts) do
-    state = nil
-    {:ok, req, state}
+    UserSessions.subscribe(self(), to: "default-user-session")
+
+    {:ok, req, nil}
   end
 
   def websocket_handle({:text, command_as_json}, req, state) do
@@ -42,7 +44,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"command" => "join", "room" => room}, req, state) do
-    ExChat.ChatRooms.join(room, self())
+    ExChat.ChatRooms.join(room, "default-user-session")
 
     {:ok, req, state}
   end
