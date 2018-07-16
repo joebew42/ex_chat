@@ -44,7 +44,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"command" => "join", "room" => room}, req, state) do
-    ChatRooms.join(room, "default-user-session")
+    ChatRooms.join(room, as: "default-user-session")
 
     {:ok, req, state}
   end
@@ -54,7 +54,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"room" => room, "message" => message}, req, state) do
-    case ChatRooms.send(room, message) do
+    case ChatRooms.send(message, [to: room]) do
       :ok ->
         {:ok, req, state}
       {:error, :unexisting_room} ->

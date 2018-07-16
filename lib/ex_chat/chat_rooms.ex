@@ -1,14 +1,24 @@
 defmodule ExChat.ChatRooms do
   use Supervisor
 
-  alias ExChat.{ChatRoom, UserSessions}
+  alias ExChat.{ChatRoom, ChatRoomRegistry, UserSessions}
 
   ##############
   # Client API #
   ##############
 
-  def join(room, session_id) do
-    case find_chatroom(room) do
+  def create(room) do
+    case find(room) do
+      {:ok, _pid} ->
+        {:error, :already_exists}
+      {:error, :unexisting_room} ->
+        {:ok, _pid} = start(room)
+        :ok
+    end
+  end
+
+  def join(room, [as: session_id]) do
+    case find(room) do
       {:ok, pid} ->
         try_join_chatroom(room, session_id, pid)
       {:error, :unexisting_room} ->
@@ -16,20 +26,10 @@ defmodule ExChat.ChatRooms do
     end
   end
 
-  def send(room, message) do
-    case find_chatroom(room) do
+  def send(message, [to: room]) do
+    case find(room) do
       {:ok, pid} -> ChatRoom.send(pid, message)
       error -> error
-    end
-  end
-
-  def create(room) do
-    case find_chatroom(room) do
-      {:ok, _pid} ->
-        {:error, :already_exists}
-      {:error, :unexisting_room} ->
-        {:ok, _pid} = start(room)
-        :ok
     end
   end
 
@@ -42,8 +42,8 @@ defmodule ExChat.ChatRooms do
     end
   end
 
-  defp find_chatroom(room) do
-    case ChatRoom.find(room) do
+  defp find(room) do
+    case Registry.lookup(ChatRoomRegistry, room) do
       [] -> {:error, :unexisting_room}
       [{pid, nil}] -> {:ok, pid}
     end
@@ -70,7 +70,9 @@ defmodule ExChat.ChatRooms do
     supervise(children, strategy: :simple_one_for_one)
   end
 
-  defp start(name) do
+  defp start(chatroom_name) do
+    name = {:via, Registry, {ChatRoomRegistry, chatroom_name}}
+
     Supervisor.start_child(:chatroom_supervisor, [name])
   end
 end

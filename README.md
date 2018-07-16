@@ -33,8 +33,6 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- The module `ChatRooms` should be reorganized like the `UserSessions`
-
 ### TODO
 
 - `ChatRoomWebSocketHandler` should collaborate only with `UserSessions`
@@ -58,6 +56,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- The module `ChatRooms` should be reorganized like the `UserSessions`
 - As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
 - rename the `UserSessions.send` to `UserSessions.notify`
 - think to rename `clients` to `session_ids` in the `ChatRoom` process

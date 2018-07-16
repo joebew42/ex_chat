@@ -3,13 +3,8 @@ defmodule ExChat.ChatRoomTest do
 
   import Mock
 
-  alias ExChat.{ChatRoomRegistry, UserSessions}
+  alias ExChat.UserSessions
   alias ExChat.ChatRoom
-
-  setup_all do
-    start_supervised! {Registry, keys: :unique, name: ChatRoomRegistry}
-    :ok
-  end
 
   test "notify subscribed user session when message is received" do
     {:ok, chatroom} = ChatRoom.create("room_name")
