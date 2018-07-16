@@ -1,8 +1,11 @@
 defmodule ExChat.ChatRooms do
+  use Supervisor
 
-  alias ExChat.ChatRoom
-  alias ExChat.ChatRoomSupervisor
-  alias ExChat.UserSessions
+  alias ExChat.{ChatRoom, UserSessions}
+
+  ##############
+  # Client API #
+  ##############
 
   def join(room, session_id) do
     case find_chatroom(room) do
@@ -25,7 +28,7 @@ defmodule ExChat.ChatRooms do
       {:ok, _pid} ->
         {:error, :already_exists}
       {:error, :unexisting_room} ->
-        {:ok, _pid} = ChatRoomSupervisor.create(room)
+        {:ok, _pid} = start(room)
         :ok
     end
   end
@@ -52,5 +55,22 @@ defmodule ExChat.ChatRooms do
 
   defp send_error_message(session_id, message) do
     UserSessions.notify({:error, message}, to: session_id)
+  end
+
+  ####################
+  # Server Callbacks #
+  ####################
+
+  def start_link(_opts) do
+    Supervisor.start_link(__MODULE__, [], name: :chatroom_supervisor)
+  end
+
+  def init(_) do
+    children = [worker(ChatRoom, [])]
+    supervise(children, strategy: :simple_one_for_one)
+  end
+
+  defp start(name) do
+    Supervisor.start_child(:chatroom_supervisor, [name])
   end
 end
