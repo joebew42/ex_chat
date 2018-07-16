@@ -1,7 +1,7 @@
 defmodule ExChat.UserSessions do
   use Supervisor
 
-  alias ExChat.{UserSession, UserSessionRegistry}
+  alias ExChat.{ChatRooms, UserSession, UserSessionRegistry}
 
   ##############
   # Client API #
@@ -29,6 +29,18 @@ defmodule ExChat.UserSessions do
       nil -> {:error, :session_not_exists}
       pid -> UserSession.notify(pid, message)
     end
+  end
+
+  def join(room, [as: session_id]) do
+    ChatRooms.join(room, as: session_id)
+  end
+
+  def send(message, [to: room, as: _session_id]) do
+    ChatRooms.send(message, to: room)
+  end
+
+  def create_chatroom(room, [as: _session_id]) do
+    ChatRooms.create(room)
   end
 
   ####################
