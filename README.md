@@ -35,20 +35,21 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
-- `ChatRooms.create` should use the `user-session-id`
 - Rename `ChatRoomWebSocketHandler` to `ChatRoomWebSocketClient`
 - Put the `user-session-id` as state of `ChatRoomWebSocketClient`
 - `ChatRoomWebSocketClient` consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
-- Enhancement: Think if it could be useful to use `Mox` instead of `Mock`
+- Try to write unit tests for `ChatRoomWebSocketClient`
+- Enhancement: Think if it could be useful to use `Mox` instead of `Mock` (think about the use of Behaviour)
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message
-- Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) int the `UserSessions` module
+- Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
 - unsubscribe a client to receive messages once it leaves the chat
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
 - in `ChatRooms` there is no need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
 - find a way to distribute the Chat, in order to use more than one nodes
   - we have to think to introduce [`gproc`](https://github.com/uwiger/gproc) for distribute the lookup processes across different nodes
+- Rename `ExChat.Init` to `ExChat.Setup` ?
 - try to write some acceptance test (e.g. gherkin/cucumber for elixir? or use ExUnit?)
 - setup a continuous integration for the project (e.g. using TravisCI)
 - try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
