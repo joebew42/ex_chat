@@ -33,6 +33,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
+
 ### TODO
 
 - Put the `user-session-id` as state of `WebSocketClient`
@@ -55,6 +56,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Find a better name for the websocket tests
 - Rename `ExChat.Web.WebSocket` to `ExChat.Web.Router`
 - Rename `ChatRoomsWebSocketHandler` to `WebSocketClient`
 - `ChatRooms.send` should use the `user-session-id`
