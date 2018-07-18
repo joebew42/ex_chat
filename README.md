@@ -36,7 +36,6 @@ As a client I want to be associated to a user so that other client can see who s
 ### TODO
 
 - Put the `user-session-id` as state of `WebSocketClient`
-- Rename `ExChat.Web.WebSocket` to `ExChat.Web.Router`
 - `WebSocketClient` consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
 - Try to write unit tests for `ChatRoomWebSocketClient`
 - Enhancement: Think if it could be useful to use `Mox` instead of `Mock` (think about the use of Behaviour)
@@ -56,6 +55,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Rename `ExChat.Web.WebSocket` to `ExChat.Web.Router`
 - Rename `ChatRoomsWebSocketHandler` to `WebSocketClient`
 - `ChatRooms.send` should use the `user-session-id`
 - The module `ChatRooms` should be reorganized like the `UserSessions`
