@@ -1,7 +1,7 @@
 defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   @behaviour :cowboy_websocket_handler
 
-  alias ExChat.UserSessions
+  alias ExChat.{UserSessions, ChatRooms}
 
   def init(_, _req, _opts) do
     {:upgrade, :protocol, :cowboy_websocket}
@@ -44,7 +44,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"command" => "join", "room" => room}, req, state) do
-    UserSessions.join(room, as: "default-user-session")
+    ChatRooms.join(room, as: "default-user-session")
 
     {:ok, req, state}
   end
@@ -54,7 +54,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"room" => room, "message" => message}, req, state) do
-    case UserSessions.send(message, to: room, as: "default-user-session") do
+    case ChatRooms.send(message, [to: room]) do
       :ok ->
         {:ok, req, state}
       {:error, :unexisting_room} ->
@@ -64,7 +64,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"command" => "create", "room" => room}, req, state) do
-    response = case UserSessions.create_chatroom(room, as: "default-user-session") do
+    response = case ChatRooms.create(room) do
       :ok -> %{success: room <> " has been created!"}
       {:error, :already_exists} ->  %{error: room <> " already exists"}
     end
