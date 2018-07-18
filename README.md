@@ -33,12 +33,15 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-### TODO
-
 - `ChatRoomWebSocketHandler` should collaborate only with `UserSessions`
   - As a `UserSession` I can join a chatroom
   - As a `UserSession` I can send messages to a chatroom
   - At the end we can remove the `ChatRooms` as a collaborator
+
+### TODO
+
+- Rename `ChatRoomWebSocketHandler` to `ChatRoomWebSocketClient`
+- Put the `user-session-id` as state of `ChatRoomWebSocketClient`
 - Enhancement: Think if it could be useful to use `Mox` instead of `Mock`
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
