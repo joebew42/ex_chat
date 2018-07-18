@@ -39,6 +39,15 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
     {:reply, {:text, to_json(response)}, req, state}
   end
 
+  def websocket_info({_session_id, chatroom_name, message}, req, state) do
+    response = %{
+      room: chatroom_name,
+      message: message
+    }
+
+    {:reply, {:text, to_json(response)}, req, state}
+  end
+
   def websocket_terminate(_reason, _req, _state) do
     :ok
   end
@@ -54,7 +63,7 @@ defmodule ExChat.Web.ChatRoomsWebSocketHandler do
   end
 
   defp handle(%{"room" => room, "message" => message}, req, state) do
-    case ChatRooms.send(message, [to: room]) do
+    case ChatRooms.send(message, to: room, as: "default-user-session") do
       :ok ->
         {:ok, req, state}
       {:error, :unexisting_room} ->

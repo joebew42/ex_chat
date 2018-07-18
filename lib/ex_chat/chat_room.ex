@@ -22,8 +22,8 @@ defmodule ExChat.ChatRoom do
     GenServer.call(pid, {:join, session_id})
   end
 
-  def send(pid, message) do
-    :ok = GenServer.cast(pid, {:send, message})
+  def send(pid, message, [as: session_id]) do
+    :ok = GenServer.call(pid, {:send, message, :as, session_id})
   end
 
   def handle_call({:join, session_id}, _from, state) do
@@ -35,9 +35,9 @@ defmodule ExChat.ChatRoom do
     {:reply, message, new_state}
   end
 
-  def handle_cast({:send, message}, state = %__MODULE__{name: name}) do
-    Enum.each(state.session_ids, &UserSessions.notify({name, message}, to: &1))
-    {:noreply, state}
+  def handle_call({:send, message, :as, session_id}, _from, state = %__MODULE__{name: name}) do
+    Enum.each(state.session_ids, &UserSessions.notify({session_id, name, message}, to: &1))
+    {:reply, :ok, state}
   end
 
   defp joined?(session_ids, session_id), do: Enum.member?(session_ids, session_id)

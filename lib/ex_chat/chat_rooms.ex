@@ -26,9 +26,9 @@ defmodule ExChat.ChatRooms do
     end
   end
 
-  def send(message, [to: room]) do
+  def send(message, [to: room, as: session_id]) do
     case find(room) do
-      {:ok, pid} -> ChatRoom.send(pid, message)
+      {:ok, pid} -> ChatRoom.send(pid, message, as: session_id)
       error -> error
     end
   end
