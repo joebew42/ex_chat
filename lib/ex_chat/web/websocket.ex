@@ -13,7 +13,7 @@ defmodule ExChat.Web.WebSocket do
   def dispatch do
     [
       {:_, [
-        {"/chat", ExChat.Web.ChatRoomsWebSocketHandler, []},
+        {"/chat", ExChat.Web.WebSocketClient, []},
         {:_, Plug.Adapters.Cowboy.Handler, {__MODULE__, []}}
       ]}
     ]

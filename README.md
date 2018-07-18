@@ -35,13 +35,12 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
-- Rename `ChatRoomWebSocketHandler` to `ChatRoomWebSocketClient`
-- Put the `user-session-id` as state of `ChatRoomWebSocketClient`
-- `ChatRoomWebSocketClient` consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
+- Put the `user-session-id` as state of `WebSocketClient`
+- Rename `ExChat.Web.WebSocket` to `ExChat.Web.Router`
+- `WebSocketClient` consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
 - Try to write unit tests for `ChatRoomWebSocketClient`
 - Enhancement: Think if it could be useful to use `Mox` instead of `Mock` (think about the use of Behaviour)
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
-- We may have to think to store the `user_id` of the user in the `state` of the `ChatRoomsWebSocketHandler`
 - When I join a chat room as an identified user I want to read my user name in the welcome message
 - Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
 - unsubscribe a client to receive messages once it leaves the chat
@@ -57,6 +56,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Rename `ChatRoomsWebSocketHandler` to `WebSocketClient`
 - `ChatRooms.send` should use the `user-session-id`
 - The module `ChatRooms` should be reorganized like the `UserSessions`
 - As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s

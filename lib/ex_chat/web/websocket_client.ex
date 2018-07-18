@@ -1,4 +1,4 @@
-defmodule ExChat.Web.ChatRoomsWebSocketHandler do
+defmodule ExChat.Web.WebSocketClient do
   @behaviour :cowboy_websocket_handler
 
   alias ExChat.{UserSessions, ChatRooms}
