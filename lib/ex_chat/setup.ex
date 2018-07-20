@@ -1,4 +1,4 @@
-defmodule ExChat.Init do
+defmodule ExChat.Setup do
   use Task, restart: :transient
 
   alias ExChat.{ChatRooms, UserSessions}
