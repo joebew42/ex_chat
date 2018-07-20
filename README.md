@@ -57,6 +57,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Use the access_token to open websocket connection from the UI
 - Try to associate a WebSocketClient to a UserSession
 - Draw the actual application architecture sketch
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
