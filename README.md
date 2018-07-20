@@ -35,7 +35,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
-- Review all the acceptance tests in order to add the User
+- Review all the acceptance tests in order to align it with the User
 - Find a way to handle all the access tokens
 - Handle the connection when the provided access token is empty or not valid (no user session associated)
 - Consider to use the version 2.2 of Cowboy to [parse the request query parameters](https://ninenines.eu/docs/en/cowboy/2.2/guide/req/)
@@ -45,6 +45,7 @@ As a client I want to be associated to a user so that other client can see who s
 - When I join a chat room as an identified user I want to read my user name in the welcome message
 - unsubscribe a client to receive messages once it leaves the chat
 - Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
+  - It could be interesting to open a related thread to the ElixirForum, trying to get more feedback
 - in `ChatRooms` there is no need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
 - Think if it could be useful to use `Mox` instead of `Mock` (think about the use of `Behaviour`)
 - find a way to distribute the Chat, in order to use more than one nodes
