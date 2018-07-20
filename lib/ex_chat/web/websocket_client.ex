@@ -91,8 +91,8 @@ defmodule ExChat.Web.WebSocketClient do
 
   defp find_user_session_by(access_token) do
     case access_token do
-      :undefined -> "default-user-session"
       "A_USER_ACCESS_TOKEN" -> "a-user"
+      _ -> "default-user-session"
     end
   end
 end
