@@ -8,9 +8,12 @@ defmodule ExChat.Web.WebSocketClient do
   end
 
   def websocket_init(_type, req, _opts) do
-    UserSessions.subscribe(self(), to: "default-user-session")
+    {access_token, _req} = :cowboy_req.qs_val("access_token", req)
+    user_session = find_user_session_by(access_token)
 
-    {:ok, req, "default-user-session"}
+    UserSessions.subscribe(self(), to: user_session)
+
+    {:ok, req, user_session}
   end
 
   def websocket_handle({:text, command_as_json}, req, session_id) do
@@ -85,4 +88,11 @@ defmodule ExChat.Web.WebSocketClient do
 
   defp to_json(response), do: Poison.encode!(response)
   defp from_json(json), do: Poison.decode(json)
+
+  defp find_user_session_by(access_token) do
+    case access_token do
+      :undefined -> "default-user-session"
+      "A_USER_ACCESS_TOKEN" -> "a-user"
+    end
+  end
 end

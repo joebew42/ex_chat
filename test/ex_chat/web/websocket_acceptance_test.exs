@@ -11,17 +11,18 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     :ok
   end
 
-  @tag :ignore
-  describe "when join the default chat room as an identified user" do
+  describe "As a User when I join the default chat room" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=ACCESS_TOKEN", forward_to: self()
+      ExChat.UserSessions.create("a-user")
+
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"join\"}")
 
       {:ok, ws_client: ws_client}
     end
 
-    test "a welcome message with the user name is received" do
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, joe!\"}"
+    test "I want to receive a welcome message that contain my name" do
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
     end
   end
 
@@ -31,10 +32,6 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(ws_client, "{\"command\":\"join\"}")
 
       {:ok, ws_client: ws_client}
-    end
-
-    test "a welcome message is received" do
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
     end
 
     test "each message sent is received back", %{ws_client: ws_client} do
@@ -74,6 +71,22 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
+  describe "As a User when I join a new chat room" do
+    setup do
+      ExChat.UserSessions.create("a-user")
+
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
+      send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
+      send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
+
+      {:ok, ws_client: ws_client}
+    end
+
+    test "I want to receive a welcome message that contain my name and the chat room name" do
+      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room, a-user!\"}"
+    end
+  end
+
   describe "when join a new chat room" do
     setup do
       {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
@@ -87,10 +100,6 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"unexisting_room\"}")
 
       assert_receive "{\"error\":\"unexisting_room does not exists\"}"
-    end
-
-    test "a welcome message is received" do
-      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room!\"}"
     end
 
     test "each message sent is received back", %{ws_client: ws_client} do
@@ -125,8 +134,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     send_as_text(ws_client, "{\"command\":\"join\"}")
     send_as_text(ws_client, "{\"command\":\"join\"}")
 
-    assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
-    refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room!\"}"
+    assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, default-user-session!\"}"
+    refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, default-user-session!\"}"
     assert_receive "{\"error\":\"you already joined the default room!\"}"
   end
 

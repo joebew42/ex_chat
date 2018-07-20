@@ -36,6 +36,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
+- Consider to use the version 2.2 of Cowboy to [parse the request query parameters](https://ninenines.eu/docs/en/cowboy/2.2/guide/req/)
 - Try to write unit tests for `WebSocketClient`
 - In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
   - Maybe we can introduce a `system-user-id` ??????!!!!!
@@ -54,6 +55,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Try to associate a WebSocketClient to a UserSession
 - Draw the actual application architecture sketch
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - Rename `ExChat.Init` to `ExChat.Setup`

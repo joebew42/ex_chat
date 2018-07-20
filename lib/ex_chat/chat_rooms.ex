@@ -50,7 +50,7 @@ defmodule ExChat.ChatRooms do
   end
 
   defp send_welcome_message(session_id, room) do
-    UserSessions.notify({room, "welcome to the " <> room <> " chat room!"}, to: session_id)
+    UserSessions.notify({room, "welcome to the " <> room <> " chat room, " <> session_id <> "!"}, to: session_id)
   end
 
   defp send_error_message(session_id, message) do
