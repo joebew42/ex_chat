@@ -36,7 +36,6 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### TODO
 
-- Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - Try to write unit tests for `WebSocketClient`
 - In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
   - Maybe we can introduce a `system-user-id` ??????!!!!!
@@ -55,6 +54,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - Rename `ExChat.Init` to `ExChat.Setup`
 - Put the `user-session-id` as a state of `WebSocketClient`
 - Find a better name for the websocket tests

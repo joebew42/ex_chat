@@ -2,14 +2,12 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
   use ExUnit.Case, async: true
   import WebSocketClient
 
-  alias ExChat.Supervisor
-
   setup_all do
     Application.start :ranch
   end
 
   setup do
-    start_supervised! Supervisor
+    start_supervised! ExChat.Application
     :ok
   end
 

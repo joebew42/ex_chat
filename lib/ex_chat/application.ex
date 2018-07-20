@@ -1,4 +1,4 @@
-defmodule ExChat.Supervisor do
+defmodule ExChat.Application do
   use Supervisor
 
   @http_options [
