@@ -54,6 +54,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Draw the actual application architecture sketch
 - Think about to rename `ExChat.Supervisor` in `ExChat.Application`
 - Rename `ExChat.Init` to `ExChat.Setup`
 - Put the `user-session-id` as a state of `WebSocketClient`
