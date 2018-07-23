@@ -9,11 +9,14 @@ defmodule ExChat.Web.WebSocketClient do
 
   def websocket_init(_type, req, _opts) do
     {access_token, _req} = :cowboy_req.qs_val("access_token", req)
-    user_session = find_user_session_by(access_token)
 
-    UserSessions.subscribe(self(), to: user_session)
-
-    {:ok, req, user_session}
+    case find_user_session_by(access_token) do
+      nil ->
+        {:shutdown, req}
+      user_session ->
+        UserSessions.subscribe(self(), to: user_session)
+        {:ok, req, user_session}
+    end
   end
 
   def websocket_handle({:text, command_as_json}, req, session_id) do
@@ -92,6 +95,7 @@ defmodule ExChat.Web.WebSocketClient do
 
   defp find_user_session_by(access_token) do
     case access_token do
+      "AN_INVALID_ACCESS_TOKEN" -> nil
       "A_USER_ACCESS_TOKEN" -> "a-user"
       _ -> "default-user-session"
     end
