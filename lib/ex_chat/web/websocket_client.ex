@@ -42,8 +42,9 @@ defmodule ExChat.Web.WebSocketClient do
     {:reply, {:text, to_json(response)}, req, session_id}
   end
 
-  def websocket_info({_session_id, chatroom_name, message}, req, session_id) do
+  def websocket_info({from_user, chatroom_name, message}, req, session_id) do
     response = %{
+      from: from_user,
       room: chatroom_name,
       message: message
     }

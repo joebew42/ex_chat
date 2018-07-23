@@ -26,45 +26,65 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
-  describe "when join the default chat room" do
+  describe "As a User when I send a message" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
+      ExChat.UserSessions.create("a-user")
+
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"join\"}")
 
       {:ok, ws_client: ws_client}
     end
 
-    test "each message sent is received back", %{ws_client: ws_client} do
+    test "I receive it back", %{ws_client: ws_client} do
       send_as_text(ws_client, "{\"room\":\"default\",\"message\":\"Hello folks!\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"Hello folks!\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"Hello folks!\",\"from\":\"a-user\"}"
     end
 
-    test "we receive all the messages sent by other clients" do
-      {:ok, other_client} = connect_to "ws://localhost:4000/chat", forward_to: NullProcess.start
-      send_as_text(other_client, "{\"command\":\"join\"}")
+    test "I receive an error message if the room does not exist", %{ws_client: ws_client} do
+      send_as_text(ws_client, "{\"room\":\"unexisting_room\",\"message\":\"a message\"}")
 
-      send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from Twitch!\"}")
-
-      assert_receive "{\"room\":\"default\",\"message\":\"Hello from Twitch!\"}"
+      assert_receive "{\"error\":\"unexisting_room does not exists\"}"
     end
   end
 
-  describe "when create a new chat room" do
+  describe "As a User when I receive a message" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
+      ExChat.UserSessions.create("a-user")
+
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
+      send_as_text(ws_client, "{\"command\":\"join\"}")
+
+      {:ok, ws_client: ws_client}
+    end
+
+    test "I can read the name of the user who sent the message" do
+      {:ok, other_client} = connect_to "ws://localhost:4000/chat?access_token=A_DEFAULT_USER_ACCESS_TOKEN", forward_to: NullProcess.start
+      send_as_text(other_client, "{\"command\":\"join\"}")
+      send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from other user!\"}")
+
+      assert_receive "{\"room\":\"default\",\"message\":\"Hello from other user!\",\"from\":\"default-user-session\"}"
+    end
+  end
+
+  describe "As a User when I create a new chat room" do
+    setup do
+      ExChat.UserSessions.create("a-user")
+
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
       send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
 
       {:ok, ws_client: ws_client}
     end
 
-    test "an error message is received if the room already exist", %{ws_client: ws_client} do
+    test "I receive an error message if the room already exist", %{ws_client: ws_client} do
       send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
 
       assert_receive "{\"error\":\"a_chat_room already exists\"}"
     end
 
-    test "a successful message is received", %{ws_client: ws_client} do
+    test "I receive a successful message", %{ws_client: ws_client} do
       send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"another_room\"}")
 
       assert_receive "{\"success\":\"another_room has been created!\"}"
@@ -87,71 +107,34 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
-  describe "when join a new chat room" do
+  describe "As a User I cannot" do
     setup do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
-      send_as_text(ws_client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
-      send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
+      ExChat.UserSessions.create("a-user")
+
+      {:ok, ws_client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
 
       {:ok, ws_client: ws_client}
     end
 
-    test "an error message is received if the room does not exists", %{ws_client: ws_client} do
-      send_as_text(ws_client, "{\"command\":\"join\",\"room\":\"unexisting_room\"}")
+    test "join twice the same chat room", %{ws_client: ws_client} do
+      send_as_text(ws_client, "{\"command\":\"join\"}")
+      send_as_text(ws_client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"error\":\"unexisting_room does not exists\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive "{\"error\":\"you already joined the default room!\"}"
     end
 
-    test "each message sent is received back", %{ws_client: ws_client} do
-      send_as_text(ws_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}")
+    test "send invalid messages", %{ws_client: ws_client} do
+      send_as_text(ws_client, "this is an invalid message")
 
-      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello folks!\"}"
+      refute_receive _
     end
 
-    test "we receive all the messages sent by other clients" do
-      {:ok, other_client} = connect_to "ws://localhost:4000/chat", forward_to: NullProcess.start
-      send_as_text(other_client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
+    test "send invalid commands", %{ws_client: ws_client} do
+      send_as_text(ws_client, "{\"something\":\"invalid\"}")
 
-      send_as_text(other_client, "{\"room\":\"a_chat_room\",\"message\":\"Hello from Twitch!\"}")
-
-      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"Hello from Twitch!\"}"
+      refute_receive _
     end
-  end
-
-  describe "when send a message to an unexisting room" do
-    test "an error message is received" do
-      {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
-
-      send_as_text(ws_client, "{\"room\":\"unexisting_room\",\"message\":\"a message\"}")
-
-      assert_receive "{\"error\":\"unexisting_room does not exists\"}"
-    end
-  end
-
-  test "avoid a client to join twice to a room" do
-    {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
-
-    send_as_text(ws_client, "{\"command\":\"join\"}")
-    send_as_text(ws_client, "{\"command\":\"join\"}")
-
-    assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, default-user-session!\"}"
-    refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, default-user-session!\"}"
-    assert_receive "{\"error\":\"you already joined the default room!\"}"
-  end
-
-  test "invalid messages are not handled" do
-    {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
-
-    send_as_text(ws_client, "this is an invalid message")
-
-    refute_receive _
-  end
-
-  test "invalid commands are not handled" do
-    {:ok, ws_client} = connect_to "ws://localhost:4000/chat", forward_to: self()
-
-    send_as_text(ws_client, "{\"something\":\"invalid\"}")
-
-    refute_receive _
   end
 end
