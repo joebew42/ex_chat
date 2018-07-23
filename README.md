@@ -34,7 +34,7 @@ As a client I want to be associated to a user so that other client can see who s
 ### DOING
 
 - Find a way to handle all the access tokens
- - what happen when we try to connect to the chat with an invalid access token (e.g. 1) the token not exist or 2) no token provided)
+ - what happen when we try to connect to the chat with an invalid access token (e.g. 1) the token not exist or 2) no token provided) [cowbody documentation](https://ninenines.eu/docs/en/cowboy/1.0/guide/ws_handlers/)
 
 ### TODO
 
