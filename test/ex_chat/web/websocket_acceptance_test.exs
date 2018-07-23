@@ -45,7 +45,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I can read the name of the user who sent the message", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      {:ok, other_client} = connect_to "ws://localhost:4000/chat?access_token=A_DEFAULT_USER_ACCESS_TOKEN", forward_to: NullProcess.start
+      {:ok, other_client} = connect_to websocket_chat_url(with: "A_DEFAULT_USER_ACCESS_TOKEN"), forward_to: NullProcess.start
       send_as_text(other_client, "{\"command\":\"join\"}")
       send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from other user!\"}")
 
@@ -108,7 +108,11 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
   defp connect_as_a_user(_context) do
     ExChat.UserSessions.create("a-user")
-    {:ok, client} = connect_to "ws://localhost:4000/chat?access_token=A_USER_ACCESS_TOKEN", forward_to: self()
+    {:ok, client} = connect_to websocket_chat_url(with: "A_USER_ACCESS_TOKEN"), forward_to: self()
     {:ok, client: client}
+  end
+
+  defp websocket_chat_url([with: access_token]) do
+    "ws://localhost:4000/chat?access_token=" <> access_token
   end
 end
