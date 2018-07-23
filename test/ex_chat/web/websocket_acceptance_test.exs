@@ -21,7 +21,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       {:ok, ws_client: ws_client}
     end
 
-    test "I want to receive a welcome message that contain my name" do
+    test "I want to receive a welcome message containing my name" do
       assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
     end
   end

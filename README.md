@@ -33,9 +33,10 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
+- Review all the acceptance tests in order to align it with the User Feature
+
 ### TODO
 
-- Review all the acceptance tests in order to align it with the User Feature
 - Find a way to handle all the access tokens
 - Handle the connection when the provided access token is empty or not valid (no user session associated)
 - Consider to use the version 2.2 of Cowboy to [parse the request query parameters](https://ninenines.eu/docs/en/cowboy/2.2/guide/req/)
