@@ -37,6 +37,7 @@ As a client I want to be associated to a user so that other client can see who s
  - what happen when we try to connect to the chat with an invalid access token
    - 1) the token not exist/not valid [DONE]
    - 2) no token provided [TODO]
+ - Extract a collaborator for the WebSocketClient that will be responsible to understand if there is a user_session for a given access_tokent
 
 ### TODO
 
