@@ -14,7 +14,7 @@ defmodule ExChat.Web.Router do
     [
       {:_, [
         {"/chat", ExChat.Web.WebSocketClient, []},
-        {:_, Plug.Adapters.Cowboy.Handler, {__MODULE__, []}}
+        {:_, Plug.Adapters.Cowboy2.Handler, {__MODULE__, []}}
       ]}
     ]
   end

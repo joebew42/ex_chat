@@ -3,7 +3,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
   import WebSocketClient
 
   setup_all do
-    Application.start :ranch
+    [:cowlib, :cowboy, :ranch]
+    |> Enum.each(&(Application.start(&1)))
   end
 
   setup do
@@ -12,10 +13,10 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
   end
 
   describe "As a Client when I provide an invalid token" do
-    test "xxx" do
-      {:ok, client} = connect_to websocket_chat_url(with: "AN_INVALID_ACCESS_TOKEN"), forward_to: self()
+    test "I get a 400 Bad Request" do
+      result = connect_to websocket_chat_url(with: "AN_INVALID_ACCESS_TOKEN"), forward_to: self()
 
-      assert_receive "xxx"
+      assert result == {:error, %WebSockex.RequestError{code: 400, message: "Bad Request"}}
     end
   end
 

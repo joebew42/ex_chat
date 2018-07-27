@@ -17,7 +17,7 @@ defmodule ExChat.Application do
       ExChat.ChatRooms,
       ExChat.UserSessions,
       ExChat.Setup,
-      Plug.Adapters.Cowboy.child_spec(:http, ExChat.Web.Router, [], @http_options)
+      Plug.Adapters.Cowboy2.child_spec(scheme: :http, plug: ExChat.Web.Router, options: @http_options)
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

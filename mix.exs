@@ -27,8 +27,8 @@ defmodule ExChat.MixProject do
 
   defp deps do
     [
-      {:cowboy, "~> 1.0.0"},
-      {:plug, "~> 1.0"},
+      {:cowboy, "~> 2.4"},
+      {:plug, "~> 1.6"},
       {:poison, "~> 3.1"},
       {:websockex, "~> 0.4.0", only: :test},
       {:mock, "~> 0.3.0", only: :test}

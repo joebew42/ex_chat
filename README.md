@@ -33,8 +33,10 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- Find a way to handle all the access tokens
- - what happen when we try to connect to the chat with an invalid access token (e.g. 1) the token not exist or 2) no token provided) [cowbody documentation](https://ninenines.eu/docs/en/cowboy/1.0/guide/ws_handlers/)
+- Find a way to handle "all" access tokens
+ - what happen when we try to connect to the chat with an invalid access token
+   - 1) the token not exist/not valid [DONE]
+   - 2) no token provided [TODO]
 
 ### TODO
 
@@ -55,11 +57,13 @@ As a client I want to be associated to a user so that other client can see who s
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
 - try to write some acceptance test with Wallaby, for the frontend ?
 - setup a continuous integration for the project (e.g. using TravisCI)
+- Bonus: Let's try to use `Websockex` for the server too, instead of using the raw `cowboy_websocket`
 - try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
 - it seems that we have some flaky tests for "other clients" scenarios
 
 ### DONE
 
+- Bump to version 2.4 to fix the issue of cowboy 1.0 about the [`cowboy_clock badarg`](https://github.com/ninenines/cowboy/issues/820)
 - Extract the websocket chat URL in the `WebSocketAcceptanceTests`
 - Rename `ws_client` to `client` in the `WebSocketAcceptanceTests`
 - Try to remove all the setup duplication in the `WebSocketAcceptanceTests`
