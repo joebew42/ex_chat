@@ -10,7 +10,7 @@ defmodule ExChat.Web.WebSocketClient do
       nil ->
         {:ok, :cowboy_req.reply(400, req), state}
       user_session ->
-        {:cowboy_websocket, req, user_session}
+        {:cowboy_websocket, req, user_session, %{idle_timeout: 1000 * 60 * 10}}
     end
   end
 

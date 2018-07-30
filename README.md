@@ -34,17 +34,18 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
+
 ### TODO
 
- - Extract a collaborator for the WebSocketClient that will be responsible to understand if there is a user_session for a given access_token
-- Update the UI in order to handle the new message format
+- Update the UI in order to handle the user id
+- Extract a collaborator for the WebSocketClient that will be responsible to understand if there is a user_session for a given access_token
 - Handle the connection when the provided access token is empty or not valid (no user session associated)
-- Consider to use the version 2.2 of Cowboy to [parse the request query parameters](https://ninenines.eu/docs/en/cowboy/2.2/guide/req/)
 - Try to write unit tests for `WebSocketClient`
 - In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
   - Maybe we can introduce a `system-user-id` ??????!!!!!
 - When I join a chat room as an identified user I want to read my user name in the welcome message
-- unsubscribe a client to receive messages once it leaves the chat
+- Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
+- Find a way to document the webosocket API
 - Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
   - It could be interesting to open a related thread to the ElixirForum, trying to get more feedback
 - in `ChatRooms` there is no need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
@@ -60,6 +61,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- It seems that we have a [websocket idle timeout issue](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive). Increase the idle timeout to 10 minutes
 - what happen when we try to connect to the chat with an invalid access token
   - 1) the token not exist or is not valid [DONE]
   - 2) no token provided [DONE]
