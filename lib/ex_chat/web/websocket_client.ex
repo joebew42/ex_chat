@@ -1,12 +1,13 @@
 defmodule ExChat.Web.WebSocketClient do
   @behaviour :cowboy_websocket
 
+  alias ExChat.AuthenticationService
   alias ExChat.{UserSessions, ChatRooms}
 
   def init(req, state) do
     access_token = access_token_from(req)
 
-    case find_user_session_by(access_token) do
+    case AuthenticationService.find_user_session_by(access_token) do
       nil ->
         {:ok, :cowboy_req.reply(400, req), state}
       user_session ->
@@ -88,15 +89,6 @@ defmodule ExChat.Web.WebSocketClient do
 
   defp to_json(response), do: Poison.encode!(response)
   defp from_json(json), do: Poison.decode(json)
-
-  defp find_user_session_by(access_token) do
-    case access_token do
-      nil -> nil
-      "AN_INVALID_ACCESS_TOKEN" -> nil
-      "A_USER_ACCESS_TOKEN" -> "a-user"
-      _ -> "default-user-session"
-    end
-  end
 
   defp access_token_from(req) do
     query_parameter =

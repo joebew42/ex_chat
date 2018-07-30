@@ -34,11 +34,10 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_session for a given access_token
-
 ### TODO
 
-- Try to write unit tests for `WebSocketClient`
+- Document the collaboration between `WebSocketClient` and the `AuthenticationService` through tests
+- Provide an In Memory implementation of the `AuthenticationService` (?)
 - In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
   - Maybe we can introduce a `system-user-id` ??????!!!!!
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
@@ -58,6 +57,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_session for a given access_token
 - Update the UI in order to handle the user id
 - It seems that we have a [websocket idle timeout issue](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive). Increase the idle timeout to 10 minutes
 - Handle the connection when the provided access token is empty or not valid (no user session associated)
