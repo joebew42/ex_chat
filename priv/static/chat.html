@@ -74,8 +74,10 @@
           writeToScreen('<span style="color: red;">ERROR: ' + response.error + '</span>');
         } else if (isSuccess(response)) {
           writeToScreen('<span style="color: green;">SUCCESS: ' + response.success + '</span>');
+        } else if (isSystemMessage(response)) {
+          writeToScreen('<span style="color: gray;">' + response.room +': ' + response.message + '</span>');
         } else {
-          writeToScreen('<span style="color: blue;">MESSAGE: ' + response.room +': ' + response.message + '</span>');
+          writeToScreen('<span style="color: blue;">' + response.room +': (' + response.from + ') ' + response.message + '</span>');
         }
       }
       function onError(evt) {
@@ -99,6 +101,9 @@
       }
       function isSuccess(response) {
         return response.success != undefined
+      }
+      function isSystemMessage(response) {
+        return response.from == undefined
       }
       /* From: https://stackoverflow.com/a/5158301 */
       function getParameterByName(name) {
