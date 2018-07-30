@@ -20,6 +20,14 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
+  describe "As a Client when I don't provide a token" do
+    test "I get a 400 Bad Request" do
+      result = connect_to websocket_chat_url(), forward_to: self()
+
+      assert result == {:error, %WebSockex.RequestError{code: 400, message: "Bad Request"}}
+    end
+  end
+
   describe "As a User when I join the default chat room" do
     setup :connect_as_a_user
 
@@ -121,7 +129,11 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     {:ok, client: client}
   end
 
+  defp websocket_chat_url() do
+    "ws://localhost:4000/chat"
+  end
+
   defp websocket_chat_url([with: access_token]) do
-    "ws://localhost:4000/chat?access_token=" <> access_token
+    "#{websocket_chat_url()}?access_token=#{access_token}"
   end
 end

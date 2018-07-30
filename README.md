@@ -7,6 +7,7 @@ This is a simple chat server built in Elixir with the goal to show a real life a
 ## Features roadmap
 
 - As a client I want to be associated to a user so that other client can see who send messages
+- As a client I want to create a user so that I can use the chat system
 - As a user I can send a private message to an existing user to that I can talk directly without using an existing room
 
 ## Run tests
@@ -33,14 +34,9 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DOING
 
-- Find a way to handle "all" access tokens
- - what happen when we try to connect to the chat with an invalid access token
-   - 1) the token not exist/not valid [DONE]
-   - 2) no token provided [TODO]
- - Extract a collaborator for the WebSocketClient that will be responsible to understand if there is a user_session for a given access_tokent
-
 ### TODO
 
+ - Extract a collaborator for the WebSocketClient that will be responsible to understand if there is a user_session for a given access_token
 - Update the UI in order to handle the new message format
 - Handle the connection when the provided access token is empty or not valid (no user session associated)
 - Consider to use the version 2.2 of Cowboy to [parse the request query parameters](https://ninenines.eu/docs/en/cowboy/2.2/guide/req/)
@@ -64,6 +60,9 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- what happen when we try to connect to the chat with an invalid access token
+  - 1) the token not exist or is not valid [DONE]
+  - 2) no token provided [DONE]
 - Bump to version 2.4 to fix the issue of cowboy 1.0 about the [`cowboy_clock badarg`](https://github.com/ninenines/cowboy/issues/820)
 - Extract the websocket chat URL in the `WebSocketAcceptanceTests`
 - Rename `ws_client` to `client` in the `WebSocketAcceptanceTests`

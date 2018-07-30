@@ -91,6 +91,7 @@ defmodule ExChat.Web.WebSocketClient do
 
   defp find_user_session_by(access_token) do
     case access_token do
+      nil -> nil
       "AN_INVALID_ACCESS_TOKEN" -> nil
       "A_USER_ACCESS_TOKEN" -> "a-user"
       _ -> "default-user-session"
@@ -98,10 +99,13 @@ defmodule ExChat.Web.WebSocketClient do
   end
 
   defp access_token_from(req) do
-    {"access_token", access_token} =
+    query_parameter =
       :cowboy_req.parse_qs(req)
       |> Enum.find(fn({key, _value}) -> key == "access_token" end)
 
-    access_token
+    case query_parameter do
+      {"access_token", access_token} -> access_token
+      _ -> nil
+    end
   end
 end
