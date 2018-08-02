@@ -34,19 +34,16 @@ As a client I want to be associated to a user so that other clients can see who 
 
 ### DOING
 
+- Try to decouple the `WebSocketClient` from the Application Domain (think if it could be useful to introduce the concept of use cases, or actions, for validate_access_token, subscribe_client, join_chatroom and send_message_to_chatroom)
 
 ### TODO
 
-- Try to decouple the `WebSocketClient` from the Application Domain (think if it could be useful to introduce the concept of use cases, or actions, for validate_access_token, subscribe_client, join_chatroom and send_message_to_chatroom)
-- In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
-  - Maybe we can introduce a `system-user-id` ??????!!!!!
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
 - Find a way to document the websocket API
 - Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
   - It could be interesting to open a related thread to the ElixirForum, trying to get more feedback
-- in `ChatRooms` there is no need of `:room` atom for the messages `{:join, client, :room, room}`, `{:send, message, :room, room}` and `{:create, :room, room}`
 - Think if it could be useful to use `Mox` instead of `Mock` (think about the use of `Behaviour`)
-- find a way to distribute the Chat, in order to use more than one nodes
+- find a way to distribute the Chat across different nodes, in order to use more than one nodes
   - we have to think to introduce [`gproc`](https://github.com/uwiger/gproc) for distribute the lookup processes across different nodes
 - improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
 - try to write some acceptance test with Wallaby, for the frontend ?
