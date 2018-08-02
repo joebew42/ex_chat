@@ -30,14 +30,15 @@ _Check out the chat web client at `http://localhost:4000/chat.html`_
 
 Feature:
 
-As a client I want to be associated to a user so that other client can see who send messages
+As a client I want to be associated to a user so that other clients can see who send messages
 
 ### DOING
 
+
 ### TODO
 
+- Maybe the `AuthenticationService` is a "Repository" instead. Consider to rename it
 - Document the collaboration between `WebSocketClient` and the `AuthenticationService` through tests
-- Provide an In Memory implementation of the `AuthenticationService` (?)
 - In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
   - Maybe we can introduce a `system-user-id` ??????!!!!!
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
@@ -57,6 +58,7 @@ As a client I want to be associated to a user so that other client can see who s
 
 ### DONE
 
+- Provide a real implementation of the `AuthenticationService`
 - Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_session for a given access_token
 - Update the UI in order to handle the user id
 - It seems that we have a [websocket idle timeout issue](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive). Increase the idle timeout to 10 minutes
