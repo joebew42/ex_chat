@@ -16,7 +16,7 @@ defmodule ExChat.Application do
       {Registry, keys: :unique, name: ExChat.UserSessionRegistry},
       ExChat.ChatRooms,
       ExChat.UserSessions,
-      ExChat.AuthenticationService,
+      ExChat.AccessTokenRepository,
       ExChat.Setup,
       Plug.Adapters.Cowboy2.child_spec(scheme: :http, plug: ExChat.Web.Router, options: @http_options)
     ]

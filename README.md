@@ -37,8 +37,7 @@ As a client I want to be associated to a user so that other clients can see who 
 
 ### TODO
 
-- Maybe the `AuthenticationService` is a "Repository" instead. Consider to rename it
-- Document the collaboration between `WebSocketClient` and the `AuthenticationService` through tests
+- Try to decouple the `WebSocketClient` from the Application Domain (think if it could be useful to introduce the concept of use cases, or actions, for validate_access_token, subscribe_client, join_chatroom and send_message_to_chatroom)
 - In the `WebSocketClient` module we consider to remove the duplication of `websocket_info({_session_id, chatroom_name, message}, req, state)` and `websocket_info({chatroom_name, message}, req, state)`
   - Maybe we can introduce a `system-user-id` ??????!!!!!
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
@@ -58,6 +57,7 @@ As a client I want to be associated to a user so that other clients can see who 
 
 ### DONE
 
+- Maybe the `AuthenticationService` is a "Repository" instead. Consider to rename it
 - Provide a real implementation of the `AuthenticationService`
 - Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_session for a given access_token
 - Update the UI in order to handle the user id

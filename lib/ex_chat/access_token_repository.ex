@@ -1,4 +1,4 @@
-defmodule ExChat.AuthenticationService do
+defmodule ExChat.AccessTokenRepository do
   use GenServer
 
   ##############
@@ -6,11 +6,11 @@ defmodule ExChat.AuthenticationService do
   ##############
 
   def add(access_token, user_session) do
-    :ok = GenServer.call(:authentication_service, {:add, access_token, user_session})
+    :ok = GenServer.call(:access_token_repository, {:add, access_token, user_session})
   end
 
   def find_user_session_by(access_token) do
-    GenServer.call(:authentication_service, {:find_user_session_by, access_token})
+    GenServer.call(:access_token_repository, {:find_user_session_by, access_token})
   end
 
   ####################
@@ -18,7 +18,7 @@ defmodule ExChat.AuthenticationService do
   ####################
 
   def start_link(_opts) do
-    GenServer.start_link(__MODULE__, [], name: :authentication_service)
+    GenServer.start_link(__MODULE__, [], name: :access_token_repository)
   end
 
   def init(_args) do
