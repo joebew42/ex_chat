@@ -1,17 +1,17 @@
 defmodule ExChat.Web.WebSocketController do
   @behaviour :cowboy_websocket
 
-  alias ExChat.AccessTokenRepository
+  alias ExChat.UseCases.ValidateAccessToken
   alias ExChat.{UserSessions, ChatRooms}
 
   def init(req, state) do
     access_token = access_token_from(req)
 
-    case AccessTokenRepository.find_user_session_by(access_token) do
-      nil ->
-        {:ok, :cowboy_req.reply(400, req), state}
-      user_session ->
+    case ValidateAccessToken.on(access_token) do
+      {:ok, user_session} ->
         {:cowboy_websocket, req, user_session, %{idle_timeout: 1000 * 60 * 10}}
+      {:error, :access_token_not_valid} ->
+        {:ok, :cowboy_req.reply(400, req), state}
     end
   end
 
