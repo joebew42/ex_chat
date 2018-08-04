@@ -1,4 +1,4 @@
-defmodule ExChat.Web.WebSocketClient do
+defmodule ExChat.Web.WebSocketController do
   @behaviour :cowboy_websocket
 
   alias ExChat.AccessTokenRepository

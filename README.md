@@ -40,7 +40,7 @@ At the moment there are two users in the system. You can use two different URLs 
 ### TODO
 
 - Try to decouple the `WebSocketClient` from the Application Domain (think if it could be useful to introduce the concept of use cases, or actions, for validate_access_token, subscribe_client, join_chatroom and send_message_to_chatroom)
-- Should the `WebSocketClient` be renamed in [`WebSocketController`](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) ?
+
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
 - Find a way to document the websocket API
 - Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
@@ -57,6 +57,7 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### DONE
 
+- Should the `WebSocketClient` be renamed in [`WebSocketController`](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) ?
 - As a client I want to be associated to a user so that other clients can see who send messages
 - Prepare the system with some initial data:
   - `foo_user` associated to the token `foo_token`
