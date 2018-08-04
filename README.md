@@ -6,7 +6,6 @@ This is a simple chat server built in Elixir with the goal to show a real life a
 
 ## Features roadmap
 
-- As a client I want to be associated to a user so that other client can see who send messages
 - As a client I want to create a user so that I can use the chat system
 - As a user I can send a private message to an existing user to that I can talk directly without using an existing room
 
@@ -24,20 +23,23 @@ $ mix deps.get
 $ iex -S mix
 ```
 
-_Check out the chat web client at `http://localhost:4000/chat.html`_
+## How to use the chat
+
+The web client will be available at `http://localhost:4000/chat.html`
+
+At the moment there are two users in the system. You can use two different URLs in order to get associated to them:
+
+- `http://localhost:4000/chat.html?access_token=foo_token` to enter as _foo_user_
+- `http://localhost:4000/chat.html?access_token=bar_token` to enter as _bar_user_
 
 ## Scratchpad
 
-Feature:
-
-As a client I want to be associated to a user so that other clients can see who send messages
-
 ### DOING
 
-- Try to decouple the `WebSocketClient` from the Application Domain (think if it could be useful to introduce the concept of use cases, or actions, for validate_access_token, subscribe_client, join_chatroom and send_message_to_chatroom)
 
 ### TODO
 
+- Try to decouple the `WebSocketClient` from the Application Domain (think if it could be useful to introduce the concept of use cases, or actions, for validate_access_token, subscribe_client, join_chatroom and send_message_to_chatroom)
 - Should the `WebSocketClient` be renamed in [`WebSocketController`](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) ?
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
 - Find a way to document the websocket API
@@ -55,6 +57,10 @@ As a client I want to be associated to a user so that other clients can see who 
 
 ### DONE
 
+- As a client I want to be associated to a user so that other clients can see who send messages
+- Prepare the system with some initial data:
+  - `foo_user` associated to the token `foo_token`
+  - `bar_user` associated to the token `bar_token`
 - Maybe the `AuthenticationService` is a "Repository" instead. Consider to rename it
 - Provide a real implementation of the `AuthenticationService`
 - Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_session for a given access_token

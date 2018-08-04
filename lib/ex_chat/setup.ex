@@ -9,7 +9,11 @@ defmodule ExChat.Setup do
 
   def run() do
     ChatRooms.create("default")
-    UserSessions.create("default-user-session")
-    AccessTokenRepository.add("A_DEFAULT_USER_ACCESS_TOKEN", "default-user-session")
+
+    UserSessions.create("foo_user")
+    UserSessions.create("bar_user")
+
+    AccessTokenRepository.add("foo_token", "foo_user")
+    AccessTokenRepository.add("bar_token", "bar_user")
   end
 end

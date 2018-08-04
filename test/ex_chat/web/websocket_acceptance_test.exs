@@ -62,11 +62,11 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I can read the name of the user who sent the message", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      {:ok, other_client} = connect_to websocket_chat_url(with: "A_DEFAULT_USER_ACCESS_TOKEN"), forward_to: NullProcess.start
+      {:ok, other_client} = connect_to websocket_chat_url(with: "bar_token"), forward_to: NullProcess.start
       send_as_text(other_client, "{\"command\":\"join\"}")
       send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from other user!\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"Hello from other user!\",\"from\":\"default-user-session\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"Hello from other user!\",\"from\":\"bar_user\"}"
     end
   end
 
