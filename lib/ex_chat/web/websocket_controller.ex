@@ -36,15 +36,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"command" => "join", "room" => room}, session_id) do
-    result = case ChatRooms.join(room, as: session_id) do
-      :ok ->
-        UserSessions.notify(%{room: room, message: "welcome to the #{room} chat room, #{session_id}!"}, to: session_id)
-        :ok
-      {:error, :already_joined} -> {:error, "you already joined the #{room} room!"}
-      {:error, :unexisting_room} -> {:error, "#{room} does not exists"}
-    end
-
-    case result do
+    case join_chat_room_on(room, session_id) do
       :ok ->
         {:ok, session_id}
       {:error, message} ->
@@ -87,6 +79,18 @@ defmodule ExChat.Web.WebSocketController do
     case query_parameter do
       {"access_token", access_token} -> access_token
       _ -> nil
+    end
+  end
+
+  defp join_chat_room_on(room, user_id) do
+    case ChatRooms.join(room, as: user_id) do
+      :ok ->
+        UserSessions.notify(%{room: room, message: "welcome to the #{room} chat room, #{user_id}!"}, to: user_id)
+        :ok
+      {:error, :already_joined} ->
+        {:error, "you already joined the #{room} room!"}
+      {:error, :unexisting_room} ->
+        {:error, "#{room} does not exists"}
     end
   end
 end
