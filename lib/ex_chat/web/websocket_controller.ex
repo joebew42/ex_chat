@@ -1,7 +1,7 @@
 defmodule ExChat.Web.WebSocketController do
   @behaviour :cowboy_websocket
 
-  alias ExChat.UseCases.ValidateAccessToken
+  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom}
   alias ExChat.{UserSessions, ChatRooms}
 
   def init(req, state) do
@@ -67,12 +67,11 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"room" => room, "message" => message}, session_id) do
-    case ChatRooms.send(message, to: room, as: session_id) do
+    case SendMessageToChatRoom.on(message, room, session_id) do
+      {:error, message} ->
+        {:reply, {:text, to_json(%{ error: message })}, session_id}
       :ok ->
         {:ok, session_id}
-      {:error, :unexisting_room} ->
-        response = %{ error: room <> " does not exists" }
-        {:reply, {:text, to_json(response)}, session_id}
     end
   end
 
