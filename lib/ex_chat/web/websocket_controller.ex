@@ -1,8 +1,8 @@
 defmodule ExChat.Web.WebSocketController do
   @behaviour :cowboy_websocket
 
-  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom, CreateChatRoom, JoinChatRoom}
-  alias ExChat.UserSessions
+  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
+    CreateChatRoom, JoinChatRoom, SubscribeToUserSession}
 
   def init(req, state) do
     access_token = access_token_from(req)
@@ -16,7 +16,8 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   def websocket_init(user_session) do
-    UserSessions.subscribe(self(), to: user_session)
+    SubscribeToUserSession.on(self(), user_session)
+
     {:ok, user_session}
   end
 

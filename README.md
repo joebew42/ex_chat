@@ -36,8 +36,7 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### DOING
 
-- Try to decouple the `WebSocketController` from the Application Domain by introducing the Use Cases:
-  - subscribe_client TODO
+
 
 ### TODO
 
@@ -59,6 +58,8 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### DONE
 
+- Try to decouple the `WebSocketController` from the Application Domain by introducing the Use Cases:
+- Extract a use case for `SubscribeToUserSession`
 - Extract a use case for `JoinChatRoom`
 - Extract a use case for `CreateChatRoom`
 - Extract a use case for `SendMessageToChatRoom`
