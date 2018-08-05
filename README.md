@@ -38,7 +38,6 @@ At the moment there are two users in the system. You can use two different URLs 
 
 - Try to decouple the `WebSocketController` from the Application Domain by introducing the Use Cases:
   - subscribe_client TODO
-  - create_chatroom TODO
   - join_chatroom TODO
 
 ### TODO
@@ -61,6 +60,7 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### DONE
 
+- Extract a use case for `CreateChatRoom`
 - Extract a use case for `SendMessageToChatRoom`
 - Extract a use case for `ValidateAccessToken`
 - Should the `WebSocketClient` be renamed in [`WebSocketController`](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) ?
