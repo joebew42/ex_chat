@@ -36,7 +36,7 @@ defmodule ExChat.ChatRoom do
   end
 
   def handle_call({:send, message, :as, session_id}, _from, state = %__MODULE__{name: name}) do
-    Enum.each(state.session_ids, &UserSessions.notify({session_id, name, message}, to: &1))
+    Enum.each(state.session_ids, &UserSessions.notify(%{from: session_id, room: name, message: message}, to: &1))
     {:reply, :ok, state}
   end
 

@@ -36,6 +36,15 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
     end
+
+    test "I want that each connected clients receives the welcome message", %{client: client} do
+      connect_to websocket_chat_url(with: "A_USER_ACCESS_TOKEN"), forward_to: self()
+
+      send_as_text(client, "{\"command\":\"join\"}")
+
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+    end
   end
 
   describe "As a User when I send a message" do

@@ -1,7 +1,7 @@
 defmodule ExChat.ChatRooms do
   use Supervisor
 
-  alias ExChat.{ChatRoom, ChatRoomRegistry, UserSessions}
+  alias ExChat.{ChatRoom, ChatRoomRegistry}
 
   ##############
   # Client API #
@@ -20,9 +20,9 @@ defmodule ExChat.ChatRooms do
   def join(room, [as: session_id]) do
     case find(room) do
       {:ok, pid} ->
-        try_join_chatroom(room, session_id, pid)
+        try_join_chatroom(pid, session_id)
       {:error, :unexisting_room} ->
-        send_error_message(session_id, room <> " does not exists")
+        {:error, :unexisting_room}
     end
   end
 
@@ -33,12 +33,12 @@ defmodule ExChat.ChatRooms do
     end
   end
 
-  defp try_join_chatroom(room, session_id, chatroom_pid) do
+  defp try_join_chatroom(chatroom_pid, session_id) do
     case ChatRoom.join(chatroom_pid, session_id) do
       :ok ->
-        send_welcome_message(session_id, room)
+        :ok
       {:error, :already_joined} ->
-        send_error_message(session_id, "you already joined the " <> room <> " room!")
+        {:error, :already_joined}
     end
   end
 
@@ -47,14 +47,6 @@ defmodule ExChat.ChatRooms do
       [] -> {:error, :unexisting_room}
       [{pid, nil}] -> {:ok, pid}
     end
-  end
-
-  defp send_welcome_message(session_id, room) do
-    UserSessions.notify({room, "welcome to the " <> room <> " chat room, " <> session_id <> "!"}, to: session_id)
-  end
-
-  defp send_error_message(session_id, message) do
-    UserSessions.notify({:error, message}, to: session_id)
   end
 
   ####################
