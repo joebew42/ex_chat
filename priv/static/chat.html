@@ -47,7 +47,7 @@
       }
 
       /* WebSockets functions */
-      var wsUri = "ws://localhost:4000/chat";
+      var wsUri = "ws://" + location.host + "/chat";
       var output;
       var websocket;
       function init() {
