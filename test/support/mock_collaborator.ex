@@ -1,0 +1,1 @@
+Mox.defmock(ExChat.MockCollaborator, for: ExChat.Collaborator)

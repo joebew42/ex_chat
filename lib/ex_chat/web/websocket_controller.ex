@@ -37,6 +37,8 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"command" => "join", "room" => room}, session_id) do
+    ExChat.MockCollaborator.say_hello()
+
     case JoinChatRoom.on(room, session_id) do
       :ok ->
         {:ok, session_id}

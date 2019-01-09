@@ -1,12 +1,16 @@
 defmodule ExChat.Web.WebSocketAcceptanceTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
+
   import WebSocketClient
+  import Mox
 
   setup_all do
-    [:cowlib, :cowboy, :ranch]
+    [:cowlib, :cowboy, :ranch, :mox]
     |> Enum.each(&(Application.start(&1)))
   end
 
+  setup :set_mox_global
+  setup :verify_on_exit!
   setup do
     start_supervised! ExChat.Application
     :ok
@@ -32,6 +36,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     setup :connect_as_a_user
 
     test "I want to receive a welcome message containing my name", %{client: client} do
+      Mox.expect(ExChat.MockCollaborator, :say_hello, fn -> "hello world" end)
+
       send_as_text(client, "{\"command\":\"join\"}")
 
       assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
