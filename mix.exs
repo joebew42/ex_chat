@@ -31,7 +31,7 @@ defmodule ExChat.MixProject do
       {:plug, "~> 1.6"},
       {:poison, "~> 3.1"},
       {:websockex, "~> 0.4.0", only: :test},
-      {:mock, "~> 0.3.0", only: :test}
+      {:mock, "~> 0.3.3", only: :test}
     ]
   end
 end
