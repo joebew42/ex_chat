@@ -55,7 +55,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       send_as_text(client, "{\"room\":\"default\",\"message\":\"Hello folks!\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"Hello folks!\",\"from\":\"a-user\"}"
+      assert_receive "{\"room\":\"default\",\"from\":\"a-user\",\"message\":\"Hello folks!\"}"
     end
 
     test "I receive an error message if the room does not exist", %{client: client} do
@@ -75,7 +75,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(other_client, "{\"command\":\"join\"}")
       send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from other user!\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"Hello from other user!\",\"from\":\"bar_user\"}"
+      assert_receive "{\"room\":\"default\",\"from\":\"bar_user\",\"message\":\"Hello from other user!\"}"
     end
   end
 
