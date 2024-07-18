@@ -1,5 +1,7 @@
 defmodule ExChat.Web.WebSocketController do
-  @behaviour :cowboy_websocket
+  if Code.ensure_loaded?(:cowboy_websocket) do
+    @behaviour :cowboy_websocket
+  end
 
   alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
     CreateChatRoom, JoinChatRoom, SubscribeToUserSession}
