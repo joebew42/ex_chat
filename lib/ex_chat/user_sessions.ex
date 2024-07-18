@@ -1,5 +1,5 @@
 defmodule ExChat.UserSessions do
-  use Supervisor
+  use DynamicSupervisor
 
   alias ExChat.{UserSession, UserSessionRegistry}
 
@@ -36,18 +36,17 @@ defmodule ExChat.UserSessions do
   ####################
 
   def start_link(_opts) do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+    DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def init(_) do
-    children = [worker(UserSession, [])]
-    supervise(children, strategy: :simple_one_for_one)
+    DynamicSupervisor.init(strategy: :one_for_one)
   end
 
   defp start(session_id) do
     name = {:via, Registry, {UserSessionRegistry, session_id}}
 
-    Supervisor.start_child(__MODULE__, [name])
+    DynamicSupervisor.start_child(__MODULE__, {UserSession ,name})
   end
 
   defp find(session_id) do

@@ -1,5 +1,5 @@
 defmodule ExChat.ChatRooms do
-  use Supervisor
+  use DynamicSupervisor
 
   alias ExChat.{ChatRoom, ChatRoomRegistry}
 
@@ -54,17 +54,16 @@ defmodule ExChat.ChatRooms do
   ####################
 
   def start_link(_opts) do
-    Supervisor.start_link(__MODULE__, [], name: :chatroom_supervisor)
+    DynamicSupervisor.start_link(__MODULE__, [], name: :chatroom_supervisor)
   end
 
   def init(_) do
-    children = [worker(ChatRoom, [])]
-    supervise(children, strategy: :simple_one_for_one)
+    DynamicSupervisor.init(strategy: :one_for_one)
   end
 
   defp start(chatroom_name) do
     name = {:via, Registry, {ChatRoomRegistry, chatroom_name}}
 
-    Supervisor.start_child(:chatroom_supervisor, [name])
+    DynamicSupervisor.start_child(:chatroom_supervisor, {ChatRoom, name})
   end
 end
