@@ -3,8 +3,8 @@ defmodule ExChat.Web.WebSocketController do
     @behaviour :cowboy_websocket
   end
 
-  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
-    CreateChatRoom, JoinChatRoom, SubscribeToUserSession}
+  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToRoom,
+    CreateRoom, JoinRoom, SubscribeToUserSession}
 
   def init(req, state) do
     access_token = access_token_from(req)
@@ -39,7 +39,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"command" => "join", "room" => room}, session_id) do
-    case JoinChatRoom.on(room, session_id) do
+    case JoinRoom.on(room, session_id) do
       :ok ->
         {:ok, session_id}
       {:error, message} ->
@@ -52,7 +52,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"room" => room, "message" => message}, session_id) do
-    case SendMessageToChatRoom.on(message, room, session_id) do
+    case SendMessageToRoom.on(message, room, session_id) do
       {:error, message} ->
         {:reply, {:text, to_json(%{ error: message })}, session_id}
       :ok ->
@@ -61,7 +61,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"command" => "create", "room" => room}, session_id) do
-    response = case CreateChatRoom.on(room) do
+    response = case CreateRoom.on(room) do
       {:ok, message} -> %{success: message}
       {:error, message} -> %{error: message}
     end
