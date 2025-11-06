@@ -1,0 +1,18 @@
+You are supposed to work and implement this feature:
+
+- Rename the `ChatRoom` and `ChatRooms` to `Room` and `Rooms` (Removing the prefix `Chat`). The term `Chat` is redundant.
+
+Common code and ways of working conventions:
+
+- Use semantic commit (e.g., feat, refactor, chore, style, docs ...)
+- Add or change existing tests for each change you make
+- Ensure each change have its own commit
+- Once everything is implemented create a PR so that it contains two section:
+  - "## Context" -> It highlights the change we want to introduce, keeping an high-level description. No need to be too detailed or technnical.
+  - "## This PR" -> It describes the introduced changes, keeping an high-level description. No need to be too detailed or technnical.
+
+Remember to follow these additional conventions:
+
+- Ensure that the tests are run everytime you add a change
+- Ensure that at the end of the implementation no regressions are added
+

@@ -1,0 +1,2 @@
+- Ensure that the tests are run everytime you add a change
+- Ensure that at the end of the implementation no regressions are added
