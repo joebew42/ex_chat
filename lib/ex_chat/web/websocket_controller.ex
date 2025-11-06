@@ -4,7 +4,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
-    CreateChatRoom, JoinChatRoom, SubscribeToUserSession}
+    CreateRoom, JoinChatRoom, SubscribeToUserSession}
 
   def init(req, state) do
     access_token = access_token_from(req)
@@ -61,7 +61,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"command" => "create", "room" => room}, session_id) do
-    response = case CreateChatRoom.on(room) do
+    response = case CreateRoom.on(room) do
       {:ok, message} -> %{success: message}
       {:error, message} -> %{error: message}
     end
