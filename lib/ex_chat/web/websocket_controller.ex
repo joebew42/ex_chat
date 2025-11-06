@@ -3,7 +3,7 @@ defmodule ExChat.Web.WebSocketController do
     @behaviour :cowboy_websocket
   end
 
-  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
+  alias ExChat.UseCases.{ValidateAccessToken, SendMessageToRoom,
     CreateRoom, JoinRoom, SubscribeToUserSession}
 
   def init(req, state) do
@@ -52,7 +52,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"room" => room, "message" => message}, session_id) do
-    case SendMessageToChatRoom.on(message, room, session_id) do
+    case SendMessageToRoom.on(message, room, session_id) do
       {:error, message} ->
         {:reply, {:text, to_json(%{ error: message })}, session_id}
       :ok ->
