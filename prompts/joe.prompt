@@ -1,0 +1,8 @@
+- Use semantic commit (e.g., feat, refactor, chore, style, docs ...)
+- Add or change existing tests for each change you make
+- Ensure each change have its own commit
+  - Use only the commit subject. No need to add the full commit message
+- Once everything is implemented create a PR so that it contains two sections:
+  - "## Context" -> It highlights the change we want to introduce, keeping an high-level description. No need to be too detailed or technnical.
+  - "## This PR" -> It describes the introduced changes, keeping an high-level description. No need to be too detailed or technnical.
+  - Do not add any reference to Claude

@@ -1,0 +1,1 @@
+- Rename the `ChatRoom` and `ChatRooms` to `Room` and `Rooms` (Removing the prefix `Chat`). The term `Chat` is redundant.
