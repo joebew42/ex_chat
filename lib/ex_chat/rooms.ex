@@ -1,4 +1,4 @@
-defmodule ExChat.ChatRooms do
+defmodule ExChat.Rooms do
   use DynamicSupervisor
 
   alias ExChat.{Room, ChatRoomRegistry}

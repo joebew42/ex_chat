@@ -1,9 +1,9 @@
 defmodule ExChat.UseCases.SendMessageToChatRoom do
 
-  alias ExChat.ChatRooms
+  alias ExChat.Rooms
 
   def on(message, room, user_id) do
-    case ChatRooms.send(message, to: room, as: user_id) do
+    case Rooms.send(message, to: room, as: user_id) do
       :ok ->
         :ok
       {:error, :unexisting_room} ->
