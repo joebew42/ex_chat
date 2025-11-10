@@ -1,4 +1,4 @@
-defmodule ExChat.UseCases.SendMessageToChatRoom do
+defmodule ExChat.UseCases.SendMessageToRoom do
 
   alias ExChat.Rooms
 
