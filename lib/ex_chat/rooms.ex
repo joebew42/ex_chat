@@ -1,7 +1,7 @@
-defmodule ExChat.ChatRooms do
+defmodule ExChat.Rooms do
   use DynamicSupervisor
 
-  alias ExChat.{Room, ChatRoomRegistry}
+  alias ExChat.{Room, RoomRegistry}
 
   ##############
   # Client API #
@@ -43,7 +43,7 @@ defmodule ExChat.ChatRooms do
   end
 
   defp find(room) do
-    case Registry.lookup(ChatRoomRegistry, room) do
+    case Registry.lookup(RoomRegistry, room) do
       [] -> {:error, :unexisting_room}
       [{pid, nil}] -> {:ok, pid}
     end
@@ -62,7 +62,7 @@ defmodule ExChat.ChatRooms do
   end
 
   defp start(chatroom_name) do
-    name = {:via, Registry, {ChatRoomRegistry, chatroom_name}}
+    name = {:via, Registry, {RoomRegistry, chatroom_name}}
 
     DynamicSupervisor.start_child(:chatroom_supervisor, {Room, name})
   end

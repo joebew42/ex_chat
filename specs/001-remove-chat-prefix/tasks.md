@@ -40,14 +40,14 @@
 
 ### Step 1: Rename ChatRoom → Room (Leaf Module)
 
-- [ ] T004 [US1] Rename file using `git mv lib/ex_chat/chat_room.ex lib/ex_chat/room.ex`
-- [ ] T005 [US1] Update module definition from `defmodule ExChat.ChatRoom` to `defmodule ExChat.Room` in lib/ex_chat/room.ex
-- [ ] T006 [US1] Rename test file using `git mv test/ex_chat/chat_room_test.exs test/ex_chat/room_test.exs`
-- [ ] T007 [US1] Update test module definition from `ExChat.ChatRoomTest` to `ExChat.RoomTest` in test/ex_chat/room_test.exs
-- [ ] T008 [US1] Update all `ChatRoom` references to `Room` in test/ex_chat/room_test.exs
-- [ ] T009 [US1] Update `ChatRoomRegistry` references to `RoomRegistry` in test/ex_chat/room_test.exs
-- [ ] T010 [US1] Run `mix test` to verify Room module tests pass
-- [ ] T011 [US1] Commit with message: `refactor: rename ChatRoom module to Room`
+- [X] T004 [US1] Rename file using `git mv lib/ex_chat/chat_room.ex lib/ex_chat/room.ex`
+- [X] T005 [US1] Update module definition from `defmodule ExChat.ChatRoom` to `defmodule ExChat.Room` in lib/ex_chat/room.ex
+- [X] T006 [US1] Rename test file using `git mv test/ex_chat/chat_room_test.exs test/ex_chat/room_test.exs`
+- [X] T007 [US1] Update test module definition from `ExChat.ChatRoomTest` to `ExChat.RoomTest` in test/ex_chat/room_test.exs
+- [X] T008 [US1] Update all `ChatRoom` references to `Room` in test/ex_chat/room_test.exs
+- [X] T009 [US1] Update `ChatRoomRegistry` references to `RoomRegistry` in test/ex_chat/room_test.exs
+- [X] T010 [US1] Run `mix test` to verify Room module tests pass
+- [X] T011 [US1] Commit with message: `refactor: rename ChatRoom module to Room`
 
 **Checkpoint**: Room module renamed, tests passing
 
