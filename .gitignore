@@ -24,3 +24,5 @@ ex_chat-*.tar
 
 .idea
 *.iml
+.claude
+.specify
