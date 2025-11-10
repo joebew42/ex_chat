@@ -1,4 +1,4 @@
-defmodule ExChat.ChatRoom do
+defmodule ExChat.Room do
   use GenServer
 
   alias ExChat.UserSessions
