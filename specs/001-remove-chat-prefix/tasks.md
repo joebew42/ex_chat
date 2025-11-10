@@ -53,16 +53,16 @@
 
 ### Step 2: Rename ChatRooms → Rooms (Supervisor Module)
 
-- [ ] T012 [US1] Rename file using `git mv lib/ex_chat/chat_rooms.ex lib/ex_chat/rooms.ex`
-- [ ] T013 [US1] Update module definition from `defmodule ExChat.ChatRooms` to `defmodule ExChat.Rooms` in lib/ex_chat/rooms.ex
-- [ ] T014 [US1] Update alias from `alias ExChat.{ChatRoom, ChatRoomRegistry}` to `alias ExChat.{Room, RoomRegistry}` in lib/ex_chat/rooms.ex
-- [ ] T015 [US1] Update all `ChatRoom` function calls to `Room` in lib/ex_chat/rooms.ex
-- [ ] T016 [US1] Update `ChatRoomRegistry` references to `RoomRegistry` in lib/ex_chat/rooms.ex
-- [ ] T017 [US1] Update supervision tree: change `{ChatRooms, ...}` to `{Rooms, ...}` in lib/ex_chat/application.ex
-- [ ] T018 [US1] Update registry definition: change `name: ChatRoomRegistry` to `name: RoomRegistry` in lib/ex_chat/application.ex
-- [ ] T019 [US1] Update registry references from `ChatRoomRegistry` to `RoomRegistry` in lib/ex_chat/setup.ex
-- [ ] T020 [US1] Run `mix test` to verify Rooms module and supervision tree work correctly
-- [ ] T021 [US1] Commit with message: `refactor: rename ChatRooms module to Rooms and update registry`
+- [X] T012 [US1] Rename file using `git mv lib/ex_chat/chat_rooms.ex lib/ex_chat/rooms.ex`
+- [X] T013 [US1] Update module definition from `defmodule ExChat.ChatRooms` to `defmodule ExChat.Rooms` in lib/ex_chat/rooms.ex
+- [X] T014 [US1] Update alias from `alias ExChat.{ChatRoom, ChatRoomRegistry}` to `alias ExChat.{Room, RoomRegistry}` in lib/ex_chat/rooms.ex
+- [X] T015 [US1] Update all `ChatRoom` function calls to `Room` in lib/ex_chat/rooms.ex
+- [X] T016 [US1] Update `ChatRoomRegistry` references to `RoomRegistry` in lib/ex_chat/rooms.ex
+- [X] T017 [US1] Update supervision tree: change `{ChatRooms, ...}` to `{Rooms, ...}` in lib/ex_chat/application.ex
+- [X] T018 [US1] Update registry definition: change `name: ChatRoomRegistry` to `name: RoomRegistry` in lib/ex_chat/application.ex
+- [X] T019 [US1] Update registry references from `ChatRoomRegistry` to `RoomRegistry` in lib/ex_chat/setup.ex
+- [X] T020 [US1] Run `mix test` to verify Rooms module and supervision tree work correctly
+- [X] T021 [US1] Commit with message: `refactor: rename ChatRooms module to Rooms and update registry`
 
 **Checkpoint**: Rooms supervisor renamed, registry updated, tests passing
 
