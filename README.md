@@ -40,11 +40,10 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### TODO
 
-- Rename `ChatRoom`, `ChatRooms` and `Chatroom` to `Room` (basically remove the `Chat` term)
 - Rename `session_id` or `user_session_id` to `user_id`
 - Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
 - Find a way to document the websocket API
-- Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
+- Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `Rooms` module
   - It could be interesting to open a related thread to the ElixirForum, trying to get more feedback
 - Think if it could be useful to use `Mox` instead of `Mock` (think about the use of `Behaviour`)
 - find a way to distribute the Chat across different nodes, in order to use more than one nodes
@@ -58,11 +57,12 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### DONE
 
+- Rename `ChatRoom`, `ChatRooms` and `Chatroom` to `Room` (basically remove the `Chat` term)
 - Try to decouple the `WebSocketController` from the Application Domain by introducing the Use Cases:
 - Extract a use case for `SubscribeToUserSession`
-- Extract a use case for `JoinChatRoom`
-- Extract a use case for `CreateChatRoom`
-- Extract a use case for `SendMessageToChatRoom`
+- Extract a use case for `JoinRoom`
+- Extract a use case for `CreateRoom`
+- Extract a use case for `SendMessageToRoom`
 - Extract a use case for `ValidateAccessToken`
 - Should the `WebSocketClient` be renamed in [`WebSocketController`](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html) ?
 - As a client I want to be associated to a user so that other clients can see who send messages
