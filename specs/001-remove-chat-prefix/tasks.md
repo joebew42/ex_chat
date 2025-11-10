@@ -68,62 +68,62 @@
 
 ### Step 3: Rename Use Case - CreateChatRoom → CreateRoom
 
-- [ ] T022 [US1] Rename file using `git mv lib/ex_chat/use_cases/create_chat_room.ex lib/ex_chat/use_cases/create_room.ex`
-- [ ] T023 [US1] Update module definition from `defmodule ExChat.UseCases.CreateChatRoom` to `defmodule ExChat.UseCases.CreateRoom` in lib/ex_chat/use_cases/create_room.ex
-- [ ] T024 [US1] Update alias from `alias ExChat.ChatRooms` to `alias ExChat.Rooms` in lib/ex_chat/use_cases/create_room.ex
-- [ ] T025 [US1] Update all `ChatRooms` function calls to `Rooms` in lib/ex_chat/use_cases/create_room.ex
-- [ ] T026 [US1] Rename test file using `git mv test/ex_chat/use_cases/create_chat_room_test.exs test/ex_chat/use_cases/create_room_test.exs`
-- [ ] T027 [US1] Update test module definition from `ExChat.UseCases.CreateChatRoomTest` to `ExChat.UseCases.CreateRoomTest` in test/ex_chat/use_cases/create_room_test.exs
-- [ ] T028 [US1] Update all `CreateChatRoom` references to `CreateRoom` in test/ex_chat/use_cases/create_room_test.exs
-- [ ] T029 [US1] Run `mix test` to verify CreateRoom use case tests pass
-- [ ] T030 [US1] Commit with message: `refactor: rename CreateChatRoom use case to CreateRoom`
+- [X] T022 [US1] Rename file using `git mv lib/ex_chat/use_cases/create_chat_room.ex lib/ex_chat/use_cases/create_room.ex`
+- [X] T023 [US1] Update module definition from `defmodule ExChat.UseCases.CreateChatRoom` to `defmodule ExChat.UseCases.CreateRoom` in lib/ex_chat/use_cases/create_room.ex
+- [X] T024 [US1] Update alias from `alias ExChat.ChatRooms` to `alias ExChat.Rooms` in lib/ex_chat/use_cases/create_room.ex
+- [X] T025 [US1] Update all `ChatRooms` function calls to `Rooms` in lib/ex_chat/use_cases/create_room.ex
+- [X] T026 [US1] Rename test file using `git mv test/ex_chat/use_cases/create_chat_room_test.exs test/ex_chat/use_cases/create_room_test.exs`
+- [X] T027 [US1] Update test module definition from `ExChat.UseCases.CreateChatRoomTest` to `ExChat.UseCases.CreateRoomTest` in test/ex_chat/use_cases/create_room_test.exs
+- [X] T028 [US1] Update all `CreateChatRoom` references to `CreateRoom` in test/ex_chat/use_cases/create_room_test.exs
+- [X] T029 [US1] Run `mix test` to verify CreateRoom use case tests pass
+- [X] T030 [US1] Commit with message: `refactor: rename CreateChatRoom use case to CreateRoom`
 
 **Checkpoint**: CreateRoom use case renamed, tests passing
 
 ### Step 4: Rename Use Case - JoinChatRoom → JoinRoom
 
-- [ ] T031 [US1] Rename file using `git mv lib/ex_chat/use_cases/join_chat_room.ex lib/ex_chat/use_cases/join_room.ex`
-- [ ] T032 [US1] Update module definition from `defmodule ExChat.UseCases.JoinChatRoom` to `defmodule ExChat.UseCases.JoinRoom` in lib/ex_chat/use_cases/join_room.ex
-- [ ] T033 [US1] Update alias from `alias ExChat.ChatRooms` to `alias ExChat.Rooms` in lib/ex_chat/use_cases/join_room.ex
-- [ ] T034 [US1] Update all `ChatRooms` function calls to `Rooms` in lib/ex_chat/use_cases/join_room.ex
-- [ ] T035 [US1] Rename test file using `git mv test/ex_chat/use_cases/join_chat_room_test.exs test/ex_chat/use_cases/join_room_test.exs`
-- [ ] T036 [US1] Update test module definition from `ExChat.UseCases.JoinChatRoomTest` to `ExChat.UseCases.JoinRoomTest` in test/ex_chat/use_cases/join_room_test.exs
-- [ ] T037 [US1] Update all `JoinChatRoom` references to `JoinRoom` in test/ex_chat/use_cases/join_room_test.exs
-- [ ] T038 [US1] Run `mix test` to verify JoinRoom use case tests pass
-- [ ] T039 [US1] Commit with message: `refactor: rename JoinChatRoom use case to JoinRoom`
+- [X] T031 [US1] Rename file using `git mv lib/ex_chat/use_cases/join_chat_room.ex lib/ex_chat/use_cases/join_room.ex`
+- [X] T032 [US1] Update module definition from `defmodule ExChat.UseCases.JoinChatRoom` to `defmodule ExChat.UseCases.JoinRoom` in lib/ex_chat/use_cases/join_room.ex
+- [X] T033 [US1] Update alias from `alias ExChat.ChatRooms` to `alias ExChat.Rooms` in lib/ex_chat/use_cases/join_room.ex
+- [X] T034 [US1] Update all `ChatRooms` function calls to `Rooms` in lib/ex_chat/use_cases/join_room.ex
+- [X] T035 [US1] Rename test file using `git mv test/ex_chat/use_cases/join_chat_room_test.exs test/ex_chat/use_cases/join_room_test.exs`
+- [X] T036 [US1] Update test module definition from `ExChat.UseCases.JoinChatRoomTest` to `ExChat.UseCases.JoinRoomTest` in test/ex_chat/use_cases/join_room_test.exs
+- [X] T037 [US1] Update all `JoinChatRoom` references to `JoinRoom` in test/ex_chat/use_cases/join_room_test.exs
+- [X] T038 [US1] Run `mix test` to verify JoinRoom use case tests pass
+- [X] T039 [US1] Commit with message: `refactor: rename JoinChatRoom use case to JoinRoom`
 
 **Checkpoint**: JoinRoom use case renamed, tests passing
 
 ### Step 5: Rename Use Case - SendMessageToChatRoom → SendMessageToRoom
 
-- [ ] T040 [US1] Rename file using `git mv lib/ex_chat/use_cases/send_message_to_chat_room.ex lib/ex_chat/use_cases/send_message_to_room.ex`
-- [ ] T041 [US1] Update module definition from `defmodule ExChat.UseCases.SendMessageToChatRoom` to `defmodule ExChat.UseCases.SendMessageToRoom` in lib/ex_chat/use_cases/send_message_to_room.ex
-- [ ] T042 [US1] Update alias from `alias ExChat.ChatRooms` to `alias ExChat.Rooms` in lib/ex_chat/use_cases/send_message_to_room.ex
-- [ ] T043 [US1] Update all `ChatRooms` function calls to `Rooms` in lib/ex_chat/use_cases/send_message_to_room.ex
-- [ ] T044 [US1] Rename test file using `git mv test/ex_chat/use_cases/send_message_to_chat_room_test.exs test/ex_chat/use_cases/send_message_to_room_test.exs`
-- [ ] T045 [US1] Update test module definition from `ExChat.UseCases.SendMessageToChatRoomTest` to `ExChat.UseCases.SendMessageToRoomTest` in test/ex_chat/use_cases/send_message_to_room_test.exs
-- [ ] T046 [US1] Update all `SendMessageToChatRoom` references to `SendMessageToRoom` in test/ex_chat/use_cases/send_message_to_room_test.exs
-- [ ] T047 [US1] Run `mix test` to verify SendMessageToRoom use case tests pass
-- [ ] T048 [US1] Commit with message: `refactor: rename SendMessageToChatRoom use case to SendMessageToRoom`
+- [X] T040 [US1] Rename file using `git mv lib/ex_chat/use_cases/send_message_to_chat_room.ex lib/ex_chat/use_cases/send_message_to_room.ex`
+- [X] T041 [US1] Update module definition from `defmodule ExChat.UseCases.SendMessageToChatRoom` to `defmodule ExChat.UseCases.SendMessageToRoom` in lib/ex_chat/use_cases/send_message_to_room.ex
+- [X] T042 [US1] Update alias from `alias ExChat.ChatRooms` to `alias ExChat.Rooms` in lib/ex_chat/use_cases/send_message_to_room.ex
+- [X] T043 [US1] Update all `ChatRooms` function calls to `Rooms` in lib/ex_chat/use_cases/send_message_to_room.ex
+- [X] T044 [US1] Rename test file using `git mv test/ex_chat/use_cases/send_message_to_chat_room_test.exs test/ex_chat/use_cases/send_message_to_room_test.exs`
+- [X] T045 [US1] Update test module definition from `ExChat.UseCases.SendMessageToChatRoomTest` to `ExChat.UseCases.SendMessageToRoomTest` in test/ex_chat/use_cases/send_message_to_room_test.exs
+- [X] T046 [US1] Update all `SendMessageToChatRoom` references to `SendMessageToRoom` in test/ex_chat/use_cases/send_message_to_room_test.exs
+- [X] T047 [US1] Run `mix test` to verify SendMessageToRoom use case tests pass
+- [X] T048 [US1] Commit with message: `refactor: rename SendMessageToChatRoom use case to SendMessageToRoom`
 
 **Checkpoint**: SendMessageToRoom use case renamed, tests passing
 
 ### Step 6: Update WebSocket Controller
 
-- [ ] T049 [US1] Update use case aliases in lib/ex_chat/web/websocket_controller.ex: `CreateChatRoom` → `CreateRoom`, `JoinChatRoom` → `JoinRoom`, `SendMessageToChatRoom` → `SendMessageToRoom`
-- [ ] T050 [US1] Update all use case function calls to use new names in lib/ex_chat/web/websocket_controller.ex
-- [ ] T051 [US1] Run `mix test` to verify WebSocket acceptance tests pass
-- [ ] T052 [US1] Commit with message: `refactor: update WebSocketController to use renamed use cases`
+- [X] T049 [US1] Update use case aliases in lib/ex_chat/web/websocket_controller.ex: `CreateChatRoom` → `CreateRoom`, `JoinChatRoom` → `JoinRoom`, `SendMessageToChatRoom` → `SendMessageToRoom`
+- [X] T050 [US1] Update all use case function calls to use new names in lib/ex_chat/web/websocket_controller.ex
+- [X] T051 [US1] Run `mix test` to verify WebSocket acceptance tests pass
+- [X] T052 [US1] Commit with message: `refactor: update WebSocketController to use renamed use cases`
 
 **Checkpoint**: WebSocket controller updated, all tests passing
 
 ### Step 7: Final Verification
 
-- [ ] T053 [US1] Run `mix clean && mix compile --warnings-as-errors` to verify clean compilation
-- [ ] T054 [US1] Run `mix test` to verify entire test suite passes with zero failures
-- [ ] T055 [US1] Verify no old names remain: `grep -r "ChatRoom" lib/ test/ | grep -v specs/ | wc -l` should return 0
-- [ ] T056 [US1] Verify no old filenames remain: `find lib test -name "*chat_room*" -type f | wc -l` should return 0
-- [ ] T057 [US1] Verify application starts without errors: `mix run --no-halt` (Ctrl+C to stop after verification)
+- [X] T053 [US1] Run `mix clean && mix compile --warnings-as-errors` to verify clean compilation
+- [X] T054 [US1] Run `mix test` to verify entire test suite passes with zero failures
+- [X] T055 [US1] Verify no old names remain: `grep -r "ChatRoom" lib/ test/ | grep -v specs/ | wc -l` should return 0
+- [X] T056 [US1] Verify no old filenames remain: `find lib test -name "*chat_room*" -type f | wc -l` should return 0
+- [X] T057 [US1] Verify application starts without errors: `mix run --no-halt` (Ctrl+C to stop after verification)
 
 **Checkpoint**: User Story 1 complete - all modules renamed, tests passing, zero regressions
 
@@ -137,9 +137,9 @@
 
 ### Documentation Updates
 
-- [ ] T058 [US2] Update README.md: Mark completed TODO item "Rename `ChatRoom`, `ChatRooms` and `Chatroom` to `Room`" as DONE or remove it
-- [ ] T059 [US2] Review README.md for any other references to ChatRoom in documentation sections and update to Room
-- [ ] T060 [US2] Commit with message: `docs: update README after Room module refactoring`
+- [X] T058 [US2] Update README.md: Mark completed TODO item "Rename `ChatRoom`, `ChatRooms` and `Chatroom` to `Room`" as DONE or remove it
+- [X] T059 [US2] Review README.md for any other references to ChatRoom in documentation sections and update to Room
+- [X] T060 [US2] Commit with message: `docs: update README after Room module refactoring`
 
 **Checkpoint**: Documentation updated to reflect new naming
 
@@ -149,11 +149,11 @@
 
 **Purpose**: Final checks and cleanup
 
-- [ ] T061 Run full test suite one final time: `mix test`
-- [ ] T062 Verify code compiles cleanly: `mix compile --warnings-as-errors`
-- [ ] T063 Run application startup test: `iex -S mix` (verify modules load, then exit)
-- [ ] T064 Verify success criteria SC-002: `grep -r "ChatRoom" lib/ test/ --exclude-dir=specs` returns zero results
-- [ ] T065 Verify success criteria SC-003: `find lib test -name "*chat_room*"` returns zero results
+- [X] T061 Run full test suite one final time: `mix test`
+- [X] T062 Verify code compiles cleanly: `mix compile --warnings-as-errors`
+- [X] T063 Run application startup test: `iex -S mix` (verify modules load, then exit)
+- [X] T064 Verify success criteria SC-002: `grep -r "ChatRoom" lib/ test/ --exclude-dir=specs` returns zero results
+- [X] T065 Verify success criteria SC-003: `find lib test -name "*chat_room*"` returns zero results
 
 ---
 
