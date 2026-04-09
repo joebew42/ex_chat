@@ -6,12 +6,15 @@ defmodule ExChat.Web.WebSocketController do
   alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
     CreateChatRoom, JoinChatRoom, SubscribeToUserSession}
 
+  @default_ping_interval 30_000
+  @default_idle_timeout 60_000
+
   def init(req, state) do
     access_token = access_token_from(req)
 
     case ValidateAccessToken.on(access_token) do
       {:ok, user_session} ->
-        {:cowboy_websocket, req, user_session, %{idle_timeout: 1000 * 60 * 10}}
+        {:cowboy_websocket, req, user_session, %{idle_timeout: idle_timeout()}}
       {:error, :access_token_not_valid} ->
         {:ok, :cowboy_req.reply(400, req), state}
     end
@@ -19,6 +22,7 @@ defmodule ExChat.Web.WebSocketController do
 
   def websocket_init(user_session) do
     SubscribeToUserSession.on(self(), user_session)
+    schedule_ping()
 
     {:ok, user_session}
   end
@@ -32,6 +36,11 @@ defmodule ExChat.Web.WebSocketController do
 
   def websocket_handle(_message, session_id) do
     {:ok, session_id}
+  end
+
+  def websocket_info(:ping, session_id) do
+    schedule_ping()
+    {:reply, {:ping, ""}, session_id}
   end
 
   def websocket_info(message, session_id) do
@@ -73,6 +82,18 @@ defmodule ExChat.Web.WebSocketController do
 
   defp to_json(response), do: Poison.encode!(response)
   defp from_json(json), do: Poison.decode(json)
+
+  defp schedule_ping do
+    Process.send_after(self(), :ping, ping_interval())
+  end
+
+  defp ping_interval do
+    Application.get_env(:ex_chat, :ping_interval, @default_ping_interval)
+  end
+
+  defp idle_timeout do
+    Application.get_env(:ex_chat, :idle_timeout, @default_idle_timeout)
+  end
 
   defp access_token_from(req) do
     query_parameter =
