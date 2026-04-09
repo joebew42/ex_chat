@@ -71,11 +71,16 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I can read the name of the user who sent the message", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      {:ok, other_client} = connect_to websocket_chat_url(with: "bar_token"), forward_to: NullProcess.start
+      other_user = "other-user"
+      other_token = "OTHER_USER_TOKEN"
+      ExChat.UserSessions.create(other_user)
+      ExChat.AccessTokenRepository.add(other_token, other_user)
+
+      {:ok, other_client} = connect_to websocket_chat_url(with: other_token), forward_to: NullProcess.start
       send_as_text(other_client, "{\"command\":\"join\"}")
       send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from other user!\"}")
 
-      assert_receive "{\"room\":\"default\",\"from\":\"bar_user\",\"message\":\"Hello from other user!\"}"
+      assert_receive "{\"room\":\"default\",\"from\":\"other-user\",\"message\":\"Hello from other user!\"}"
     end
   end
 
@@ -132,6 +137,42 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
+  describe "As a Client when I create a user" do
+    test "I receive a username and an access token" do
+      {:ok, response} = post_json("/users", %{username: "alice"})
+
+      assert response.status == 201
+      body = Poison.decode!(response.body)
+      assert body["username"] == "alice"
+      assert is_binary(body["access_token"])
+    end
+
+    test "I receive an error when the username is already taken" do
+      {:ok, _} = post_json("/users", %{username: "bob"})
+      {:ok, response} = post_json("/users", %{username: "bob"})
+
+      assert response.status == 409
+      assert Poison.decode!(response.body) == %{"error" => "username already taken"}
+    end
+
+    test "I receive an error when the username is missing" do
+      {:ok, response} = post_json("/users", %{})
+
+      assert response.status == 400
+      assert Poison.decode!(response.body) == %{"error" => "username is required"}
+    end
+
+    test "I can connect to the chat with the returned access token" do
+      {:ok, response} = post_json("/users", %{username: "charlie"})
+      body = Poison.decode!(response.body)
+
+      {:ok, client} = connect_to websocket_chat_url(with: body["access_token"]), forward_to: self()
+      send_as_text(client, "{\"command\":\"join\"}")
+
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, charlie!\"}"
+    end
+  end
+
   defp connect_as_a_user(_context) do
     a_user = "a-user"
     an_access_token = "A_USER_ACCESS_TOKEN"
@@ -149,5 +190,37 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
   defp websocket_chat_url([with: access_token]) do
     "#{websocket_chat_url()}?access_token=#{access_token}"
+  end
+
+  defp post_json(path, body) do
+    body_json = Poison.encode!(body)
+    content_length = byte_size(body_json)
+
+    request =
+      "POST #{path} HTTP/1.1\r\n" <>
+      "Host: localhost:4000\r\n" <>
+      "Content-Type: application/json\r\n" <>
+      "Content-Length: #{content_length}\r\n" <>
+      "Connection: close\r\n" <>
+      "\r\n" <>
+      body_json
+
+    {:ok, socket} = :gen_tcp.connect(~c"localhost", 4000, [:binary, active: false])
+    :ok = :gen_tcp.send(socket, request)
+    {:ok, response} = recv_all(socket, "")
+    :gen_tcp.close(socket)
+
+    [header_section, resp_body] = String.split(response, "\r\n\r\n", parts: 2)
+    [status_line | _] = String.split(header_section, "\r\n")
+    [_, status_code, _] = String.split(status_line, " ", parts: 3)
+
+    {:ok, %{status: String.to_integer(status_code), body: resp_body}}
+  end
+
+  defp recv_all(socket, acc) do
+    case :gen_tcp.recv(socket, 0, 5000) do
+      {:ok, data} -> recv_all(socket, acc <> data)
+      {:error, :closed} -> {:ok, acc}
+    end
   end
 end
