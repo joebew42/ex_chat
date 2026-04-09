@@ -40,21 +40,7 @@ At the moment there are two users in the system. You can use two different URLs 
 
 ### TODO
 
-- Rename `ChatRoom`, `ChatRooms` and `Chatroom` to `Room` (basically remove the `Chat` term)
-- Rename `session_id` or `user_session_id` to `user_id`
-- Introduce the [ping/pong mechanism](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive) between client and server in order to unsubscribe and disconnect a client due inactivity
-- Find a way to document the websocket API
-- Try to split the [API, the Server and the Application Logic](https://pragdave.me/blog/2017/07/13/decoupling-interface-and-implementation-in-elixir.html) in the `UserSessions` and in the `ChatRooms` module
-  - It could be interesting to open a related thread to the ElixirForum, trying to get more feedback
-- Think if it could be useful to use `Mox` instead of `Mock` (think about the use of `Behaviour`)
-- find a way to distribute the Chat across different nodes, in order to use more than one nodes
-  - we have to think to introduce [`gproc`](https://github.com/uwiger/gproc) for distribute the lookup processes across different nodes
-- improve the way we make assertions on received messages (e.g. assert_receive wants pattern match and not functions or variables) in the `websocket_test.exs`
-- try to write some acceptance test with Wallaby, for the frontend ?
-- setup a continuous integration for the project (e.g. using TravisCI)
-- Bonus: Let's try to use `Websockex` for the server too, instead of using the raw `cowboy_websocket`
-- try to expose the chat using the [IRC protocol](https://tools.ietf.org/html/rfc1459)
-- it seems that we have some flaky tests for "other clients" scenarios
+See [open issues](https://github.com/joebew42/ex_chat/issues) for the full list of planned work.
 
 ### DONE
 
