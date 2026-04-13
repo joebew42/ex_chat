@@ -137,6 +137,19 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
+  describe "As a connected User the server sends periodic pings" do
+    setup do
+      Application.put_env(:ex_chat, :ping_interval, 100)
+      on_exit(fn -> Application.delete_env(:ex_chat, :ping_interval) end)
+    end
+
+    setup :connect_as_a_user_with_ping_awareness
+
+    test "I receive a ping frame from the server", %{client: _client} do
+      assert_receive {:ping_received, _payload}, 1_000
+    end
+  end
+
   describe "As a Client when I create a user" do
     test "I receive a username and an access token" do
       {:ok, response} = post_json("/users", %{username: "alice"})
@@ -171,6 +184,20 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, charlie!\"}"
     end
+  end
+
+  defp connect_as_a_user_with_ping_awareness(_context) do
+    a_user = "a-user"
+    an_access_token = "A_USER_ACCESS_TOKEN"
+
+    ExChat.UserSessions.create(a_user)
+    ExChat.AccessTokenRepository.add(an_access_token, a_user)
+
+    {:ok, client} = PingAwareWebSocketClient.connect_to(
+      websocket_chat_url(with: an_access_token),
+      forward_to: self()
+    )
+    {:ok, client: client}
   end
 
   defp connect_as_a_user(_context) do
