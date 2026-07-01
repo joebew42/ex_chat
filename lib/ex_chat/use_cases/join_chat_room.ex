@@ -1,11 +1,12 @@
 defmodule ExChat.UseCases.JoinChatRoom do
 
-  alias ExChat.{ChatRooms, UserSessions}
+  alias ExChat.{ChatRooms, Greeting, UserSessions}
 
-  def on(room, user_id) do
+  def on(room, user_id, now \\ Time.utc_now()) do
     case ChatRooms.join(room, as: user_id) do
       :ok ->
-        UserSessions.notify(%{room: room, message: "welcome to the #{room} chat room, #{user_id}!"}, to: user_id)
+        greeting = Greeting.greeting(now)
+        UserSessions.notify(%{room: room, message: "#{greeting}, #{user_id}! Welcome to the #{room} chat room, #{user_id}!"}, to: user_id)
         :ok
       {:error, :already_joined} ->
         {:error, "you already joined the #{room} room!"}
