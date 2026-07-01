@@ -1,7 +1,7 @@
 defmodule ExChat.ChatRooms do
   use DynamicSupervisor
 
-  alias ExChat.{ChatRoom, ChatRoomRegistry}
+  alias ExChat.{Room, ChatRoomRegistry}
 
   ##############
   # Client API #
@@ -28,13 +28,13 @@ defmodule ExChat.ChatRooms do
 
   def send(message, [to: room, as: session_id]) do
     case find(room) do
-      {:ok, pid} -> ChatRoom.send(pid, message, as: session_id)
+      {:ok, pid} -> Room.send(pid, message, as: session_id)
       error -> error
     end
   end
 
   defp try_join_chatroom(chatroom_pid, session_id) do
-    case ChatRoom.join(chatroom_pid, session_id) do
+    case Room.join(chatroom_pid, session_id) do
       :ok ->
         :ok
       {:error, :already_joined} ->
@@ -64,6 +64,6 @@ defmodule ExChat.ChatRooms do
   defp start(chatroom_name) do
     name = {:via, Registry, {ChatRoomRegistry, chatroom_name}}
 
-    DynamicSupervisor.start_child(:chatroom_supervisor, {ChatRoom, name})
+    DynamicSupervisor.start_child(:chatroom_supervisor, {Room, name})
   end
 end
