@@ -188,11 +188,6 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
-  # Asserts a forwarded text frame whose decoded content equals `expected` is
-  # received, comparing decoded maps so the assertion is independent of JSON key
-  # ordering. Like `assert_receive`, it matches selectively: other text frames
-  # (e.g. an interleaved welcome broadcast) are ignored and left in the mailbox
-  # for later assertions, so it also tolerates out-of-order delivery.
   defp assert_receive_message(expected, timeout \\ 100) do
     case receive_matching(expected, timeout, []) do
       {:ok, decoded, skipped} ->
@@ -205,9 +200,6 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
-  # Refutes receiving a text frame whose decoded content equals `unexpected`,
-  # independent of JSON key ordering. Any other text frame is left in the
-  # mailbox so following assertions can still consume it.
   defp refute_receive_message(unexpected, timeout \\ 100) do
     skipped = drain_text_frames(timeout, [])
 
