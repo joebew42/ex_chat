@@ -34,7 +34,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I want to receive a welcome message containing my name", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
     end
 
     test "I want that each connected clients receives the welcome message", %{client: client} do
@@ -42,8 +42,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
     end
   end
 
@@ -55,13 +55,13 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       send_as_text(client, "{\"room\":\"default\",\"message\":\"Hello folks!\"}")
 
-      assert_receive "{\"room\":\"default\",\"from\":\"a-user\",\"message\":\"Hello folks!\"}"
+      assert_receive_message %{"room" => "default", "from" => "a-user", "message" => "Hello folks!"}
     end
 
     test "I receive an error message if the room does not exist", %{client: client} do
       send_as_text(client, "{\"room\":\"unexisting_room\",\"message\":\"a message\"}")
 
-      assert_receive "{\"error\":\"unexisting_room does not exists\"}"
+      assert_receive_message %{"error" => "unexisting_room does not exists"}
     end
   end
 
@@ -80,7 +80,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(other_client, "{\"command\":\"join\"}")
       send_as_text(other_client, "{\"room\":\"default\",\"message\":\"Hello from other user!\"}")
 
-      assert_receive "{\"room\":\"default\",\"from\":\"other-user\",\"message\":\"Hello from other user!\"}"
+      assert_receive_message %{"room" => "default", "from" => "other-user", "message" => "Hello from other user!"}
     end
   end
 
@@ -91,13 +91,13 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
 
-      assert_receive "{\"error\":\"a_chat_room already exists\"}"
+      assert_receive_message %{"error" => "a_chat_room already exists"}
     end
 
     test "I receive a successful message", %{client: client} do
       send_as_text(client, "{\"command\":\"create\",\"room\":\"another_room\"}")
 
-      assert_receive "{\"success\":\"another_room has been created!\"}"
+      assert_receive_message %{"success" => "another_room has been created!"}
     end
   end
 
@@ -108,7 +108,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
-      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room, a-user!\"}"
+      assert_receive_message %{"room" => "a_chat_room", "message" => "welcome to the a_chat_room chat room, a-user!"}
     end
   end
 
@@ -119,9 +119,11 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"join\"}")
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
-      refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
-      assert_receive "{\"error\":\"you already joined the default room!\"}"
+      welcome = %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+
+      assert_receive_message welcome
+      refute_receive_message welcome
+      assert_receive_message %{"error" => "you already joined the default room!"}
     end
 
     test "send invalid messages", %{client: client} do
@@ -182,8 +184,64 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       {:ok, client} = connect_to websocket_chat_url(with: body["access_token"]), forward_to: self()
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, charlie!\"}"
+      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, charlie!"}
     end
+  end
+
+  # Asserts a forwarded text frame whose decoded content equals `expected` is
+  # received, comparing decoded maps so the assertion is independent of JSON key
+  # ordering. Like `assert_receive`, it matches selectively: other text frames
+  # (e.g. an interleaved welcome broadcast) are ignored and left in the mailbox
+  # for later assertions, so it also tolerates out-of-order delivery.
+  defp assert_receive_message(expected, timeout \\ 100) do
+    case receive_matching(expected, timeout, []) do
+      {:ok, decoded, skipped} ->
+        requeue(Enum.reverse(skipped))
+        decoded
+
+      {:timeout, skipped} ->
+        requeue(Enum.reverse(skipped))
+        flunk("expected to receive a message matching #{inspect(expected)}")
+    end
+  end
+
+  # Refutes receiving a text frame whose decoded content equals `unexpected`,
+  # independent of JSON key ordering. Any other text frame is left in the
+  # mailbox so following assertions can still consume it.
+  defp refute_receive_message(unexpected, timeout \\ 100) do
+    skipped = drain_text_frames(timeout, [])
+
+    refute Enum.any?(skipped, fn raw_message -> Poison.decode!(raw_message) == unexpected end),
+           "unexpectedly received a message matching #{inspect(unexpected)}"
+
+    requeue(skipped)
+  end
+
+  defp receive_matching(expected, timeout, skipped) do
+    receive do
+      raw_message when is_binary(raw_message) ->
+        decoded = Poison.decode!(raw_message)
+
+        if decoded == expected do
+          {:ok, decoded, skipped}
+        else
+          receive_matching(expected, timeout, [raw_message | skipped])
+        end
+    after
+      timeout -> {:timeout, skipped}
+    end
+  end
+
+  defp drain_text_frames(timeout, acc) do
+    receive do
+      raw_message when is_binary(raw_message) -> drain_text_frames(timeout, [raw_message | acc])
+    after
+      timeout -> Enum.reverse(acc)
+    end
+  end
+
+  defp requeue(raw_messages) do
+    Enum.each(raw_messages, &send(self(), &1))
   end
 
   defp connect_as_a_user_with_ping_awareness(_context) do
