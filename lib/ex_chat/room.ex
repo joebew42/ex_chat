@@ -1,15 +1,15 @@
-defmodule ExChat.ChatRoom do
+defmodule ExChat.Room do
   use GenServer
 
   alias ExChat.UserSessions
 
   defstruct session_ids: [], name: nil
 
-  def create(name = {:via, Registry, {_registry_name, chatroom_name}}) do
-    GenServer.start_link(__MODULE__, %__MODULE__{name: chatroom_name}, name: name)
+  def create(name = {:via, Registry, {_registry_name, room_name}}) do
+    GenServer.start_link(__MODULE__, %__MODULE__{name: room_name}, name: name)
   end
-  def create(chatroom_name) do
-    GenServer.start_link(__MODULE__, %__MODULE__{name: chatroom_name}, name: String.to_atom(chatroom_name))
+  def create(room_name) do
+    GenServer.start_link(__MODULE__, %__MODULE__{name: room_name}, name: String.to_atom(room_name))
   end
 
   def start_link(name), do: create(name)
