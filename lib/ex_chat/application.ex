@@ -12,7 +12,7 @@ defmodule ExChat.Application do
 
   def init(:ok) do
     children = [
-      {Registry, keys: :unique, name: ExChat.ChatRoomRegistry},
+      {Registry, keys: :unique, name: ExChat.RoomRegistry},
       {Registry, keys: :unique, name: ExChat.UserSessionRegistry},
       ExChat.ChatRooms,
       ExChat.UserSessions,
