@@ -57,7 +57,7 @@ See [open issues](https://github.com/joebew42/ex_chat/issues) for the full list 
   - `bar_user` associated to the token `bar_token`
 - Maybe the `AuthenticationService` is a "Repository" instead. Consider to rename it
 - Provide a real implementation of the `AuthenticationService`
-- Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_session for a given access_token
+- Extract a collaborator for the `WebSocketClient` that will be responsible to understand if there is an existing user_id for a given access_token
 - Update the UI in order to handle the user id
 - It seems that we have a [websocket idle timeout issue](https://ninenines.eu/docs/en/cowboy/2.4/guide/ws_handlers/#_keeping_the_connection_alive). Increase the idle timeout to 10 minutes
 - Handle the connection when the provided access token is empty or not valid (no user session associated)
@@ -83,9 +83,9 @@ See [open issues](https://github.com/joebew42/ex_chat/issues) for the full list 
 - The module `ChatRooms` should be reorganized like the `UserSessions`
 - As a `ChatRoom` I can notify of new messages to all the subscribed `UserSession`s
 - rename the `UserSessions.send` to `UserSessions.notify`
-- think to rename `clients` to `session_ids` in the `ChatRoom` process
+- think to rename `clients` to `user_ids` in the `ChatRoom` process
 - Rename `ExChat.Registry` in `ExChat.ChatRoomRegistry`
-- rename `user_session_id` to `session_id`
+- rename `user_session_id` to `user_id`
 - Maybe the `UserSessions` and `UserSessionSupervisor` could be merged in a single module named `UserSessions`
 - Fix the names used for the user sessions in the `UserSessionsTest`
 - Try to find a way to remove the shared state (the `UserSessionRegistry`) from the `UserSessions` Tests
