@@ -7,25 +7,25 @@ defmodule ExChat.UserSessions do
   # Client API #
   ##############
 
-  def create(session_id) do
-    case find(session_id) do
+  def create(user_id) do
+    case find(user_id) do
       nil ->
-        start(session_id)
+        start(user_id)
         :ok
       _pid ->
         {:error, :already_exists}
     end
   end
 
-  def subscribe(client_pid, [to: session_id]) do
-    case find(session_id) do
+  def subscribe(client_pid, [to: user_id]) do
+    case find(user_id) do
       nil -> {:error, :session_not_exists}
       pid -> UserSession.subscribe(pid, client_pid)
     end
   end
 
-  def notify(message, [to: session_id]) do
-    case find(session_id) do
+  def notify(message, [to: user_id]) do
+    case find(user_id) do
       nil -> {:error, :session_not_exists}
       pid -> UserSession.notify(pid, message)
     end
@@ -43,14 +43,14 @@ defmodule ExChat.UserSessions do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
-  defp start(session_id) do
-    name = {:via, Registry, {UserSessionRegistry, session_id}}
+  defp start(user_id) do
+    name = {:via, Registry, {UserSessionRegistry, user_id}}
 
     DynamicSupervisor.start_child(__MODULE__, {UserSession ,name})
   end
 
-  defp find(session_id) do
-    case Registry.lookup(UserSessionRegistry, session_id) do
+  defp find(user_id) do
+    case Registry.lookup(UserSessionRegistry, user_id) do
        [] -> nil
        [{pid, nil}] -> pid
     end
