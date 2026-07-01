@@ -34,7 +34,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I want to receive a welcome message containing my name", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      assert_receive_message welcome_message("default", "a-user")
     end
 
     test "I want that each connected clients receives the welcome message", %{client: client} do
@@ -42,8 +42,10 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      welcome = welcome_message("default", "a-user")
+
+      assert_receive_message welcome
+      assert_receive_message welcome
     end
   end
 
@@ -108,7 +110,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
-      assert_receive_message %{"room" => "a_chat_room", "message" => "welcome to the a_chat_room chat room, a-user!"}
+      assert_receive_message welcome_message("a_chat_room", "a-user")
     end
   end
 
@@ -119,7 +121,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"join\"}")
       send_as_text(client, "{\"command\":\"join\"}")
 
-      welcome = %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      welcome = welcome_message("default", "a-user")
 
       assert_receive_message welcome
       refute_receive_message welcome
@@ -184,8 +186,13 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       {:ok, client} = connect_to websocket_chat_url(with: body["access_token"]), forward_to: self()
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, charlie!"}
+      assert_receive_message welcome_message("default", "charlie")
     end
+  end
+
+  defp welcome_message(room, user) do
+    greeting = ExChat.Greeting.greeting(Time.utc_now())
+    %{"room" => room, "message" => "#{greeting}, #{user}! Welcome to the #{room} chat room, #{user}!"}
   end
 
   defp assert_receive_message(expected, timeout \\ 100) do
