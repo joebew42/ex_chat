@@ -1,4 +1,4 @@
-defmodule ExChat.UseCases.JoinChatRoom do
+defmodule ExChat.UseCases.JoinRoom do
 
   alias ExChat.{Rooms, UserSessions}
 

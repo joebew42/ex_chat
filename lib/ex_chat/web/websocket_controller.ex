@@ -4,7 +4,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
-    CreateRoom, JoinChatRoom, SubscribeToUserSession}
+    CreateRoom, JoinRoom, SubscribeToUserSession}
 
   @default_ping_interval 30_000
   @default_idle_timeout 60_000
@@ -48,7 +48,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   defp handle(%{"command" => "join", "room" => room}, session_id) do
-    case JoinChatRoom.on(room, session_id) do
+    case JoinRoom.on(room, session_id) do
       :ok ->
         {:ok, session_id}
       {:error, message} ->
