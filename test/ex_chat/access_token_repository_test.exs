@@ -13,8 +13,8 @@ defmodule ExChat.AccessTokenRepositoryTest do
   end
 
   test "return the user session associated to the token" do
-    AccessTokenRepository.add("a-token", "a-user-session")
+    AccessTokenRepository.add("a-token", "a-user-id")
 
-    assert AccessTokenRepository.find_user_session_by("a-token") == "a-user-session"
+    assert AccessTokenRepository.find_user_session_by("a-token") == "a-user-id"
   end
 end
