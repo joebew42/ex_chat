@@ -88,10 +88,10 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     setup :connect_as_a_user
 
     test "I receive an error message if the room already exist", %{client: client} do
-      send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
-      send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
+      send_as_text(client, "{\"command\":\"create\",\"room\":\"a_room\"}")
+      send_as_text(client, "{\"command\":\"create\",\"room\":\"a_room\"}")
 
-      assert_receive "{\"error\":\"a_chat_room already exists\"}"
+      assert_receive "{\"error\":\"a_room already exists\"}"
     end
 
     test "I receive a successful message", %{client: client} do
@@ -105,10 +105,10 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     setup :connect_as_a_user
 
     test "I want to receive a welcome message that contain my name and the chat room name", %{client: client} do
-      send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
-      send_as_text(client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
+      send_as_text(client, "{\"command\":\"create\",\"room\":\"a_room\"}")
+      send_as_text(client, "{\"command\":\"join\",\"room\":\"a_room\"}")
 
-      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room, a-user!\"}"
+      assert_receive "{\"room\":\"a_room\",\"message\":\"welcome to the a_room chat room, a-user!\"}"
     end
   end
 
