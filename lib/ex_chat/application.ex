@@ -14,7 +14,7 @@ defmodule ExChat.Application do
     children = [
       {Registry, keys: :unique, name: ExChat.RoomRegistry},
       {Registry, keys: :unique, name: ExChat.UserSessionRegistry},
-      ExChat.ChatRooms,
+      ExChat.Rooms,
       ExChat.UserSessions,
       ExChat.AccessTokenRepository,
       ExChat.Setup,

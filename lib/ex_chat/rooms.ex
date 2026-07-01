@@ -1,4 +1,4 @@
-defmodule ExChat.ChatRooms do
+defmodule ExChat.Rooms do
   use DynamicSupervisor
 
   alias ExChat.{Room, RoomRegistry}
@@ -20,7 +20,7 @@ defmodule ExChat.ChatRooms do
   def join(room, [as: session_id]) do
     case find(room) do
       {:ok, pid} ->
-        try_join_chatroom(pid, session_id)
+        try_join_room(pid, session_id)
       {:error, :unexisting_room} ->
         {:error, :unexisting_room}
     end
@@ -33,8 +33,8 @@ defmodule ExChat.ChatRooms do
     end
   end
 
-  defp try_join_chatroom(chatroom_pid, session_id) do
-    case Room.join(chatroom_pid, session_id) do
+  defp try_join_room(room_pid, session_id) do
+    case Room.join(room_pid, session_id) do
       :ok ->
         :ok
       {:error, :already_joined} ->
@@ -54,16 +54,16 @@ defmodule ExChat.ChatRooms do
   ####################
 
   def start_link(_opts) do
-    DynamicSupervisor.start_link(__MODULE__, [], name: :chatroom_supervisor)
+    DynamicSupervisor.start_link(__MODULE__, [], name: :room_supervisor)
   end
 
   def init(_) do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
-  defp start(chatroom_name) do
-    name = {:via, Registry, {RoomRegistry, chatroom_name}}
+  defp start(room_name) do
+    name = {:via, Registry, {RoomRegistry, room_name}}
 
-    DynamicSupervisor.start_child(:chatroom_supervisor, {Room, name})
+    DynamicSupervisor.start_child(:room_supervisor, {Room, name})
   end
 end

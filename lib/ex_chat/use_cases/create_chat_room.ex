@@ -1,9 +1,9 @@
 defmodule ExChat.UseCases.CreateChatRoom do
 
-  alias ExChat.ChatRooms
+  alias ExChat.Rooms
 
   def on(room) do
-    case ChatRooms.create(room) do
+    case Rooms.create(room) do
       :ok ->
         {:ok, "#{room} has been created!"}
       {:error, :already_exists} ->
