@@ -14,8 +14,8 @@ defmodule ExChat.UseCases.ValidateAccessTokenTest do
   end
 
   test "return the user session when there is an access token" do
-    with_mock(AccessTokenRepository, find_user_session_by: fn(_) -> "a user session" end) do
-      assert ValidateAccessToken.on("a valid token") == {:ok, "a user session"}
+    with_mock(AccessTokenRepository, find_user_session_by: fn(_) -> "a user id" end) do
+      assert ValidateAccessToken.on("a valid token") == {:ok, "a user id"}
       assert called AccessTokenRepository.find_user_session_by("a valid token")
     end
   end

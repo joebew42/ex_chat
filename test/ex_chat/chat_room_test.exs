@@ -10,7 +10,7 @@ defmodule ExChat.ChatRoomTest do
     {:ok, chatroom} = ChatRoom.create("room_name")
     ChatRoom.join(chatroom, "a-user-session-id")
 
-    with_mock UserSessions, [notify: fn(_message, [to: _user_session_id]) -> :ok end] do
+    with_mock UserSessions, [notify: fn(_message, [to: _user_id]) -> :ok end] do
       expected_message = %{
         from: "another-user-session-id",
         room: "room_name",

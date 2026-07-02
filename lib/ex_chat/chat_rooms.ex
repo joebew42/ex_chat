@@ -17,24 +17,24 @@ defmodule ExChat.ChatRooms do
     end
   end
 
-  def join(room, [as: session_id]) do
+  def join(room, [as: user_id]) do
     case find(room) do
       {:ok, pid} ->
-        try_join_chatroom(pid, session_id)
+        try_join_chatroom(pid, user_id)
       {:error, :unexisting_room} ->
         {:error, :unexisting_room}
     end
   end
 
-  def send(message, [to: room, as: session_id]) do
+  def send(message, [to: room, as: user_id]) do
     case find(room) do
-      {:ok, pid} -> ChatRoom.send(pid, message, as: session_id)
+      {:ok, pid} -> ChatRoom.send(pid, message, as: user_id)
       error -> error
     end
   end
 
-  defp try_join_chatroom(chatroom_pid, session_id) do
-    case ChatRoom.join(chatroom_pid, session_id) do
+  defp try_join_chatroom(chatroom_pid, user_id) do
+    case ChatRoom.join(chatroom_pid, user_id) do
       :ok ->
         :ok
       {:error, :already_joined} ->

@@ -5,8 +5,8 @@ defmodule ExChat.AccessTokenRepository do
   # Client API #
   ##############
 
-  def add(access_token, user_session) do
-    :ok = GenServer.call(:access_token_repository, {:add, access_token, user_session})
+  def add(access_token, user_id) do
+    :ok = GenServer.call(:access_token_repository, {:add, access_token, user_id})
   end
 
   def find_user_session_by(access_token) do
@@ -25,8 +25,8 @@ defmodule ExChat.AccessTokenRepository do
     {:ok, %{}}
   end
 
-  def handle_call({:add, access_token, user_session}, _from, state) do
-    {:reply, :ok, Map.put(state, access_token, user_session)}
+  def handle_call({:add, access_token, user_id}, _from, state) do
+    {:reply, :ok, Map.put(state, access_token, user_id)}
   end
 
   def handle_call({:find_user_session_by, access_token}, _from, state) do

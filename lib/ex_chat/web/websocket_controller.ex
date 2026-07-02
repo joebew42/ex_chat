@@ -13,72 +13,72 @@ defmodule ExChat.Web.WebSocketController do
     access_token = access_token_from(req)
 
     case ValidateAccessToken.on(access_token) do
-      {:ok, user_session} ->
-        {:cowboy_websocket, req, user_session, %{idle_timeout: idle_timeout()}}
+      {:ok, user_id} ->
+        {:cowboy_websocket, req, user_id, %{idle_timeout: idle_timeout()}}
       {:error, :access_token_not_valid} ->
         {:ok, :cowboy_req.reply(400, req), state}
     end
   end
 
-  def websocket_init(user_session) do
-    SubscribeToUserSession.on(self(), user_session)
+  def websocket_init(user_id) do
+    SubscribeToUserSession.on(self(), user_id)
     schedule_ping()
 
-    {:ok, user_session}
+    {:ok, user_id}
   end
 
-  def websocket_handle({:text, command_as_json}, session_id) do
+  def websocket_handle({:text, command_as_json}, user_id) do
     case from_json(command_as_json) do
-      {:error, _reason} -> {:ok, session_id}
-      {:ok, command} -> handle(command, session_id)
+      {:error, _reason} -> {:ok, user_id}
+      {:ok, command} -> handle(command, user_id)
     end
   end
 
-  def websocket_handle(_message, session_id) do
-    {:ok, session_id}
+  def websocket_handle(_message, user_id) do
+    {:ok, user_id}
   end
 
-  def websocket_info(:ping, session_id) do
+  def websocket_info(:ping, user_id) do
     schedule_ping()
-    {:reply, {:ping, ""}, session_id}
+    {:reply, {:ping, ""}, user_id}
   end
 
-  def websocket_info(message, session_id) do
-    {:reply, {:text, to_json(message)}, session_id}
+  def websocket_info(message, user_id) do
+    {:reply, {:text, to_json(message)}, user_id}
   end
 
-  defp handle(%{"command" => "join", "room" => room}, session_id) do
-    case JoinChatRoom.on(room, session_id) do
+  defp handle(%{"command" => "join", "room" => room}, user_id) do
+    case JoinChatRoom.on(room, user_id) do
       :ok ->
-        {:ok, session_id}
+        {:ok, user_id}
       {:error, message} ->
-        {:reply, {:text, to_json(%{error: message})}, session_id}
+        {:reply, {:text, to_json(%{error: message})}, user_id}
     end
   end
 
-  defp handle(command = %{"command" => "join"}, session_id) do
-    handle(Map.put(command, "room", "default"), session_id)
+  defp handle(command = %{"command" => "join"}, user_id) do
+    handle(Map.put(command, "room", "default"), user_id)
   end
 
-  defp handle(%{"room" => room, "message" => message}, session_id) do
-    case SendMessageToChatRoom.on(message, room, session_id) do
+  defp handle(%{"room" => room, "message" => message}, user_id) do
+    case SendMessageToChatRoom.on(message, room, user_id) do
       {:error, message} ->
-        {:reply, {:text, to_json(%{ error: message })}, session_id}
+        {:reply, {:text, to_json(%{ error: message })}, user_id}
       :ok ->
-        {:ok, session_id}
+        {:ok, user_id}
     end
   end
 
-  defp handle(%{"command" => "create", "room" => room}, session_id) do
+  defp handle(%{"command" => "create", "room" => room}, user_id) do
     response = case CreateChatRoom.on(room) do
       {:ok, message} -> %{success: message}
       {:error, message} -> %{error: message}
     end
 
-    {:reply, {:text, to_json(response)}, session_id}
+    {:reply, {:text, to_json(response)}, user_id}
   end
 
-  defp handle(_not_handled_command, session_id), do: {:ok, session_id}
+  defp handle(_not_handled_command, user_id), do: {:ok, user_id}
 
   defp to_json(response), do: Poison.encode!(response)
   defp from_json(json), do: Poison.decode(json)
