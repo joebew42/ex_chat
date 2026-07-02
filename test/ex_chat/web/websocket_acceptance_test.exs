@@ -84,6 +84,25 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     end
   end
 
+  describe "As a User when I send the /who command" do
+    setup :connect_as_a_user
+
+    test "I receive back my logged in information", %{client: client} do
+      send_as_text(client, "{\"room\":\"default\",\"message\":\"/who\"}")
+
+      assert_receive "{\"message\":\"You are logged in as a-user\"}"
+    end
+
+    test "a message that merely contains /who is broadcast as usual", %{client: client} do
+      send_as_text(client, "{\"command\":\"join\"}")
+
+      send_as_text(client, "{\"room\":\"default\",\"message\":\"who is there /who\"}")
+
+      assert_receive "{\"room\":\"default\",\"from\":\"a-user\",\"message\":\"who is there /who\"}"
+      refute_receive "{\"message\":\"You are logged in as a-user\"}"
+    end
+  end
+
   describe "As a User when I create a new chat room" do
     setup :connect_as_a_user
 
