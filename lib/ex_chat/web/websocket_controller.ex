@@ -4,7 +4,7 @@ defmodule ExChat.Web.WebSocketController do
   end
 
   alias ExChat.UseCases.{ValidateAccessToken, SendMessageToChatRoom,
-    CreateChatRoom, JoinChatRoom, SubscribeToUserSession}
+    CreateChatRoom, JoinChatRoom, SubscribeToUserSession, WhoAmI}
 
   @default_ping_interval 30_000
   @default_idle_timeout 60_000
@@ -58,6 +58,11 @@ defmodule ExChat.Web.WebSocketController do
 
   defp handle(command = %{"command" => "join"}, session_id) do
     handle(Map.put(command, "room", "default"), session_id)
+  end
+
+  defp handle(%{"message" => "/who"}, session_id) do
+    {:ok, message} = WhoAmI.on(session_id)
+    {:reply, {:text, to_json(%{message: message})}, session_id}
   end
 
   defp handle(%{"room" => room, "message" => message}, session_id) do
