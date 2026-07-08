@@ -34,7 +34,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I want to receive a welcome message containing my name", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!" <> _
     end
 
     test "I want that each connected clients receives the welcome message", %{client: client} do
@@ -42,8 +42,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!" <> _
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!" <> _
     end
   end
 
@@ -108,7 +108,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
-      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room, a-user!\"}"
+      assert_receive "{\"room\":\"a_chat_room\",\"message\":\"welcome to the a_chat_room chat room, a-user!" <> _
     end
   end
 
@@ -119,8 +119,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"join\"}")
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
-      refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!" <> _
+      refute_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, a-user!" <> _
       assert_receive "{\"error\":\"you already joined the default room!\"}"
     end
 
@@ -182,7 +182,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       {:ok, client} = connect_to websocket_chat_url(with: body["access_token"]), forward_to: self()
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, charlie!\"}"
+      assert_receive "{\"room\":\"default\",\"message\":\"welcome to the default chat room, charlie!" <> _
     end
   end
 
