@@ -34,7 +34,22 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
     test "I want to receive a welcome message containing my name", %{client: client} do
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      assert_receive_message a_welcome_message(to: "a-user", in: "default")
+    end
+
+    test "I want to know how close Christmas is", %{client: client} do
+      send_as_text(client, "{\"command\":\"join\"}")
+
+      welcome = assert_receive_message a_welcome_message(to: "a-user", in: "default")
+      "welcome to the default chat room, a-user! " <> seasonal_clause = welcome["message"]
+
+      assert map_size(welcome) == 2
+      assert welcome["room"] == "default"
+
+      assert seasonal_clause == "It is Christmas! Ho Ho merry Christmas 🎄" or
+               seasonal_clause == "Ho ho a-user! Have you done your Christmas shopping yet? 🎁" or
+               seasonal_clause =~ ~r/^It is \d+ days to Christmas 🎅$/u,
+             "unexpected seasonal clause: #{inspect(seasonal_clause)}"
     end
 
     test "I want that each connected clients receives the welcome message", %{client: client} do
@@ -42,8 +57,8 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
 
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      assert_receive_message a_welcome_message(to: "a-user", in: "default")
+      assert_receive_message a_welcome_message(to: "a-user", in: "default")
     end
   end
 
@@ -108,7 +123,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"create\",\"room\":\"a_chat_room\"}")
       send_as_text(client, "{\"command\":\"join\",\"room\":\"a_chat_room\"}")
 
-      assert_receive_message %{"room" => "a_chat_room", "message" => "welcome to the a_chat_room chat room, a-user!"}
+      assert_receive_message a_welcome_message(to: "a-user", in: "a_chat_room")
     end
   end
 
@@ -119,7 +134,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       send_as_text(client, "{\"command\":\"join\"}")
       send_as_text(client, "{\"command\":\"join\"}")
 
-      welcome = %{"room" => "default", "message" => "welcome to the default chat room, a-user!"}
+      welcome = a_welcome_message(to: "a-user", in: "default")
 
       assert_receive_message welcome
       refute_receive_message welcome
@@ -184,7 +199,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       {:ok, client} = connect_to websocket_chat_url(with: body["access_token"]), forward_to: self()
       send_as_text(client, "{\"command\":\"join\"}")
 
-      assert_receive_message %{"room" => "default", "message" => "welcome to the default chat room, charlie!"}
+      assert_receive_message a_welcome_message(to: "charlie", in: "default")
     end
   end
 
@@ -203,10 +218,20 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
   defp refute_receive_message(unexpected, timeout \\ 100) do
     skipped = drain_text_frames(timeout, [])
 
-    refute Enum.any?(skipped, fn raw_message -> Poison.decode!(raw_message) == unexpected end),
+    refute Enum.any?(skipped, fn raw_message -> matches?(unexpected, Poison.decode!(raw_message)) end),
            "unexpectedly received a message matching #{inspect(unexpected)}"
 
     requeue(skipped)
+  end
+
+  defp matches?(expected, decoded) when is_function(expected, 1), do: expected.(decoded)
+  defp matches?(expected, decoded), do: decoded == expected
+
+  defp a_welcome_message([to: user, in: room]) do
+    fn decoded ->
+      decoded["room"] == room and
+        String.starts_with?(decoded["message"], "welcome to the #{room} chat room, #{user}!")
+    end
   end
 
   defp receive_matching(expected, timeout, skipped) do
@@ -214,7 +239,7 @@ defmodule ExChat.Web.WebSocketAcceptanceTest do
       raw_message when is_binary(raw_message) ->
         decoded = Poison.decode!(raw_message)
 
-        if decoded == expected do
+        if matches?(expected, decoded) do
           {:ok, decoded, skipped}
         else
           receive_matching(expected, timeout, [raw_message | skipped])
